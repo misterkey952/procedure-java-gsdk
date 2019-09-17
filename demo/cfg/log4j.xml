@@ -16,7 +16,7 @@
 	</appender>
 	<appender name="FileAppender" class="org.apache.log4j.DailyMaxRollingFileAppender">
 		<!-- 这里设置日志输出的绝对路径，如果设置相对路径，日志会生成在tomcat目录的相对路径里 -->
-		<param name="File" value="logsDance/console/console.log" />
+		<param name="File" value="${catalina.base}/logsDance/console/console.log" />
 		<param name="Threshold" value="ALL" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd-HH'.log'" />
 		<param name="Encoding" value="UTF-8" />
@@ -30,10 +30,16 @@
 		<appender-ref ref="FileAppender" />
 	</appender>
 
+
+	<logger name="APPLICATION" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="AsyncCONSOLE" />
+	</logger>
+
 	<!-- logger 日志输出设置开始,root的日志等级设置成了error,需要输出日志的请自行设置等级 -->
 	<root>
-		<level value="debug"/>
-		<appender-ref ref="CONSOLE" />
+		<level value="info"/>
+		<appender-ref ref="AsyncCONSOLE" />
 	</root>
 
 </log4j:configuration>

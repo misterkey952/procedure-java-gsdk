@@ -7,7 +7,7 @@ import java.io.File;
 
 public abstract class GameApplication {
 
-    private Logger logger;
+    private static final Logger logger=LoggerFactory.getLogger("GameApplication");
     private String appRootPath;
     private String resRootPath;
     private String cfgRootPath;
@@ -17,7 +17,6 @@ public abstract class GameApplication {
         this.resRootPath = appRootPath+ File.separator+"res";
         this.cfgRootPath = cfgRootPath+File.separator+"cfg";
         this.appName=appName;
-        logger= LoggerFactory.getLogger(this.getClass());
         initialize();
     }
 
