@@ -1,4 +1,4 @@
-package century.gsdk.storage;
+package century.gsdk.storage.core;
 
 public class StorageException extends Exception{
     public StorageException(String message) {

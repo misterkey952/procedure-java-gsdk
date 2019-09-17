@@ -1,4 +1,4 @@
-package century.gsdk.storage;
+package century.gsdk.storage.core;
 public interface StorageAPI {
     void initialze(String config)throws StorageException;
     void commit() throws StorageException;

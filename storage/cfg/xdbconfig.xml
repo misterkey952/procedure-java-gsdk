@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDBConfig package="century.x.xdb.assist">
+
+	<url value="jdbc:mysql://192.168.1.5/ttyem?useUnicode=true&amp;characterEncoding=UTF-8" type="java.lang.String">数据库连接</url>
+	
+	<user value="root" type="java.lang.String">数据库用户</user>
+	
+	<password value="1" type="java.lang.String">数据库密码</password>
+	
+	<maxCon value="10" type="short">最大连接数</maxCon>
+	
+	<minCon value="1" type="short">最小链接数</minCon>
+	
+	<driver value="com.mysql.jdbc.Driver" type="java.lang.String">驱动</driver>
+		
+	<packages value="century.x.xdb.test.entity1;century.x.xdb.test.entity2" type="java.lang.String">数据库表结构对应的包名</packages>
+		
+	<auto value="update" type="java.lang.String">是否自动建表  create自动创建表   update 自动更新表</auto>
+	<autoCommit value="false" type="boolean">是否自动提交</autoCommit>
+	
+</XDBConfig>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XRedisConfig>
+	<ip value="10.0.8.199" type="java.lang.String">redis服务器</ip>
+	
+	<port value="6379" type="int">端口</port>
+	
+	<maxJedis value="1" type="int">最大连接数据</maxJedis>
+	
+	<passwd value="123456" type="java.lang.String">密码</passwd>
+	
+	<db value="0" type="int">使用DBid</db>
+	
+	<timeout value="10000" type="int">链接超时时间</timeout>
+	
+	<maxidel value="400" type="int">最多空闲的jedis</maxidel>
+	
+	<openp value="true" type="boolean">是否开启持久化线程</openp>
+	
+</XRedisConfig>

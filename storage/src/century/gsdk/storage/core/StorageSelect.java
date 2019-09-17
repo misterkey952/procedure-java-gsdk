@@ -1,4 +1,4 @@
-package century.gsdk.storage;
+package century.gsdk.storage.core;
 
 import java.sql.ResultSet;
 

@@ -1,4 +1,4 @@
-package century.gsdk.storage;
+package century.gsdk.storage.core;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
