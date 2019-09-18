@@ -21,8 +21,14 @@ public abstract class NetConnect {
         handleMap=new HashMap<>();
     }
 
+    public void close(){
+        onClose();
+        onUserClose();
+    }
+
     public abstract void start();
-    public abstract void close();
+    public abstract void onClose();
+    public abstract void onUserClose();
     public abstract void registerSession(NetSession session);
     public abstract NetSession session(Object param);
 

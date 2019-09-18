@@ -51,8 +51,9 @@ public abstract class NettyServer extends NettyConnect{
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG,1024)
                     .childHandler(channelInitializer());
-            channelFuture=bootstrap.bind(getIp(),getPort()).sync();
+            channel=bootstrap.bind(getIp(),getPort()).sync().channel();
             info("start success");
+            channel.closeFuture().addListener(new NetConnectCloseEvent(this));
         }catch(Exception e) {
             this.close();
             error("start err",e);
@@ -71,9 +72,9 @@ public abstract class NettyServer extends NettyConnect{
     }
 
     @Override
-    public void close() {
-        if(channelFuture!=null){
-            channelFuture.channel().close();
+    public void onClose() {
+        if(channel!=null){
+            channel.close();
         }
         bossGroup.shutdownGracefully();
         workGroup.shutdownGracefully();

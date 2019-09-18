@@ -2,7 +2,7 @@ package century.gsdk.net.netty;
 import century.gsdk.net.core.NetConnect;
 import century.gsdk.tools.xml.XMLTool;
 import com.google.protobuf.Parser;
-import io.netty.channel.ChannelFuture;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.util.AttributeKey;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 public abstract class NettyConnect extends NetConnect {
     public static final AttributeKey<NettyConnect> NETTYCONNECT=AttributeKey.valueOf("NETTYCONNECT");
-    protected ChannelFuture channelFuture;
+    protected Channel channel;
     private Map<Integer, Parser> type2parse;
     private Map<Parser,Integer> parse2type;
     public NettyConnect(String name, String ip, int port) {

@@ -22,9 +22,9 @@ public abstract class NettyClient extends NettyConnect{
     }
 
     @Override
-    public void close() {
-        if(channelFuture!=null){
-            channelFuture.channel().close();
+    public void onClose() {
+        if(channel!=null){
+            channel.close();
         }
         workGroup.shutdownGracefully();
         info("close success");
@@ -38,8 +38,9 @@ public abstract class NettyClient extends NettyConnect{
             bootstrap.group(workGroup).channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY,true)
                     .handler(channelInitializer());
-            channelFuture=bootstrap.connect(getIp(), getPort()).sync();
+            channel =bootstrap.connect(getIp(), getPort()).sync().channel();
             info("connect success");
+            channel.closeFuture().addListener(new NetConnectCloseEvent(this));
         }catch(Exception e) {
             this.close();
             error("connect err",e);
@@ -55,5 +56,9 @@ public abstract class NettyClient extends NettyConnect{
     public NetSession session(Object param){
         return this.session;
     }
+    public NetSession session(){
+        return session(null);
+    }
+
 
 }

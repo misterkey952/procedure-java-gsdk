@@ -1,13 +1,21 @@
 package century.gsdk.net.netty;
 
 import century.gsdk.net.core.NetSession;
+import century.gsdk.net.core.SessionCloseHook;
 import io.netty.channel.socket.SocketChannel;
 
 public class NettySession extends NetSession {
     private SocketChannel socketChannel;
 
-    public NettySession(SocketChannel socketChannel) {
+    public NettySession(SocketChannel socketChannel){
         this.socketChannel = socketChannel;
+        socketChannel.closeFuture().addListener(new NetSessionCloseEvent(this));
+    }
+
+    public NettySession(SocketChannel socketChannel,SessionCloseHook closeHook) {
+        this.socketChannel = socketChannel;
+        initCloseHook(closeHook);
+        socketChannel.closeFuture().addListener(new NetSessionCloseEvent(this));
     }
 
     @Override
@@ -42,6 +50,12 @@ public class NettySession extends NetSession {
     @Override
     public int remotePort() {
         return socketChannel.remoteAddress().getPort();
+    }
+
+    @Override
+    public void onClose() {
+        socketChannel.close();
+        info("session is close");
     }
 
     public SocketChannel socketChannel(){

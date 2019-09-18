@@ -11,11 +11,13 @@ public abstract class GameApplication {
     private String appRootPath;
     private String resRootPath;
     private String cfgRootPath;
+    private String datRootPath;
     private String appName;
     protected void init(String appRootPath,String appName) {
         this.appRootPath = appRootPath;
         this.resRootPath = appRootPath+ File.separator+"res";
-        this.cfgRootPath = cfgRootPath+File.separator+"cfg";
+        this.cfgRootPath = appRootPath+File.separator+"cfg";
+        this.datRootPath= appRootPath+File.separator+"dat";
         this.appName=appName;
         initialize();
     }

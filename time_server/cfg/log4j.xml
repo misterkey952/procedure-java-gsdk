@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<!-- windows环境标准输出,也就是开发环境-->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="ALL" />
+		<param name="Follow" value="true"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS} %p][%c]%m%n" />
+		</layout>
+	</appender>
+	<appender name="AsyncCONSOLE" class="org.apache.log4j.AsyncAppender">
+		<appender-ref ref="CONSOLE" />
+	</appender>
+	<appender name="FileAppender" class="org.apache.log4j.DailyMaxRollingFileAppender">
+		<!-- 这里设置日志输出的绝对路径，如果设置相对路径，日志会生成在tomcat目录的相对路径里 -->
+		<param name="File" value="./console/console.log" />
+		<param name="Threshold" value="ALL" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd-HH'.log'" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="MaxBackupIndex" value="${MaxBackupIndex}"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS} %p][%c]%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="AsyncFileAppender" class="org.apache.log4j.AsyncAppender">
+		<appender-ref ref="FileAppender" />
+	</appender>
+
+
+	<logger name="STD_OUT" additivity="false">
+		<level value="info" />
+		<appender-ref ref="AsyncCONSOLE" />
+	</logger>
+
+	<!-- logger 日志输出设置开始,root的日志等级设置成了error,需要输出日志的请自行设置等级 -->
+	<root>
+		<level value="info"/>
+		<appender-ref ref="AsyncCONSOLE" />
+	</root>
+
+</log4j:configuration>

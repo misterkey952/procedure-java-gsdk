@@ -5,10 +5,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class NetSession {
-
     private static final Logger logger= LoggerFactory.getLogger("NetSession");
-
     private Map<String,Object> attribute=new ConcurrentHashMap<>();
+    private SessionCloseHook closeHook;
 
     public abstract void sendMsg(Object msg);
     public abstract void syncSendMsg(Object msg);
@@ -16,8 +15,19 @@ public abstract class NetSession {
     public abstract int localPort();
     public abstract String remoteIP();
     public abstract int remotePort();
+    public void close(){
 
+        if(closeHook!=null){
+            closeHook.hook();
+        }
+        onClose();
+    }
 
+    protected void initCloseHook(SessionCloseHook closeHook){
+        this.closeHook=closeHook;
+        closeHook.init(this);
+    }
+    public abstract void onClose();
     public void attribute(String key,Object value){
         attribute.put(key,value);
     }
