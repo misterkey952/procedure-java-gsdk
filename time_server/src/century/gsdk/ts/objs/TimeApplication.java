@@ -15,7 +15,7 @@ public class TimeApplication extends GameApplication {
     public void initialize() {
         timeServer=new TimeServer("TIMES","127.0.0.1",6000);
         timeServer.start();
-        GTime gTime= GTimeManager.getInstance().createGTime(1);
-        gTime.start();
+        TimeEventHandle.getInstance().start();
+        GTime.getInstance().start();
     }
 }

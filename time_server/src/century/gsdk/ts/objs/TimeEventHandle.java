@@ -1,20 +1,22 @@
 package century.gsdk.ts.objs;
-
 import century.gsdk.net.core.NetSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingDeque;
-
 public class TimeEventHandle implements Runnable{
     private static final Logger logger= LoggerFactory.getLogger("TimeEventHandle");
     private BlockingDeque<Long> blockingDeque=new LinkedBlockingDeque<>();
     private Set<NetSession> sessionSet=new HashSet<>();
     private boolean onoff;
+
+    private static final TimeEventHandle instance=new TimeEventHandle();
+    private TimeEventHandle(){}
+    public static TimeEventHandle getInstance(){
+        return instance;
+    }
 
     public void start(){
         onoff=true;

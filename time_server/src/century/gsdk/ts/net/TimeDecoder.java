@@ -2,8 +2,7 @@ package century.gsdk.ts.net;
 
 import century.gsdk.net.core.SessionCloseHook;
 import century.gsdk.net.netty.NettySession;
-import century.gsdk.ts.objs.GTime;
-import century.gsdk.ts.objs.GTimeManager;
+import century.gsdk.ts.objs.TimeEventHandle;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
@@ -30,21 +29,16 @@ public class TimeDecoder extends ChannelInboundHandlerAdapter {
         if (buffer.readableBytes() < 4) {
             return;
         }
-        int timeID = buffer.readInt();
-        final GTime gTime= GTimeManager.getInstance().getGTime(timeID);
-        if(gTime!=null){
-            gTime.getTimeEventHandle().registerSession(new NettySession((SocketChannel) ctx.channel(), new SessionCloseHook() {
-                @Override
-                public void hook() {
-                    gTime.getTimeEventHandle().removeSession(session);
-                }
-            }));
-        }
+        TimeEventHandle.getInstance().registerSession(new NettySession((SocketChannel) ctx.channel(), new SessionCloseHook() {
+            @Override
+            public void hook() {
+                TimeEventHandle.getInstance().removeSession(session);
+            }
+        }));
     }
 
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
-        System.out.println("--------------");
     }
 }
