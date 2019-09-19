@@ -1,7 +1,4 @@
 package century.gsdk.storage.core;
-
-import org.dom4j.Element;
-
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -18,7 +15,7 @@ import org.dom4j.Element;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public interface IStorage {
     void init(StorageInfo info);

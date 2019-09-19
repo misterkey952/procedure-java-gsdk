@@ -3,7 +3,7 @@
 	<storage name="storate_test" split="4">
 		<connection>
 			<host>127.0.0.1</host>
-			<user>x5online</user>
+			<user>root</user>
 			<passwd>111111</passwd>
 			<driver>com.mysql.jdbc.Driver</driver>
 		</connection>

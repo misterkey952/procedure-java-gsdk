@@ -38,7 +38,7 @@ public class TestApplication extends GameApplication {
         StorageInfo storageInfo=new StorageInfo(
                 "storate_test",
                 "127.0.0.1",
-                "x5online",
+                "root",
                 "111111",
                 "com.mysql.jdbc.Driver",
                 1
