@@ -68,4 +68,11 @@ public class Storage implements IStorage{
     public StorageConnect achiveConnection(int splitID) {
         return sources[splitID%sources.length].getConnection();
     }
+
+    @Override
+    public StorageSource[] storageSouece() {
+        return sources;
+    }
+
+
 }

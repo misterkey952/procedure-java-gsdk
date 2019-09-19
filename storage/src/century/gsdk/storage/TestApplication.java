@@ -1,10 +1,7 @@
 package century.gsdk.storage;
 
 import century.gsdk.docker.GameApplication;
-import century.gsdk.storage.core.IStorage;
-import century.gsdk.storage.core.Storage;
-import century.gsdk.storage.core.StorageConnect;
-import century.gsdk.storage.core.StorageInfo;
+import century.gsdk.storage.core.*;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -48,20 +45,18 @@ public class TestApplication extends GameApplication {
         );
         storage.init(storageInfo);
 
-        StorageConnect connect=storage.achiveConnection();
+        StorageTransaction storageTransaction=new StorageTransaction();
+        StorageConnect connect=storageTransaction.getConnection(storage);
         try {
-            PreparedStatement pst=connect.preparedStatement("INSERT INTO cc_zz VALUES(?,?,?,?,?,?,?)");
-            pst.setInt(1,1);
-            pst.setInt(2,1);
-            pst.setInt(3,1);
-            pst.setInt(4,1);
-            pst.setInt(5,1);
-            pst.setString(6,"999999");
-            pst.setString(7,"9699999");
+            PreparedStatement pst=connect.preparedStatement("INSERT INTO cc_zz2 VALUES(?,?)");
+            pst.setInt(1,46);
+            pst.setInt(2,2);
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        storageTransaction.commit();
+        storageTransaction.release();
     }
 }

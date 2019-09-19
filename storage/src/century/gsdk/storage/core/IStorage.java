@@ -26,4 +26,5 @@ public interface IStorage {
     StorageSource achiveStorageSource(int splitID);
     StorageConnect achiveConnection();
     StorageConnect achiveConnection(int splitID);
+    StorageSource[] storageSouece();
 }

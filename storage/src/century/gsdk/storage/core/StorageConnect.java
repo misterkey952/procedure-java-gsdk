@@ -60,7 +60,7 @@ public class StorageConnect {
         }
 
         try {
-            connection.setSavepoint();
+           connection.setSavepoint();
         } catch (SQLException e) {
             logger.error("setSavepoint err",e);
             throw e;
@@ -70,7 +70,7 @@ public class StorageConnect {
     public void release(){
         try {
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("release connection err",e);
         }
     }

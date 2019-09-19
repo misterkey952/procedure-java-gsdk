@@ -8,24 +8,15 @@
 			<driver>com.mysql.jdbc.Driver</driver>
 		</connection>
 
-		<table split="4" name="cc_zz" character="UTF8">
+		<table name="cc_zz" character="UTF8">
 			<column name="te1" type="int" length="" default="0" keyType="PRIMARY" incre="true"/>
 			<column name="te3" type="int" length="" default="0" keyType="PRIMARY"/>
 			<column name="te2" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te4" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te5" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te6" type="string" length="266" default="0"/>
-			<column name="te7" type="string" length="255"/>
 		</table>
 
-		<table split="1" name="cc_ll" character="UTF8">
+		<table name="cc_zz2" character="UTF8" engine="InnoDB">
 			<column name="te1" type="int" length="" default="0" keyType="PRIMARY" incre="true"/>
-			<column name="te3" type="int" length="" default="0" keyType="PRIMARY"/>
-			<column name="te2" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te4" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te5" type="int" length="" default="0" keyType="UNIQUE" />
-			<column name="te6" type="string" length="266" default="0"/>
-			<column name="te7" type="string" length="255"/>
+			<column name="te2" type="int" length="" default="0" />
 		</table>
 	</storage>
 </warehouse>
