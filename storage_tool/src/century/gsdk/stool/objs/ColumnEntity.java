@@ -25,17 +25,15 @@ public class ColumnEntity {
     private DataType dataType;
     private int length;
     private String defaultValue;
-    private boolean pk;
     private boolean incr;
-    private String des;
+    private String keyType;
     public ColumnEntity(Element element) {
         name= XMLTool.getStrAttrValue(element,"name");
         dataType=DataType.getDataType(XMLTool.getStrAttrValue(element,"type"));
         length=XMLTool.getIntAttrValue(element,"length");
         defaultValue=XMLTool.getStrAttrValue(element,"defaultValue");
-        pk=XMLTool.getBoolAttrValue(element,"pk");
         incr=XMLTool.getBoolAttrValue(element,"incre");
-        des=XMLTool.getStrAttrValue(element,"des");
+        keyType=XMLTool.getStrAttrValue(element,"keyType");
     }
 
     public String getName() {
@@ -54,15 +52,12 @@ public class ColumnEntity {
         return defaultValue;
     }
 
-    public boolean isPk() {
-        return pk;
-    }
 
     public boolean isIncr() {
         return incr;
     }
 
-    public String getDes() {
-        return des;
+    public String getKeyType() {
+        return keyType;
     }
 }

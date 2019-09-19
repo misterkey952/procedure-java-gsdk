@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<define>
+	<database name="storate_test" split="4">
+		<connection>
+			<host>127.0.0.1</host>
+			<user>x5online</user>
+			<passwd>111111</passwd>
+			<driver>com.mysql.jdbc.Driver</driver>
+		</connection>
+
+		<table split="32" name="cc_zz" character="UTF8">
+			<column name="te1" type="int" length="" default="0" keyType="PRIMARY" incre="true"/>
+			<column name="te3" type="int" length="" default="0" keyType="PRIMARY"/>
+			<column name="te2" type="int" length="" default="0" keyType="UNIQUE" />
+			<column name="te4" type="int" length="" default="0" keyType="UNIQUE" />
+			<column name="te5" type="int" length="" default="0" keyType="UNIQUE" />
+			<column name="te6" type="string" length="266" default="0"/>
+			<column name="te7" type="string" length="255"/>
+		</table>
+	</database>
+</define>

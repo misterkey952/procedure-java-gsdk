@@ -1,6 +1,7 @@
 package century.gsdk.stool;
 
-import century.gsdk.stool.objs.StorageToolManager;
+import century.gsdk.docker.GameDocker;
+import century.gsdk.stool.objs.StorageToolApplication;
 
 import java.io.File;
 /**
@@ -24,7 +25,9 @@ import java.io.File;
 public class AutoGen {
     public static void main(String[] args){
         String rootPath=System.getProperty("user.dir");
-        String dir=rootPath+ File.separator+"storage_tool/cfg";
-        StorageToolManager.getInstance().loadDefineXML(dir);
+        String dir=rootPath+ File.separator+"storage_tool";
+        GameDocker docker=new GameDocker(StorageToolApplication.getInstance());
+        docker.start(dir,"StorageTool");
+        StorageToolApplication.getInstance().buildDataBaseAndTable();
     }
 }
