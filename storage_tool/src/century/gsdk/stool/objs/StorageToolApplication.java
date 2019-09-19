@@ -55,7 +55,7 @@ public class StorageToolApplication extends GameApplication {
         DataBaseEntity dataBaseEntity;
         for(File file:defineFileList){
             Element element= XMLTool.getRootElement(file);
-            List<Element> dblist=element.elements("database");
+            List<Element> dblist=element.elements("storage");
             for(Element edb:dblist){
                 dataBaseEntity=new DataBaseEntity(edb);
                 dataBaseEntityMap.put(dataBaseEntity.getDbName(),dataBaseEntity);
