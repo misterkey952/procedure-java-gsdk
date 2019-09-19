@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <define>
-	<conn>
-		<host>127.0.0.1</host>
-		<user>root</user>
-		<passwd>111111</passwd>
-		<driver>com.mysql.jdbc.Driver</driver>
-	</conn>
+	<database name="ome" split="4">
+		<connection>
+			<host>127.0.0.1</host>
+			<user>x5online</user>
+			<passwd>111111</passwd>
+			<driver>com.mysql.jdbc.Driver</driver>
+		</connection>
 
-	<db name="ome" split="4">
 		<table split="1" name="cc_zz" character="UTF-8">
 			<column name="te1" type="" length="" default="0" pk="true" incre="" des=""/>
 			<column name="te1" type="" length="" default="0" pk="true" incre="" des=""/>
@@ -16,5 +16,5 @@
 			<column name="te1" type="" length="" default="0" pk="true" incre="" des=""/>
 			<column name="te1" type="" length="" default="0" pk="true" incre="" des=""/>
 		</table>
-	</db>
+	</database>
 </define>

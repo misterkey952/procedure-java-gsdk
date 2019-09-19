@@ -1,5 +1,22 @@
 package century.gsdk.storage.dbm.assistant;
-
+/**
+ *     Copyright (C) <2019>  <Century>
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ */
 public interface XDBConst {
 	/** 在入库的时候，字段上没有值时，用这个值替代*/
 	String DEF_STR="DEFSTR";

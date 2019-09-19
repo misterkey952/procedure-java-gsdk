@@ -1,8 +1,7 @@
-package century.gsdk.net.netty;
+package century.gsdk.stool.objs;
 
-import century.gsdk.net.core.NetSession;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *     Copyright (C) <2019>  <Century>
  *
@@ -21,15 +20,33 @@ import io.netty.util.concurrent.GenericFutureListener;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class NetSessionCloseEvent implements GenericFutureListener<ChannelFuture> {
-    private NetSession session;
+public enum DataProtocolType {
+    JDBC("jdbc","jdbc");
+    private String typeName;
+    private String protoName;
 
-    public NetSessionCloseEvent(NetSession session) {
-        this.session = session;
+    DataProtocolType(String typeName, String protoName) {
+        this.typeName = typeName;
+        this.protoName = protoName;
     }
 
-    @Override
-    public void operationComplete(ChannelFuture future) throws Exception {
-        session.close();
+    private static Map<String, DataProtocolType> id2type;
+    static {
+        id2type = new HashMap<String, DataProtocolType>();
+        for (DataProtocolType type : DataProtocolType.values()) {
+            id2type.put(type.getTypeName(), type);
+        }
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public static DataProtocolType getDataType(String name){
+        return id2type.get(name);
+    }
+
+    public String getProtoName() {
+        return protoName;
     }
 }
