@@ -31,10 +31,6 @@ public class StorageConnect {
     public PreparedStatement preparedStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
     }
-
-    public Statement statement() throws SQLException {
-        return connection.createStatement();
-    }
     public void commit() throws SQLException{
         try {
             connection.commit();

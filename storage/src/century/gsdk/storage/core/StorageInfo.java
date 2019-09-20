@@ -1,5 +1,13 @@
 package century.gsdk.storage.core;
 
+import century.gsdk.tools.str.StringTool;
+import century.gsdk.tools.xml.XMLTool;
+import com.jolbox.bonecp.BoneCPConfig;
+import org.dom4j.Element;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -21,54 +29,98 @@ package century.gsdk.storage.core;
 public class StorageInfo {
     private String name;
     private String host;
-    private String protoType= "jdbc";
-    private String dataBaseType="mysql";
     private String character="UTF-8";
     private String user;
-    private String pwd;
+    private String passwd;
     private String driver;
     private int split;
+    private DataProtocolType protoType= DataProtocolType.JDBC;
+    private DataBaseType dataBaseType=DataBaseType.MYSQL;
+    public StorageInfo(Element element) {
+        name=XMLTool.getStrTextValue(element,"name");
+        host= XMLTool.getStrTextValue(element,"host");
+        user=XMLTool.getStrTextValue(element,"user");
+        passwd=XMLTool.getStrTextValue(element,"passwd");
+        driver=XMLTool.getStrTextValue(element,"driver");
+        split=XMLTool.getIntTextValue(element,"split");
+        DataProtocolType dataProtoType= DataProtocolType.getDataType(XMLTool.getStrAttrValue(element,"protocol"));
+        if(dataProtoType!=null){
+            protoType=dataProtoType;
+        }
 
+        DataBaseType dbt=DataBaseType.getDataType(XMLTool.getStrAttrValue(element,"database"));
+        if(dbt!=null){
+            dataBaseType=dbt;
+        }
 
-    public StorageInfo(String name, String host, String protoType, String dataBaseType, String character, String user, String pwd, String driver, int split) {
-        this.name = name;
-        this.host = host;
-        this.protoType = protoType;
-        this.dataBaseType = dataBaseType;
-        this.character = character;
-        this.user = user;
-        this.pwd = pwd;
-        this.driver = driver;
-        this.split = split;
+        String chr=XMLTool.getStrAttrValue(element,"character");
+        if(!StringTool.SPACE.equals(chr)){
+            character=chr;
+        }
     }
 
-    public StorageInfo(String name, String host, String user, String pwd, String driver, int split) {
-        this.name = name;
-        this.host = host;
-        this.user = user;
-        this.pwd = pwd;
-        this.driver = driver;
-        this.split = split;
+
+    public String genURL(){
+        return genURL(name);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String genURL(String dbname){
+        if(dataBaseType==DataBaseType.MYSQL){
+            return protoType.getProtoName()+":"+dataBaseType.getDataBaseTypeName()+"://"+host+"/"+dbname+"?useUnicode=true&amp;characterEncoding="+character;
+        }
+        return null;
     }
+
+    public Connection connect(String dbName)throws Exception{
+        String url=genURL(dbName);
+        try {
+            Class.forName(driver);
+            Connection connection= DriverManager.getConnection(url,user,passwd);
+            return connection;
+        } catch (Exception e) {
+            if(e.getMessage().startsWith("Unknown database")){
+                return null;
+            }else{
+                throw e;
+            }
+        }
+    }
+
+
+    public BoneCPConfig BoneCPConfig() throws ClassNotFoundException {
+        BoneCPConfig config=new BoneCPConfig();
+        Class.forName(driver);
+        config.setUser(user);
+        config.setPassword(passwd);
+        config.setJdbcUrl(genURL());
+
+        config.setPartitionCount(1);
+        config.setMaxConnectionsPerPartition(20);
+        config.setMinConnectionsPerPartition(10);
+        config.setIdleConnectionTestPeriodInMinutes(240);
+        config.setAcquireIncrement(2);
+        return config;
+    }
+
 
     public String getName() {
         return name;
     }
 
-    public String getUrl() {
-        return protoType+":"+dataBaseType+"://"+host+"/"+getName()+"?useUnicode=true&amp;characterEncoding="+character;
+    public String getHost() {
+        return host;
+    }
+
+    public String getCharacter() {
+        return character;
     }
 
     public String getUser() {
         return user;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPasswd() {
+        return passwd;
     }
 
     public String getDriver() {
@@ -77,5 +129,17 @@ public class StorageInfo {
 
     public int getSplit() {
         return split;
+    }
+
+    public DataProtocolType getProtoType() {
+        return protoType;
+    }
+
+    public DataBaseType getDataBaseType() {
+        return dataBaseType;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

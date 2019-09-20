@@ -1,6 +1,5 @@
 package century.gsdk.storage.core;
 import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,33 +29,12 @@ public class StorageConnectPool {
 
     public StorageConnectPool(StorageInfo storageInfo) throws Exception{
         try {
-            this.boneCP =new BoneCP(buildConfig(storageInfo));
+            this.boneCP =new BoneCP(storageInfo.BoneCPConfig());
         } catch (Exception e) {
             logger.error("init pool err",e);
             throw e;
         }
     }
-
-    private BoneCPConfig buildConfig(StorageInfo storageInfo) throws Exception{
-        BoneCPConfig config=new BoneCPConfig();
-        try {
-            Class.forName(storageInfo.getDriver());
-        } catch (ClassNotFoundException e) {
-            logger.error("load driver err",e);
-            throw e;
-        }
-        config.setUser(storageInfo.getUser());
-        config.setPassword(storageInfo.getPwd());
-        config.setJdbcUrl(storageInfo.getUrl());
-
-        config.setPartitionCount(1);
-        config.setMaxConnectionsPerPartition(5);
-        config.setMinConnectionsPerPartition(10);
-        config.setIdleConnectionTestPeriodInMinutes(240);
-        config.setAcquireIncrement(2);
-        return config;
-    }
-
     protected StorageConnect getConnection(){
         try {
             return new StorageConnect(boneCP.getConnection());
