@@ -1,4 +1,4 @@
-package assist;
+package assist.buildtable;
 
 import java.util.ArrayList;
 import java.util.List;

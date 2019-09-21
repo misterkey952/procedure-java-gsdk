@@ -1,5 +1,6 @@
-package assist;
+package assist.buildtable;
 
+import assist.AssistApplication;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;

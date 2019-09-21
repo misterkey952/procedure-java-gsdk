@@ -1,12 +1,8 @@
-package assist;
+package assist.gencode;
 
+import century.gsdk.storage.core.DataType;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -26,44 +22,25 @@ import java.util.Map;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class StructEntity {
+public class StructFieldEntity {
     private String name;
-    private List<ColumnEntity> list;
-    private Map<String,ColumnEntity> columnEntityMap;
+    private DataType type;
 
-    public StructEntity(String name, List<ColumnEntity> list) {
-        this.name = name;
-        this.list = list;
-        columnEntityMap=new HashMap<>();
-        for(ColumnEntity co:list){
-            columnEntityMap.put(co.getName(),co);
-        }
-    }
-
-    public StructEntity(Element element) {
+    public StructFieldEntity(Element element){
         name= XMLTool.getStrAttrValue(element,"name");
-        list=new ArrayList<>();
-        List<Element> elist=element.elements();
-        for(Element ee:elist){
-            list.add(new ColumnEntity(ee));
-        }
-
-        columnEntityMap=new HashMap<>();
-        for(ColumnEntity co:list){
-            columnEntityMap.put(co.getName(),co);
-        }
+        type=DataType.getDataType(XMLTool.getStrAttrValue(element,"type"));
     }
 
-    public ColumnEntity getColumn(String name){
-        return columnEntityMap.get(name);
+    public StructFieldEntity(String name, DataType type) {
+        this.name = name;
+        this.type = type;
     }
-
 
     public String getName() {
         return name;
     }
 
-    public List<ColumnEntity> getList() {
-        return list;
+    public DataType getType() {
+        return type;
     }
 }

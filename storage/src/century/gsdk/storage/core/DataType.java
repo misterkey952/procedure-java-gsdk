@@ -1,5 +1,7 @@
 package century.gsdk.storage.core;
 
+import century.gsdk.tools.str.StringTool;
+
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -21,26 +23,29 @@ import java.util.Map;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public enum DataType {
-    BYTE("byte","byte","tinyint"),
-    SHORT("short","short","smallint"),
-    INT("int","int","int"),
-    LONG("long","long","bigint"),
-    FLOAT("float","float","float"),
-    DOUBLE("double","double","double"),
-    BOOL("bool","boolean","bool"),
-    STRING("string","String","varchar"),
-    LSTRING("lstring","String","text"),
-    BLOB("blob","byte[]","blob"),
-    JSON("json","String","text"),
-    DATETIME("datetime","java.sql.Timestamp","datetime");
+
+    BYTE("byte","byte","tinyint","(byte)0"),
+    SHORT("short","short","smallint","(short)0"),
+    INT("int","int","int","0"),
+    LONG("long","long","bigint","0"),
+    FLOAT("float","float","float","0f"),
+    DOUBLE("double","double","double","0d"),
+    BOOL("bool","boolean","bool","false"),
+    STRING("string","String","varchar","\"\""),
+    LSTRING("lstring","String","text","\"\""),
+    BLOB("blob","byte[]","blob","null"),
+    JSON("json","String","text",""),
+    DATETIME("datetime","java.sql.Timestamp","datetime","null");
     private String typeName;
     private String javaType;
     private String mysqlType;
+    private String defaultValue;
 
-    DataType(String typeName, String javaType, String mysqlType) {
+    DataType(String typeName, String javaType, String mysqlType,String defaultValue) {
         this.typeName = typeName;
         this.javaType = javaType;
         this.mysqlType = mysqlType;
+        this.defaultValue=defaultValue;
     }
 
     private static Map<String, DataType> id2type;
@@ -73,6 +78,18 @@ public enum DataType {
         }else{
             return javaType.substring(javaType.lastIndexOf(".")+1);
         }
-
     }
-}
+
+    public String getListOrMapJavaType(){
+        if("int".equals(javaType)){
+            return "Integer";
+        }else if("datetime".equals(typeName)){
+            return getJavaType();
+        }else{
+            return StringTool.toUpperCaseFirst(getSortJavaType());
+        }
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }}

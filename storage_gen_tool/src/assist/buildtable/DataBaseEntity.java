@@ -1,5 +1,6 @@
-package assist;
+package assist.buildtable;
 
+import assist.AssistApplication;
 import century.gsdk.storage.core.StorageInfo;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;

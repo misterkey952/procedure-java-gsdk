@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<access namespace="century.gsdk.storage.test" storage="s_account" table="account" name="Account">
+<access namespace="century.gsdk.storage.test" storage="s_account" name="Account" target="F:\workspace\github\procedure-java-gsdk\storage\src">
+    <struct name="AccountStruct" applyTable="account"/>
     <struct name="SubAccount">
         <field name="id" type="string"/>
         <field name="opertor_id" type="string"/>
         <field name="login_name" type="string"/>
     </struct>
 
-    <method name="selectAccount" return="AccountStruct" mapKey="id">
+    <select name="selectAccount" return="AccountStruct" gen="one|list|map[id]">
         <param name="sa" type="SubAccount"/>
-        <sql>select * from #table where id=?sa.id? and opera=?sa.opertor_id?</sql>
-    </method>
+        <param name="ooc" type="long"/>
+        <sql>select * from [account] where id=?sa.id? and opera=?sa.opertor_id? and ooq=?ooc?</sql>
+    </select>
+
+    <select name="selectSubAccount" return="SubAccount">
+        <param name="sa" type="SubAccount"/>
+        <param name="ooc" type="long"/>
+        <sql>select * from [account] where id=?sa.id? and opera=?sa.opertor_id?</sql>
+    </select>
+
+    <select name="selectSingt" return="string">
+        <param name="sa" type="SubAccount"/>
+        <param name="ooc" type="long"/>
+        <sql>select * from [account] where id=?sa.id? and opera=?sa.opertor_id?</sql>
+    </select>
 </access>

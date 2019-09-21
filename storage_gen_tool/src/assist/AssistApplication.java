@@ -1,5 +1,7 @@
 package assist;
 
+import assist.buildtable.DataBaseEntity;
+import assist.gencode.AccessEntity;
 import century.gsdk.docker.GameApplication;
 import century.gsdk.storage.core.StorageInfo;
 import century.gsdk.tools.xml.XMLTool;
@@ -34,7 +36,7 @@ public class AssistApplication extends GameApplication {
 
     public static final Logger logger= LoggerFactory.getLogger("AssistApplication");
     private static final AssistApplication instance=new AssistApplication();
-    private String project="F:\\github\\procedure-java-gsdk\\storage\\src";
+    private String project="F:\\workspace\\github\\procedure-java-gsdk\\storage\\src";
     private AssistApplication(){
         dataBaseEntityMap=new HashMap<>();
         storageInfoMap=new HashMap<>();
@@ -42,7 +44,7 @@ public class AssistApplication extends GameApplication {
     }
 
     private List<AccessEntity> accessEntities;
-    private Map<String,DataBaseEntity> dataBaseEntityMap;
+    private Map<String, DataBaseEntity> dataBaseEntityMap;
     private Map<String, StorageInfo> storageInfoMap;
     public static AssistApplication getInstance(){
         return instance;
