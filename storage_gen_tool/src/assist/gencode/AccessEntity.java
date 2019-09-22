@@ -138,6 +138,7 @@ public class AccessEntity {
 
 
         simpleGenJava.write();
+        logger.info("auto gen a accessAssist [{}]",name);
     }
 
 

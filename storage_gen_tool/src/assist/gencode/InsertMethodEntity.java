@@ -25,13 +25,10 @@ public class InsertMethodEntity extends AbstractAccessMethod{
         super(accessEntity, element);
     }
 
-    @Override
-    void init() {
-
-    }
-
-    @Override
     void autoGen() {
-
+        createMethod();
+        method.setName(name);
+        method.addBodyLine("preparedStatement.executeUpdate();");
+        appendMethodEnd();
     }
 }

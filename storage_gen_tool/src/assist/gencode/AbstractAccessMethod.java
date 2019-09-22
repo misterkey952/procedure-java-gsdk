@@ -236,6 +236,6 @@ public abstract class AbstractAccessMethod {
     }
 
 
-    abstract void init();
+    void init(){}
     abstract void autoGen();
 }

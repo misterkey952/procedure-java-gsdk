@@ -26,6 +26,7 @@ public class AssistMain {
     public static void main(String[] args){
         GameDocker gameDocker=new GameDocker(AssistApplication.getInstance());
         gameDocker.start(System.getProperty("user.dir")+ File.separator+"storage","StorageAssist");
+        //AssistApplication.getInstance().buildDataBaseAndTable();
         AssistApplication.getInstance().genAccess();
     }
 }

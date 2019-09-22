@@ -3,7 +3,7 @@
     <connection>
         <name>s_account</name>
         <host>127.0.0.1</host>
-        <user>x5online</user>
+        <user>root</user>
         <passwd>111111</passwd>
         <driver>com.mysql.jdbc.Driver</driver>
         <split>4</split>

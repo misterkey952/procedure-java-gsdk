@@ -4,16 +4,5 @@
         <column name="id" type="string" length="32" keyType="PRIMARY"/>
         <column name="opertor_id" type="string" length="128"/>
         <column name="login_name" type="string" length="128"/>
-        <column name="create_time" type="datetime"/>
-        <column name="create_ip" type="string" length="16"/>
-        <column name="lastlogin_ip" type="string" length="16"/>
-        <column name="lastlogin_date" type="long"/>
-        <column name="lastlogout_date" type="datetime"/>
-        <column name="gold" type="int"/>
-        <column name="online" type="int"/>
-        <column name="platform" type="int"/>
-        <column name="ostype" type="byte"/>
-        <column name="subplatform" type="int"/>
-        <column name="last_idfa" type="string" length="40"/>
     </table>
 </storage>

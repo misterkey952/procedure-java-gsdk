@@ -8,6 +8,8 @@ import org.dom4j.Element;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -43,7 +45,22 @@ public class TestApplication extends GameApplication {
         Element ee= XMLTool.getRootElement(aa);
         StorageInfo storageInfo=new StorageInfo(ee.element("connection"));
         storage.init(storageInfo);
-   }
+        AccountStruct accountStruct=new AccountStruct("ome","fgdg","sfgsdfg");
+//        try {
+//            AccountAssist.insertAccount(storage.achiveConnection(),0,accountStruct);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            accountStruct=AccountAssist.selectAccountOne(storage.achiveConnection(),0);
+            List<AccountStruct> list=AccountAssist.selectAccountList(storage.achiveConnection(),0);
+            Map<String,AccountStruct> map=AccountAssist.selectAccountMap(storage.achiveConnection(),0);
+            System.out.println("ddd");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public IStorage getStorage() {
         return storage;

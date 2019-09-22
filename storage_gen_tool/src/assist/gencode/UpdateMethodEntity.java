@@ -26,12 +26,10 @@ public class UpdateMethodEntity extends AbstractAccessMethod{
     }
 
     @Override
-    void init() {
-
-    }
-
-    @Override
     void autoGen() {
-
+        createMethod();
+        method.setName(name);
+        method.addBodyLine("preparedStatement.executeUpdate();");
+        appendMethodEnd();
     }
 }
