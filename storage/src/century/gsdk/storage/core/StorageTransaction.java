@@ -40,7 +40,7 @@ public class StorageTransaction {
         }
         StorageConnect connect=storageConnects[0];
         if(connect==null){
-            connect=storageConnects[0]=storage.achiveConnection();
+            connect=storageConnects[0]=storage.obtainConnection();
             try {
                 connect.begin();
             } catch (SQLException e) {
@@ -59,7 +59,7 @@ public class StorageTransaction {
 
         StorageConnect connect=storageConnects[splitID%storageConnects.length];
         if(connect==null){
-            connect = storageConnects[splitID%storageConnects.length]=storage.achiveConnection(splitID);
+            connect = storageConnects[splitID%storageConnects.length]=storage.obtainConnection(splitID);
             try {
                 connect.begin();
             } catch (SQLException e) {

@@ -19,9 +19,9 @@ package century.gsdk.storage.core;
  */
 public interface IStorage {
     void init(StorageInfo info);
-    StorageSource achiveStorageSource();
-    StorageSource achiveStorageSource(int splitID);
-    StorageConnect achiveConnection();
-    StorageConnect achiveConnection(int splitID);
+    StorageSource obtainStorageSource();
+    StorageSource obtainStorageSource(int splitID);
+    StorageConnect obtainConnection();
+    StorageConnect obtainConnection(int splitID);
     StorageSource[] storageSouece();
 }
