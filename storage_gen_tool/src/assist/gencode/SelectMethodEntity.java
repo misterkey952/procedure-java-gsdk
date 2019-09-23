@@ -1,16 +1,10 @@
 package assist.gencode;
 
-import assist.buildtable.ColumnEntity;
 import century.gsdk.storage.core.DataType;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>

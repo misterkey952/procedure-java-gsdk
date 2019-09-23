@@ -1,6 +1,6 @@
 package assist.gencode;
 import assist.AssistApplication;
-import assist.buildtable.DataBaseEntity;
+import century.gsdk.storage.core.DataBaseEntity;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
 import org.mybatis.generator.api.dom.java.*;
@@ -45,7 +45,9 @@ public class AccessEntity {
         name=XMLTool.getStrAttrValue(element,"name");
         target=XMLTool.getStrAttrValue(element,"target");
         List<Element> elementList=element.elements("struct");
-        dataBaseEntity= AssistApplication.getInstance().getDataBaseEntity(storage);
+        String ref=XMLTool.getStrAttrValue(element,"ref");
+        Element dbelement=XMLTool.getRootElement(ref);
+        dataBaseEntity= new DataBaseEntity(dbelement);
         if(dataBaseEntity==null){
             logger.error("the storage is not exist ["+storage+"] now exit");
             System.exit(0);

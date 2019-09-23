@@ -1,6 +1,5 @@
-package assist.buildtable;
+package century.gsdk.storage.core;
 
-import assist.AssistApplication;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
@@ -111,28 +110,32 @@ public class TableEntity {
         return str.toString();
     }
 
-    public void autoGen(Connection connection,boolean splitTable){
+    public void autoGen(Connection connection,boolean splitTable,AssistExeInfo exeInfo){
         Statement statement=null;
         try{
             statement=connection.createStatement();
             statement.executeUpdate("DROP TABLE IF EXISTS "+name);
             statement.executeUpdate(genCreateSql(name));
-            AssistApplication.logger.info("create table {} complete",name);
+            exeInfo.appendString("create a table "+name+" success");
             if(split>1&&splitTable){
                 for(int i=0;i<split;i++){
                     statement.executeUpdate("DROP TABLE IF EXISTS "+name+"_"+i);
                     statement.executeUpdate(genCreateSql(name+"_"+i));
-                    AssistApplication.logger.info("create table {}_{} complete",name,i);
                 }
+                exeInfo.appendString("create split tables "+name+" "+split+" success");
+
             }
         }catch(Exception e){
-            AssistApplication.logger.error("autoGenTable "+name,e);
+            exeInfo.setCode(AssistErrCode.SYSERR);
+            exeInfo.appendString("autoGenTable "+name+" err");
+            exeInfo.appendException(e);
         }finally {
             if(statement!=null){
                 try {
                     statement.close();
                 } catch (SQLException e) {
-                    AssistApplication.logger.error("autoGenTable close statement err",e);
+                    exeInfo.appendString("autoGenTable "+name+" err");
+                    exeInfo.appendException(e);
                 }
             }
         }

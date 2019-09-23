@@ -1,4 +1,6 @@
 package century.gsdk.tools.str;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.*;
 /**
@@ -286,5 +288,14 @@ public  class StringTool {
             return s;
         else
             return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+    }
+
+    public static String exceptionStack(Throwable e) {
+        if (e == null){
+            return "";
+        }
+        StringWriter stringWriter = new StringWriter();
+        e.printStackTrace(new PrintWriter(stringWriter));
+        return stringWriter.toString();
     }
 }

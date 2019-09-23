@@ -1,9 +1,6 @@
-package assist;
+package century.gsdk.storage.core;
 
-import century.gsdk.docker.GameDocker;
-
-import java.io.File;
-
+import century.gsdk.tools.str.StringTool;
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -22,11 +19,26 @@ import java.io.File;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class AssistMain {
-    public static void main(String[] args){
-        GameDocker gameDocker=new GameDocker(AssistApplication.getInstance());
-        gameDocker.start(System.getProperty("user.dir")+ File.separator+"storage","StorageAssist");
-        //AssistApplication.getInstance().buildDataBaseAndTable();
-        AssistApplication.getInstance().genAccess();
+public class AssistExeInfo {
+    private AssistErrCode code=AssistErrCode.SUCCESS;
+    private StringBuffer stb=new StringBuffer();
+    public void appendException(Exception e){
+        stb.append(StringTool.exceptionStack(e)).append("\r\n");
+    }
+
+    public AssistErrCode getCode() {
+        return code;
+    }
+
+    public void setCode(AssistErrCode code) {
+        this.code = code;
+    }
+
+    public void appendString(String st){
+        stb.append(st).append("\r\n");
+    }
+
+    public String toString(){
+        return code.toString()+"::"+stb.toString();
     }
 }

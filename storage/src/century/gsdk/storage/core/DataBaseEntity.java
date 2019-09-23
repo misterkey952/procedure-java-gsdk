@@ -1,10 +1,6 @@
-package assist.buildtable;
-
-import assist.AssistApplication;
-import century.gsdk.storage.core.StorageInfo;
+package century.gsdk.storage.core;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,14 +27,16 @@ import java.util.Map;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class DataBaseEntity {
-    private String dbName;
+    private StorageURL url;
+    private String name;
     private int split;
     private Map<String,TableEntity> tables;
     private List<TableEntity> tableList;
-    public DataBaseEntity(Element element){
+    public DataBaseEntity(Element element,StorageURL url){
+        this.url=url;
         tables=new HashMap<>();
         tableList=new ArrayList<>();
-        dbName= XMLTool.getStrAttrValue(element,"name");
+        name= XMLTool.getStrAttrValue(element,"name");
         split=XMLTool.getIntAttrValue(element,"split");
         List<Element> elements=element.elements("table");
         TableEntity tableEntity;
@@ -49,51 +47,57 @@ public class DataBaseEntity {
         }
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getName() {
+        return name;
     }
-    private void genTables(Connection connection,boolean splitTable){
+
+    public int getSplit() {
+        return split;
+    }
+
+    private void genTables(Connection connection, boolean splitTable, AssistExeInfo exeInfo){
         for(TableEntity tableEntity:tableList){
-            tableEntity.autoGen(connection,splitTable);
+            tableEntity.autoGen(connection,splitTable,exeInfo);
         }
     }
-    public void autoGen(){
+
+    public void autoGen(AssistExeInfo exeInfo){
         Connection connection=null;
         try {
-            connection=getConnectOfDataBase(dbName,null);
-            genTables(connection,split<=1);
-            AssistApplication.logger.info("genTable of {} complete",dbName);
+            connection=getConnectOfDataBase(name,null,exeInfo);
+            genTables(connection,split<=1,exeInfo);
             if(split>1){
                 for(int i=0;i<split;i++){
-                    connection=getConnectOfDataBase(dbName+"_"+i,connection);
-                    genTables(connection,true);
-                    AssistApplication.logger.info("genTable of {}_{} complete",dbName,i);
+                    connection=getConnectOfDataBase(name+"_"+i,connection,exeInfo);
+                    genTables(connection,true,exeInfo);
                 }
             }
         } catch (Exception e) {
-            AssistApplication.logger.error("autoGen "+dbName+"err ",e);
+            exeInfo.setCode(AssistErrCode.SYSERR);
+            exeInfo.appendString("auto gen database "+name+" err");
+            exeInfo.appendException(e);
         }finally {
             if(connection!=null){
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    AssistApplication.logger.error("autoGen "+dbName+" close err ",e);
+                    exeInfo.appendString("auto gen database "+name+" close connect err");
+                    exeInfo.appendException(e);
                 }
             }
         }
     }
 
-    private Connection getConnectOfDataBase(String ldb,Connection conn) throws Exception{
+    private Connection getConnectOfDataBase(String ldb, Connection conn,AssistExeInfo exeInfo) throws Exception{
         Connection connection=null;
         Statement statement=null;
         try {
-            StorageInfo storageInfo=AssistApplication.getInstance().getStorageInfo(dbName);
-            connection=storageInfo.connect(ldb);
+            connection=url.connect(ldb);
             if(connection==null){
                 if(conn!=null){
                     connection=conn;
                 }else{
-                    connection=storageInfo.connect("test");
+                    connection=url.connect("test");
                 }
 
                 statement=connection.createStatement();
@@ -101,7 +105,8 @@ public class DataBaseEntity {
                 statement.close();
                 statement=null;
                 connection.close();
-                connection=storageInfo.connect(ldb);
+                connection=url.connect(ldb);
+                exeInfo.appendString("create a database "+ldb+" success");
             }
             connection.setAutoCommit(true);
             return connection;

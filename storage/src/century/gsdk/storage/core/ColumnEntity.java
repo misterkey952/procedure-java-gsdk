@@ -1,4 +1,4 @@
-package assist.buildtable;
+package century.gsdk.storage.core;
 
 import century.gsdk.storage.core.DataType;
 import century.gsdk.tools.xml.XMLTool;

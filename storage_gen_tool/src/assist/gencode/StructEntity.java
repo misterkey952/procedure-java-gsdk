@@ -1,6 +1,6 @@
 package assist.gencode;
-import assist.buildtable.ColumnEntity;
-import assist.buildtable.TableEntity;
+import century.gsdk.storage.core.ColumnEntity;
+import century.gsdk.storage.core.TableEntity;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;

@@ -1,6 +1,6 @@
 package assist.gencode;
 
-import assist.buildtable.TableEntity;
+import century.gsdk.storage.core.TableEntity;
 import century.gsdk.storage.core.DataType;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;

@@ -46,7 +46,7 @@ public class Storage implements IStorage{
             }
         }
 
-
+        info.setName(name);
     }
 
     @Override
