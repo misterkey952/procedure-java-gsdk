@@ -1,12 +1,11 @@
 package assist.gencode;
-import assist.AssistApplication;
+import century.gsdk.storage.core.AssistExeInfo;
 import century.gsdk.storage.core.DataBaseEntity;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
 import org.mybatis.generator.api.dom.java.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -28,7 +27,6 @@ import java.util.*;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class AccessEntity {
-    private static final Logger logger= LoggerFactory.getLogger("AccessEntity");
     private String namespace;
     private String storage;
     private String name;
@@ -37,22 +35,19 @@ public class AccessEntity {
     private List<AbstractAccessMethod> accessMethodList;
     private SimpleGenJava simpleGenJava;
     private DataBaseEntity dataBaseEntity;
-    public AccessEntity(Element element) {
+    public AccessEntity(File file,String targetAbsPath) {
+        Element element=XMLTool.getRootElement(file);
         structEntities=new HashMap<>();
         accessMethodList=new ArrayList<>();
         namespace= XMLTool.getStrAttrValue(element,"namespace");
         storage=XMLTool.getStrAttrValue(element,"storage");
         name=XMLTool.getStrAttrValue(element,"name");
-        target=XMLTool.getStrAttrValue(element,"target");
+        target=targetAbsPath+File.separator+XMLTool.getStrAttrValue(element,"target");
         List<Element> elementList=element.elements("struct");
         String ref=XMLTool.getStrAttrValue(element,"ref");
+        ref=file.getAbsolutePath().replace(file.getName(),ref);
         Element dbelement=XMLTool.getRootElement(ref);
         dataBaseEntity= new DataBaseEntity(dbelement);
-        if(dataBaseEntity==null){
-            logger.error("the storage is not exist ["+storage+"] now exit");
-            System.exit(0);
-        }
-
 
         simpleGenJava=new SimpleGenJava(namespace,target,name);
         for(Element e:elementList){
@@ -97,7 +92,7 @@ public class AccessEntity {
 
     }
 
-    public void autoGen(){
+    public void autoGen(AssistExeInfo exeInfo){
         for(StructEntity structEntity:structEntities.values()){
             structEntity.autoGen();
         }
@@ -140,7 +135,7 @@ public class AccessEntity {
 
 
         simpleGenJava.write();
-        logger.info("auto gen a accessAssist [{}]",name);
+        exeInfo.appendString("create data access "+name);
     }
 
 
@@ -170,4 +165,9 @@ public class AccessEntity {
     public DataBaseEntity getDataBaseEntity() {
         return dataBaseEntity;
     }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
 }

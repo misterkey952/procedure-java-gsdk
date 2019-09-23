@@ -29,7 +29,10 @@
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
+    <action id="century.gsdk.storage.plugin.autogen" class="century.gsdk.ideaplugin.AutoGenStorage" text="CAGSP"
+            description="gen tool for gsdk">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
   </actions>
 
 </idea-plugin>

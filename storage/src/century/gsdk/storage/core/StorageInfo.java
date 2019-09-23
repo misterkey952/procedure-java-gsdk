@@ -31,9 +31,11 @@ public class StorageInfo {
     private String name;
     private StorageURL url;
     private DataBaseEntity dataBaseEntity;
-    public StorageInfo(Element element) {
+    public StorageInfo(File file) {
+        Element element=XMLTool.getRootElement(file);
         url=new StorageURL(element);
         String ref=XMLTool.getStrAttrValue(element,"ref");
+        ref=file.getAbsolutePath().replace(file.getName(),ref);
         Element dataRoot=XMLTool.getRootElement(ref);
         dataBaseEntity=new DataBaseEntity(dataRoot,url);
         name=dataBaseEntity.getName();
@@ -54,5 +56,9 @@ public class StorageInfo {
 
     public StorageURL getUrl() {
         return url;
+    }
+
+    public DataBaseEntity getDataBaseEntity() {
+        return dataBaseEntity;
     }
 }

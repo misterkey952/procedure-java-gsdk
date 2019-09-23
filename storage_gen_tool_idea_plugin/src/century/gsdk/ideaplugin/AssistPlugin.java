@@ -1,7 +1,6 @@
 package century.gsdk.ideaplugin;
 
 import century.gsdk.storage.core.AssistExeInfo;
-import century.gsdk.storage.core.DataBaseEntity;
 import assist.gencode.AccessEntity;
 import century.gsdk.storage.core.StorageInfo;
 import century.gsdk.tools.xml.XMLTool;
@@ -29,33 +28,10 @@ import java.io.File;
  */
 public class AssistPlugin {
 
-    public static void genAccess(String path, AssistExeInfo exeInfo){
+    public static void genAccess(String rootPath,String path, AssistExeInfo exeInfo){
         File file=new File(path);
-        Element root= XMLTool.getRootElement(file);
-        if(root==null||!root.getName().equals("access")){
-            exeInfo.appendString("you selected a wrong file "+file.getName());
-            return;
-        }
-        AccessEntity accessEntity=new AccessEntity(root);
-        String ref=XMLTool.getStrAttrValue(root,"ref");
-        StorageInfo storageInfo=new StorageInfo(root);
-        file=new File(ref);
-        if(!file.exists()){
-            exeInfo.appendString("there is no ref file "+ref);
-            return;
-        }
-        root=XMLTool.getRootElement(file);
-        if(root==null||!root.getName().equals("storage")){
-            exeInfo.appendString("you ref a wrong file "+file.getName());
-            return;
-        }
-
-
-        DataBaseEntity dataBaseEntity=new DataBaseEntity(root);
-        dataBaseEntity.setStorageInfo(storageInfo);
-        dataBaseEntity.autoGen(exeInfo);
-        exeInfo.appendString("auto gen db "+dataBaseEntity.getDbName());
-
+        AccessEntity accessEntity=new AccessEntity(file,rootPath);
+        accessEntity.autoGen(exeInfo);
     }
 
 
@@ -66,24 +42,7 @@ public class AssistPlugin {
             exeInfo.appendString("you selected a wrong file "+file.getName());
             return;
         }
-        String ref=XMLTool.getStrAttrValue(root,"ref");
-        StorageInfo storageInfo=new StorageInfo(root);
-        file=new File(ref);
-        if(!file.exists()){
-            exeInfo.appendString("there is no ref file "+ref);
-            return;
-        }
-        root=XMLTool.getRootElement(file);
-        if(root==null||!root.getName().equals("storage")){
-            exeInfo.appendString("you ref a wrong file "+file.getName());
-            return;
-        }
-
-
-        DataBaseEntity dataBaseEntity=new DataBaseEntity(root);
-        dataBaseEntity.setStorageInfo(storageInfo);
-        dataBaseEntity.autoGen(exeInfo);
-        exeInfo.appendString("auto gen db "+dataBaseEntity.getDbName());
-
+        StorageInfo storageInfo=new StorageInfo(file);
+        storageInfo.getDataBaseEntity().autoGen(exeInfo);
     }
 }

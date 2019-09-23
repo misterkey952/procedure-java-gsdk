@@ -32,6 +32,21 @@ public class DataBaseEntity {
     private int split;
     private Map<String,TableEntity> tables;
     private List<TableEntity> tableList;
+
+    public DataBaseEntity(Element element){
+        tables=new HashMap<>();
+        tableList=new ArrayList<>();
+        name= XMLTool.getStrAttrValue(element,"name");
+        split=XMLTool.getIntAttrValue(element,"split");
+        List<Element> elements=element.elements("table");
+        TableEntity tableEntity;
+        for(Element e:elements){
+            tableEntity=new TableEntity(e);
+            tables.put(tableEntity.getName(),tableEntity);
+            tableList.add(tableEntity);
+        }
+    }
+
     public DataBaseEntity(Element element,StorageURL url){
         this.url=url;
         tables=new HashMap<>();

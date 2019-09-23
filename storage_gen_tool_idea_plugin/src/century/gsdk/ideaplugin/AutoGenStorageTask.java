@@ -1,5 +1,6 @@
 package century.gsdk.ideaplugin;
 
+import century.gsdk.storage.core.AssistErrCode;
 import century.gsdk.storage.core.AssistExeInfo;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -58,6 +59,9 @@ public class AutoGenStorageTask extends Task.Backgroundable{
                 VirtualFile file=null;
                 String fileName=null;
                 for(int i=0;i<selectObjects.length;i++){
+
+                    progress=(i+1)/selectCount;
+
                     if(selectObjects[i] instanceof XmlFileImpl){
                         xmlFile= (XmlFileImpl) selectObjects[i];
                     }else{
@@ -67,8 +71,21 @@ public class AutoGenStorageTask extends Task.Backgroundable{
                     }
                     file=xmlFile.getVirtualFile();
                     fileName=file.getName();
-                    exeInfo.appendString("");
+                    if(fileName.startsWith("connect.")){
+                        AssistPlugin.builddb(file.getPath(),exeInfo);
+                    }else{
+                        AssistPlugin.genAccess(mProject.getBasePath(),file.getPath(),exeInfo);
+                    }
 
+                    if(exeInfo.getCode()== AssistErrCode.SUCCESS){
+                        success++;
+                        exeInfo.appendString("success generate "+fileName);
+                    }else{
+                        errCount++;
+                        exeInfo.appendString("failed generate "+fileName);
+                    }
+                    progressIndicator.setFraction(progress);
+                    progressIndicator.setText("complete "+file.getName()+" : "+progress);
 
                 }
             }
