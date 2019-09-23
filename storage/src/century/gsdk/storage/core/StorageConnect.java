@@ -3,6 +3,8 @@ package century.gsdk.storage.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.sql.*;
+import java.util.*;
+
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -24,8 +26,21 @@ import java.sql.*;
 public class StorageConnect {
     private static final Logger logger= LoggerFactory.getLogger("StorageConnect");
     private Connection connection;
+    private Map<String,PreparedStatement> batchStatement;
     public StorageConnect(Connection connection) {
         this.connection = connection;
+        batchStatement=new HashMap<>();
+    }
+
+    public PreparedStatement preparedStatementBatch(String sql) throws SQLException {
+        PreparedStatement preparedStatement=batchStatement.get(sql);
+        if(preparedStatement==null){
+            preparedStatement=connection.prepareStatement(sql);
+            if(preparedStatement!=null){
+                batchStatement.put(sql,preparedStatement);
+            }
+        }
+        return preparedStatement;
     }
 
     public PreparedStatement preparedStatement(String sql) throws SQLException {
@@ -33,6 +48,7 @@ public class StorageConnect {
     }
     public void commit() throws SQLException{
         try {
+            connection.prepareStatement("");
             connection.commit();
         } catch (SQLException e) {
             logger.error("commit err",e);
@@ -63,8 +79,21 @@ public class StorageConnect {
         }
     }
 
+
+    public void executeBatch() throws SQLException{
+        for(PreparedStatement batch:batchStatement.values()){
+            try {
+                batch.executeBatch();
+            } catch (SQLException e) {
+                logger.error("executeBatch err",e);
+                throw e;
+            }
+        }
+    }
+
     public void release(){
         try {
+            batchStatement.clear();
             connection.close();
         } catch (Exception e) {
             logger.error("release connection err",e);

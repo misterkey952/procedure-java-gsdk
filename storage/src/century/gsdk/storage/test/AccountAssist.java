@@ -126,6 +126,18 @@ public final class AccountAssist {
         }
     }
 
+    public static void updateAccountBatch(StorageConnect connect, int __split__, AccountStruct acc) throws SQLException {
+        try {
+            PreparedStatement preparedStatement=connect.preparedStatementBatch(sqlMap.get("updateAccount").splitSql(__split__));
+            preparedStatement.setString(1,acc.getLogin_name());
+            preparedStatement.setString(2,acc.getId());
+            preparedStatement.addBatch();
+        } catch (SQLException e) {
+            logger.error("updateAccountBatch",e);
+            throw e;
+        }
+    }
+
     public static void insertAccount(StorageConnect connect, int __split__, AccountStruct acc) throws SQLException {
         try {
             PreparedStatement preparedStatement=connect.preparedStatement(sqlMap.get("insertAccount").splitSql(__split__));
@@ -139,6 +151,19 @@ public final class AccountAssist {
         }
     }
 
+    public static void insertAccountBatch(StorageConnect connect, int __split__, AccountStruct acc) throws SQLException {
+        try {
+            PreparedStatement preparedStatement=connect.preparedStatementBatch(sqlMap.get("insertAccount").splitSql(__split__));
+            preparedStatement.setString(1,acc.getId());
+            preparedStatement.setString(2,acc.getOpertor_id());
+            preparedStatement.setString(3,acc.getLogin_name());
+            preparedStatement.addBatch();
+        } catch (SQLException e) {
+            logger.error("insertAccountBatch",e);
+            throw e;
+        }
+    }
+
     public static void deleteAccount(StorageConnect connect, int __split__, AccountStruct acc) throws SQLException {
         try {
             PreparedStatement preparedStatement=connect.preparedStatement(sqlMap.get("deleteAccount").splitSql(__split__));
@@ -146,6 +171,17 @@ public final class AccountAssist {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("deleteAccount",e);
+            throw e;
+        }
+    }
+
+    public static void deleteAccountBatch(StorageConnect connect, int __split__, AccountStruct acc) throws SQLException {
+        try {
+            PreparedStatement preparedStatement=connect.preparedStatementBatch(sqlMap.get("deleteAccount").splitSql(__split__));
+            preparedStatement.setString(1,acc.getId());
+            preparedStatement.addBatch();
+        } catch (SQLException e) {
+            logger.error("deleteAccountBatch",e);
             throw e;
         }
     }

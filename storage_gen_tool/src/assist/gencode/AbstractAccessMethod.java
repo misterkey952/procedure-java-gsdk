@@ -119,8 +119,40 @@ public abstract class AbstractAccessMethod {
             ));
         }
         fillParam();
+    }
 
 
+
+    protected void createUpdateBatchMethod(){
+        method=new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setStatic(true);
+        method.addException(new FullyQualifiedJavaType("SQLException"));
+        accessEntity.getSimpleGenJava().addMethod(method);
+        method.addParameter(new Parameter(new FullyQualifiedJavaType("StorageConnect"),"connect"));
+        method.addBodyLine("try {");
+        if(split){
+            method.addParameter(new Parameter(new FullyQualifiedJavaType("int"),"__split__"));
+            method.addBodyLine("PreparedStatement preparedStatement=connect.preparedStatementBatch(sqlMap.get(\""+name+"\").splitSql(__split__));");
+        }else{
+            method.addBodyLine("PreparedStatement preparedStatement=connect.preparedStatementBatch(sqlMap.get(\""+name+"\").sql());");
+        }
+
+        for(AccessParamEntity accessParamEntity:accessParamEntityList){
+            DataType dataType=DataType.getDataType(accessParamEntity.getType());
+            String dt=null;
+            if(dataType!=null){
+                dt=dataType.getJavaType();
+            }
+            if(dt==null){
+                dt=accessParamEntity.getType();
+            }
+            method.addParameter(new Parameter(
+                    new FullyQualifiedJavaType(dt),
+                    accessParamEntity.getName()
+            ));
+        }
+        fillParam();
     }
 
     protected void appendMethodEnd(){

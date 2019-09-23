@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<access namespace="century.gsdk.storage.test" storage="s_account" name="AccountAssist" target="F:\workspace\github\procedure-java-gsdk\storage\src">
+<access namespace="century.gsdk.storage.test" storage="s_account" name="AccountAssist" target="F:\github\procedure-java-gsdk\storage\src">
     <struct name="AccountStruct" applyTable="account"/>
     <insert name="insertAccount">
         <param name="acc" type="AccountStruct"/>

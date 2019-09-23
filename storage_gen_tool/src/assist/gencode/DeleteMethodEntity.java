@@ -30,5 +30,12 @@ public class DeleteMethodEntity extends AbstractAccessMethod{
         method.setName(name);
         method.addBodyLine("preparedStatement.executeUpdate();");
         appendMethodEnd();
+        genBath();
+    }
+    void genBath(){
+        createUpdateBatchMethod();
+        method.setName(name+"Batch");
+        method.addBodyLine("preparedStatement.addBatch();");
+        appendMethodEnd();
     }
 }
