@@ -70,6 +70,10 @@ public abstract class NettyClient extends NettyConnect{
         this.session= (NettySession) session;
     }
 
+    public void sendMsg(Object object){
+        session.sendMsg(object);
+    }
+
     public NetSession session(Object param){
         return this.session;
     }

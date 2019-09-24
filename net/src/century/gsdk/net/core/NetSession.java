@@ -40,7 +40,7 @@ public abstract class NetSession {
         onClose();
     }
 
-    protected void initCloseHook(SessionCloseHook closeHook){
+    public void initCloseHook(SessionCloseHook closeHook){
         this.closeHook=closeHook;
         closeHook.init(this);
     }
@@ -48,6 +48,8 @@ public abstract class NetSession {
     public void attribute(String key,Object value){
         attribute.put(key,value);
     }
+
+    public abstract <T extends NetConnect>T getNetConnect();
 
 
     public <T>T attribute(String key){

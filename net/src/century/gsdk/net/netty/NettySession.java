@@ -1,5 +1,6 @@
 package century.gsdk.net.netty;
 
+import century.gsdk.net.core.NetConnect;
 import century.gsdk.net.core.NetSession;
 import century.gsdk.net.core.SessionCloseHook;
 import io.netty.channel.socket.SocketChannel;
@@ -73,6 +74,11 @@ public class NettySession extends NetSession {
     public void onClose() {
         socketChannel.close();
         info("session is close");
+    }
+
+    @Override
+    public <T extends NetConnect> T getNetConnect() {
+        return (T) socketChannel().attr(NettyConnect.NETTYCONNECT).get();
     }
 
     public SocketChannel socketChannel(){
