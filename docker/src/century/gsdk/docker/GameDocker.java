@@ -23,13 +23,61 @@ import java.io.File;
  */
 public class GameDocker {
     private GameApplication application;
-
-    public GameDocker(GameApplication application) {
-        this.application = application;
+    private String curPath;
+    private String appPath;
+    private String resPath;
+    private String cfgPath;
+    private String datPath;
+    private static final GameDocker gameDocker=new GameDocker();
+    private GameDocker(){
+        curPath=System.getProperty("user.dir");
+        appPath=curPath.replace(File.separator+"bin","");
+        resPath=appPath+File.separator+"res";
+        cfgPath=appPath+File.separator+"cfg";
+        datPath=appPath+File.separator+"dat";
+    }
+    public static GameDocker getInstance(){
+        return gameDocker;
     }
 
-    public void start(String appRootPath,String appName){
-        DOMConfigurator.configure(appRootPath+ File.separator+"cfg"+ File.separator +"log4j.xml");
-        application.init(appRootPath,appName);
+    public void start(GameApplication application){
+        this.application=application;
+        DOMConfigurator.configure(getCfgPath()+ File.separator +"log4j.xml");
+        this.application.initialize();
     }
+
+
+    public void resetPath(String curPath, String appPath, String resPath, String cfgPath, String datPath) {
+        this.curPath = curPath;
+        this.appPath = appPath;
+        this.resPath = resPath;
+        this.cfgPath = cfgPath;
+        this.datPath = datPath;
+    }
+
+    public String getCurPath() {
+        return curPath;
+    }
+
+    public String getAppPath() {
+        return appPath;
+    }
+
+    public String getResPath() {
+        return resPath;
+    }
+
+    public String getCfgPath() {
+        return cfgPath;
+    }
+
+    public String getDatPath() {
+        return datPath;
+    }
+
+    public GameApplication getApplication() {
+        return application;
+    }
+
+
 }

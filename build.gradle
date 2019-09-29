@@ -1,6 +1,6 @@
 allprojects {
-    group 'zillion'
-    version '1.0-SNAPSHOT'
+    group 'gsdk'
+    version '0.0.0'
 }
 
 subprojects {

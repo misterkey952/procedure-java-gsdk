@@ -25,23 +25,14 @@ import java.io.File;
 public abstract class GameApplication {
 
     private static final Logger logger=LoggerFactory.getLogger("GameApplication");
-    private String appRootPath;
-    private String resRootPath;
-    private String cfgRootPath;
-    private String datRootPath;
     private String appName;
-    protected void init(String appRootPath,String appName) {
-        this.appRootPath = appRootPath;
-        this.resRootPath = appRootPath+ File.separator+"res";
-        this.cfgRootPath = appRootPath+File.separator+"cfg";
-        this.datRootPath= appRootPath+File.separator+"dat";
-        this.appName=appName;
-        initialize();
+
+
+    public GameApplication(String appName) {
+        this.appName = appName;
     }
 
     public abstract void initialize();
-
-
 
     public void error(String msg,Throwable e){
         logger.error("[{}]"+msg,appName,e);
@@ -57,17 +48,5 @@ public abstract class GameApplication {
 
     public void info(String msg,Object... vars){
         logger.info("[{}]"+msg,appName,vars);
-    }
-
-    public String getAppRootPath() {
-        return appRootPath;
-    }
-
-    public String getResRootPath() {
-        return resRootPath;
-    }
-
-    public String getCfgRootPath() {
-        return cfgRootPath;
     }
 }
