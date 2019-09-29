@@ -9,8 +9,8 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_8
+    targetCompatibility = JavaVersion.VERSION_8
     sourceSets {
         main {
             java {
@@ -22,7 +22,3 @@ subprojects {
         }
     }
 }
-
-
-
-
