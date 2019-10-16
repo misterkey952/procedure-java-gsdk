@@ -46,26 +46,6 @@ public abstract class NettyConnect extends NetConnect {
         parse2type.put(parser,msgType);
     }
 
-    public void loadMessage(Element element){
-        List<Element> elements= XMLTool.getElementsByTag("handle",element);
-        int type;
-        Class msgparse;
-        for(Element ele:elements){
-            type=XMLTool.getIntAttrValue(ele,"type");
-            try {
-                msgparse= Class.forName(XMLTool.getStrAttrValue(ele,"msg"));
-                Field field=msgparse.getDeclaredField("PARSER");
-                boolean ass=field.isAccessible();
-                field.setAccessible(true);
-                registerParse(type, (Parser) field.get(null));
-                field.setAccessible(ass);
-            } catch (Exception e) {
-                error("loadMessage err",e);
-            }
-        }
-    }
-
-
     public int getMsgType(Parser parser){
         return parse2type.get(parser);
     }
