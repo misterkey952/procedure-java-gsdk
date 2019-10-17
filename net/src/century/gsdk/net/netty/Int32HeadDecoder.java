@@ -1,8 +1,6 @@
 package century.gsdk.net.netty;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.CompositeByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -25,14 +23,14 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class Int32HeadDecoder extends ChannelInboundHandlerAdapter {
-    private CompositeByteBuf buffer= Unpooled.compositeBuffer();
+    private ByteBuf buffer= Unpooled.directBuffer();
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        buffer.addComponent(true,(ByteBuf)msg);
+        buffer.writeBytes((ByteBuf) msg);
         nianbao(buffer,ctx);
     }
 
-    private void nianbao(CompositeByteBuf buffer,ChannelHandlerContext ctx){
+    private void nianbao(ByteBuf buffer,ChannelHandlerContext ctx){
         if (buffer.readableBytes() < 4) {
             return;
         }
@@ -42,10 +40,12 @@ public class Int32HeadDecoder extends ChannelInboundHandlerAdapter {
             buffer.readerIndex(0);
             return;
         }
-        ByteBuf dd=buffer.slice(buffer.readerIndex(),length);
-        ctx.fireChannelRead(dd);
-        buffer.readerIndex(buffer.readerIndex()+length);
-        buffer.discardReadComponents();
+        buffer.markWriterIndex();
+        buffer.writerIndex(length+4);
+        buffer.retain(2);
+        ctx.fireChannelRead(buffer);
+        buffer.resetWriterIndex();
+        buffer.discardReadBytes();
         nianbao(buffer,ctx);
     }
 }
