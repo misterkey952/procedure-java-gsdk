@@ -1,15 +1,15 @@
 package century.gsdk.net.netty;
-import century.gsdk.net.core.Identifier;
-import century.gsdk.net.core.NetAddress;
-import century.gsdk.net.core.NetConnect;
-import century.gsdk.net.core.NetConnectCloseHook;
+import century.gsdk.net.core.*;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -67,7 +67,7 @@ public class NettyConnect implements NetConnect {
     }
 
     @Override
-    public void connect() {
+    public boolean connect() {
         try {
             workGroup=new NioEventLoopGroup(threadCount);
             Bootstrap bootstrap=new Bootstrap();
@@ -76,13 +76,22 @@ public class NettyConnect implements NetConnect {
                     .handler(channelInitializer);
             channel = (SocketChannel) bootstrap.connect(remoteAddress.getIp(),remoteAddress.getPort()).sync().channel();
             localAddress=new NetAddress(
-                    channel.localAddress().getHostName(),
+                    channel.localAddress().getAddress().getHostAddress(),
                     channel.localAddress().getPort()
             );
+
+            channel.closeFuture().addListener(new GenericFutureListener<ChannelFuture>(){
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    shutDownThread();
+                }
+            });
             logger.info("Connect:{} connect local {} remote {} success",identifier.toString(),localAddress.toString(),remoteAddress.toString());
+            return true;
         }catch(Exception e) {
             this.close();
             logger.error("Connect:"+identifier.toString()+" connect "+remoteAddress.toString(),e);
+            return false;
         }
     }
 
@@ -116,6 +125,11 @@ public class NettyConnect implements NetConnect {
         } catch (InterruptedException e) {
             logger.error("syncSendMsg err",e);
         }
+    }
+
+    @Override
+    public void sendMsg(Object msg, NetSendCallBack sendCallBack) {
+        channel.writeAndFlush(msg).addListener(new NettySendCallBack(sendCallBack));
     }
 
     @Override

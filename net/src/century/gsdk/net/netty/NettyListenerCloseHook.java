@@ -32,6 +32,5 @@ public class NettyListenerCloseHook implements GenericFutureListener<ChannelFutu
     @Override
     public void operationComplete(ChannelFuture channelFuture) throws Exception {
         netListenerCloseHook.onClose();
-        ((NettyListener)netListenerCloseHook.getListener()).shutDownThread();
     }
 }

@@ -23,6 +23,11 @@ import java.util.Map;
  */
 public class MessageHandlerManager {
     private Map<Integer,MessageHandler> handlerMap=new HashMap<>();
+
+    public void loadMsgHandler(String cfgPath){
+
+    }
+
     public void registerHandler(MessageHandler handler){
         handlerMap.put(handler.handleType(),handler);
     }

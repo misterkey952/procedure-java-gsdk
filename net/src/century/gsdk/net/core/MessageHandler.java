@@ -18,6 +18,6 @@ package century.gsdk.net.core;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public interface MessageHandler<T>{
-    void handle(NetSession session, T msg);
+    void handle(ISession session, T msg);
     int handleType();
 }

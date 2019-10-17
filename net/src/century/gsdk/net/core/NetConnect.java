@@ -20,11 +20,12 @@ package century.gsdk.net.core;
 public interface NetConnect {
     NetAddress getRemoteAddress();
     NetAddress getLocalAddress();
-    void connect();
+    boolean connect();
     void close();
 
     Identifier getIdentifier();
     void sendMsg(Object msg);
     void syncSendMsg(Object msg);
+    void sendMsg(Object msg, NetSendCallBack sendCallBack);
     void addCloseHook(NetConnectCloseHook connectCloseHook);
 }

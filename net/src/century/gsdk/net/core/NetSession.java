@@ -25,17 +25,40 @@ import java.util.Map;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public abstract class NetSession {
-    private static final Logger logger= LoggerFactory.getLogger("NetSession");
+public class NetSession implements ISession{
     private Identifier identifier;
-    private NetConnect master;
-    private List<NetConnect> slaves=new ArrayList<>();
-    private MessageHandlerManager messageHandlerManager;
+    private NetConnect connect;
+    private SessionInvalid sessionInvalid;
+    @Override
+    public void addConnect(NetConnect connect, boolean master) {
+        this.connect=connect;
+    }
+
     public void sendMsg(Object msg){
-        master.sendMsg(msg);
+        connect.sendMsg(msg);
     }
     public void syncSendMsg(Object msg){
-        master.syncSendMsg(msg);
+        connect.syncSendMsg(msg);
+    }
+
+    public void sendMsg(Object msg,NetSendCallBack callBack){
+        connect.sendMsg(msg,callBack);
+    }
+
+    @Override
+    public Identifier identifier() {
+        return this.identifier;
+    }
+
+    @Override
+    public void setIdentifier(Identifier identifier) {
+        this.identifier=identifier;
+    }
+
+    @Override
+    public void setSessionInvalid(SessionInvalid sessionInvalid) {
+        this.sessionInvalid=sessionInvalid;
+        sessionInvalid.setSession(this);
     }
 
 }

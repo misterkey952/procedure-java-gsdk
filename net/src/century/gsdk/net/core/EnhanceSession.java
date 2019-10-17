@@ -1,8 +1,4 @@
-package century.gsdk.net.netty;
-
-import century.gsdk.net.core.NetConnectCloseHook;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
+package century.gsdk.net.core;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -22,15 +18,39 @@ import io.netty.util.concurrent.GenericFutureListener;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class NettyConnectCloseHook implements GenericFutureListener<ChannelFuture> {
-    private NetConnectCloseHook netConnectCloseHook;
+public class EnhanceSession implements ISession{
+    @Override
+    public void addConnect(NetConnect connect, boolean master) {
 
-    public NettyConnectCloseHook(NetConnectCloseHook netConnectCloseHook) {
-        this.netConnectCloseHook = netConnectCloseHook;
     }
 
     @Override
-    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-        netConnectCloseHook.onClose();
+    public void sendMsg(Object msg) {
+
+    }
+
+    @Override
+    public void syncSendMsg(Object msg) {
+
+    }
+
+    @Override
+    public void sendMsg(Object msg, NetSendCallBack callBack) {
+
+    }
+
+    @Override
+    public Identifier identifier() {
+        return null;
+    }
+
+    @Override
+    public void setIdentifier(Identifier identifier) {
+
+    }
+
+    @Override
+    public void setSessionInvalid(SessionInvalid sessionInvalid) {
+
     }
 }

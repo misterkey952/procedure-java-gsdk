@@ -5,13 +5,11 @@ import century.gsdk.net.core.NetAddress;
 import century.gsdk.net.core.NetListener;
 import century.gsdk.net.core.NetListenerCloseHook;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +89,13 @@ public class NettyListener implements NetListener {
                     .option(ChannelOption.SO_BACKLOG,1024)
                     .childHandler(channelInitializer);
             channel=bootstrap.bind(listenAddress.getIp(),listenAddress.getPort()).sync().channel();
+            channel.closeFuture().addListener(new GenericFutureListener<ChannelFuture>(){
+
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    shutDownThread();
+                }
+            });
             logger.info("Service:{} listen on {} success",identifier.toString(),listenAddress.toString());
         }catch(Exception e) {
             this.close();

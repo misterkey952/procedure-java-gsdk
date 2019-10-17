@@ -1,6 +1,6 @@
 package century.gsdk.net.netty;
 
-import century.gsdk.net.core.NetConnectCloseHook;
+import century.gsdk.net.core.NetSendCallBack;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -22,15 +22,19 @@ import io.netty.util.concurrent.GenericFutureListener;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class NettyConnectCloseHook implements GenericFutureListener<ChannelFuture> {
-    private NetConnectCloseHook netConnectCloseHook;
+public class NettySendCallBack implements GenericFutureListener<ChannelFuture> {
+    private NetSendCallBack callBack;
 
-    public NettyConnectCloseHook(NetConnectCloseHook netConnectCloseHook) {
-        this.netConnectCloseHook = netConnectCloseHook;
+    public NettySendCallBack(NetSendCallBack callBack) {
+        this.callBack = callBack;
     }
 
     @Override
     public void operationComplete(ChannelFuture channelFuture) throws Exception {
-        netConnectCloseHook.onClose();
+        if(channelFuture.isSuccess()){
+            callBack.onSendSuccess();
+        }else{
+            callBack.onSendFail();
+        }
     }
 }
