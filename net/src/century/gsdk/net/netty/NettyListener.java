@@ -43,6 +43,16 @@ public class NettyListener implements NetListener {
     private ChannelInitializer<SocketChannel> channelInitializer;
     private NetAddress listenAddress;
     protected Channel channel;
+
+    public NettyListener(Identifier identifier, String ip, int port, int bossThreadCount,int workThreadCount,ChannelInitializer<SocketChannel> channelInitializer) {
+        this.channelInitializer=channelInitializer;
+        this.bossThreadCount=bossThreadCount;
+        this.workThreadCount=bossThreadCount;
+        this.identifier=identifier;
+        listenAddress=new NetAddress(ip,port);
+    }
+
+
     public NettyListener(Identifier identifier, String ip, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         this.channelInitializer=channelInitializer;
         bossThreadCount=1;

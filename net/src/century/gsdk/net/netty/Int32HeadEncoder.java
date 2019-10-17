@@ -1,8 +1,5 @@
 package century.gsdk.net.netty;
-
-import com.google.protobuf.GeneratedMessageV3;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
@@ -27,8 +24,10 @@ import io.netty.channel.ChannelPromise;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class Int32HeadEncoder extends ChannelOutboundHandlerAdapter {
+    private ByteBuf buffer= Unpooled.directBuffer();
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        CompositeByteBuf buffer= Unpooled.compositeBuffer();
+        buffer.clear();
+        buffer.retain(2);
         ByteBuf bytemsg= (ByteBuf) msg;
         buffer.writeInt(bytemsg.readableBytes());
         buffer.writeBytes(bytemsg);

@@ -41,12 +41,16 @@ public class TestClientApplication extends GameApplication {
         Identifier identifier=new Identifier("test","OM");
         nettyConnect=new NettyConnect(
                 identifier,
-                "127.0.0.1",6000,
+                "127.0.0.1",6000,8,
                 new ClientChannelInitializer()
         );
         nettyConnect.connect();
-        TestString testString=TestString.newBuilder().setLineKey("LJALKDJFLKJDKSFKKASDF").build();
-        nettyConnect.sendMsg(testString);
+
+        for(int i=0;i<100000000;i++){
+            TestString testString=TestString.newBuilder().setLineKey("LJALKDJFLKJDKSFKKASDF_"+i).build();
+            nettyConnect.sendMsg(testString);
+        }
+
 
     }
 }

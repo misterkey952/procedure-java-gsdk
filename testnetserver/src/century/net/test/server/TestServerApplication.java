@@ -37,7 +37,7 @@ public class TestServerApplication extends GameApplication {
         Identifier identifier=new Identifier("test","OM");
         nettyListener=new NettyListener(
                 identifier,
-                "127.0.0.1",6000,
+                "127.0.0.1",6000,8,8,
                 new ServerChannelInitializer()
         );
 

@@ -40,6 +40,13 @@ public class NettyConnect implements NetConnect {
     private NetAddress remoteAddress;
     private NetAddress localAddress;
 
+    public NettyConnect(Identifier identifier,String ip,int port,int threadCount,ChannelInitializer<SocketChannel> channelInitializer) {
+        this.identifier=identifier;
+        this.remoteAddress=new NetAddress(ip,port);
+        this.channelInitializer=channelInitializer;
+        this.threadCount=threadCount;
+    }
+
 
 
     public NettyConnect(Identifier identifier,String ip,int port,ChannelInitializer<SocketChannel> channelInitializer) {

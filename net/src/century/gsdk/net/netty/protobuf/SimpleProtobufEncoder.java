@@ -1,8 +1,10 @@
 package century.gsdk.net.netty.protobuf;
 import com.google.protobuf.GeneratedMessageV3;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,29 +26,31 @@ import org.slf4j.LoggerFactory;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class SimpleProtobufEncoder extends MessageToByteEncoder {
+public class SimpleProtobufEncoder extends ChannelOutboundHandlerAdapter {
     private static final Logger logger= LoggerFactory.getLogger("SimpleProtobufEncoder");
     private ProtobufMessageManager protobufMessageManager;
-
+    private ByteBuf buffer= Unpooled.buffer();
     public SimpleProtobufEncoder(ProtobufMessageManager protobufMessageManager) {
         this.protobufMessageManager = protobufMessageManager;
     }
 
-    @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Object object, ByteBuf byteBuf) throws Exception {
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        buffer.clear();
         try{
-            if(object instanceof GeneratedMessageV3){
-                GeneratedMessageV3 v3= (GeneratedMessageV3) object;
+            if(msg instanceof GeneratedMessageV3){
+                GeneratedMessageV3 v3= (GeneratedMessageV3) msg;
                 byte[] bbc=v3.toByteArray();
                 int msgType=protobufMessageManager.getMsgType(v3.getParserForType());
-                byteBuf.writeInt(msgType);
-                byteBuf.writeBytes(bbc);
+                buffer.writeInt(msgType);
+                buffer.writeBytes(bbc);
+                ctx.writeAndFlush(buffer,promise);
             }else{
-                logger.warn("encode:receive a msg but it's not GeneratedMessageV3 msgType={}",object.getClass().getName());
+                logger.warn("encode:receive a msg but it's not GeneratedMessageV3 msgType={}",msg.getClass().getName());
             }
         }catch (Exception e){
             logger.error("encode err",e);
             throw e;
         }
     }
+
 }
