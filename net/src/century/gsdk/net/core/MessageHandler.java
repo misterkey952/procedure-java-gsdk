@@ -1,8 +1,4 @@
-package century.gsdk.net.netty;
-
-import century.gsdk.net.core.NetSession;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
+package century.gsdk.net.core;
 /**
  *     Copyright (C) <2019>  <Century>
  *
@@ -21,15 +17,7 @@ import io.netty.util.concurrent.GenericFutureListener;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class NetSessionCloseEvent implements GenericFutureListener<ChannelFuture> {
-    private NetSession session;
-
-    public NetSessionCloseEvent(NetSession session) {
-        this.session = session;
-    }
-
-    @Override
-    public void operationComplete(ChannelFuture future) throws Exception {
-        session.close();
-    }
+public interface MessageHandler<T>{
+    void handle(NetSession session, T msg);
+    int handleType();
 }

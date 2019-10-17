@@ -1,17 +1,17 @@
 package century.gsdk.net.netty;
+import century.gsdk.net.core.Identifier;
+import century.gsdk.net.core.NetAddress;
 import century.gsdk.net.core.NetConnect;
-import century.gsdk.tools.xml.XMLTool;
-import com.google.protobuf.Parser;
-import io.netty.channel.Channel;
+import century.gsdk.net.core.NetConnectCloseHook;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.util.AttributeKey;
-import org.dom4j.Element;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  *     Copyright (C) <2019>  <Century>
  *
@@ -30,29 +30,91 @@ import java.util.Map;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public abstract class NettyConnect extends NetConnect {
-    public static final AttributeKey<NettyConnect> NETTYCONNECT=AttributeKey.valueOf("NETTYCONNECT");
-    protected Channel channel;
-    private Map<Integer, Parser> type2parse;
-    private Map<Parser,Integer> parse2type;
-    public NettyConnect(String name, String ip, int port) {
-        super(name, ip, port);
-        type2parse=new HashMap<>();
-        parse2type=new HashMap<>();
+public class NettyConnect implements NetConnect {
+    private static final Logger logger= LoggerFactory.getLogger("NettyConnect");
+    private Identifier identifier;
+    private EventLoopGroup workGroup;
+    private ChannelInitializer<SocketChannel> channelInitializer;
+    private int threadCount;
+    protected SocketChannel channel;
+    private NetAddress remoteAddress;
+    private NetAddress localAddress;
+
+
+
+    public NettyConnect(Identifier identifier,String ip,int port,ChannelInitializer<SocketChannel> channelInitializer) {
+        this.identifier=identifier;
+        this.remoteAddress=new NetAddress(ip,port);
+        this.channelInitializer=channelInitializer;
+        threadCount=1;
     }
 
-    public void registerParse(int msgType,Parser parser){
-        type2parse.put(msgType,parser);
-        parse2type.put(parser,msgType);
+    @Override
+    public NetAddress getRemoteAddress() {
+        return this.remoteAddress;
     }
 
-    public int getMsgType(Parser parser){
-        return parse2type.get(parser);
+    @Override
+    public NetAddress getLocalAddress() {
+        return this.localAddress;
     }
 
-    public Parser getParser(int msgType){
-        return type2parse.get(msgType);
+    @Override
+    public void connect() {
+        try {
+            workGroup=new NioEventLoopGroup(threadCount);
+            Bootstrap bootstrap=new Bootstrap();
+            bootstrap.group(workGroup).channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY,true)
+                    .handler(channelInitializer);
+            channel = (SocketChannel) bootstrap.connect(remoteAddress.getIp(),remoteAddress.getPort()).sync().channel();
+            localAddress=new NetAddress(
+                    channel.localAddress().getHostName(),
+                    channel.localAddress().getPort()
+            );
+            logger.info("Connect:{} connect local {} remote {} success",identifier.toString(),localAddress.toString(),remoteAddress.toString());
+        }catch(Exception e) {
+            this.close();
+            logger.error("Connect:"+identifier.toString()+" connect "+remoteAddress.toString(),e);
+        }
     }
 
-    public abstract ChannelInitializer<SocketChannel> channelInitializer();
+
+    void shutDownThread(){
+        workGroup.shutdownGracefully();
+    }
+
+    @Override
+    public void close() {
+        if(channel!=null){
+            channel.close();
+        }
+        logger.info("Connect:{} connect {} close",identifier.toString(),remoteAddress.toString());
+    }
+
+    @Override
+    public Identifier getIdentifier() {
+        return identifier;
+    }
+
+    @Override
+    public void sendMsg(Object msg) {
+        channel.writeAndFlush(msg);
+    }
+
+    @Override
+    public void syncSendMsg(Object msg) {
+        try {
+            channel.writeAndFlush(msg).sync();
+        } catch (InterruptedException e) {
+            logger.error("syncSendMsg err",e);
+        }
+    }
+
+    @Override
+    public void addCloseHook(NetConnectCloseHook connectCloseHook) {
+        connectCloseHook.setConnect(this);
+        channel.closeFuture().addListener(new NettyConnectCloseHook(connectCloseHook));
+    }
+
 }

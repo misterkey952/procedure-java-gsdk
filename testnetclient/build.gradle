@@ -1,0 +1,12 @@
+apply plugin: 'application'
+mainClassName = 'century.net.test.client.ClientMain'
+applicationDefaultJvmArgs = [
+        "-Xrunjdwp:transport=dt_socket,address=60002,server=y,suspend=n"
+]
+
+dependencies {
+    compile fileTree(dir:'../libs',include:['*.jar'])
+    compile project(':net')
+    compile project(':tool')
+    compile project(':docker')
+}

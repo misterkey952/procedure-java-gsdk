@@ -1,12 +1,10 @@
 package century.gsdk.net.netty.protobuf;
-import century.gsdk.net.netty.NettyConnect;
 import com.google.protobuf.GeneratedMessageV3;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import io.netty.handler.codec.MessageToByteEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *     Copyright (C) <2019>  <Century>
@@ -26,26 +24,29 @@ import io.netty.channel.ChannelPromise;
  *
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@ChannelHandler.Sharable
-public class Head4Encoder extends ChannelOutboundHandlerAdapter {
-    protected NettyConnect getNettyConnect(ChannelHandlerContext ctx){
-        return ctx.channel().attr(NettyConnect.NETTYCONNECT).get();
+public class SimpleProtobufEncoder extends MessageToByteEncoder {
+    private static final Logger logger= LoggerFactory.getLogger("SimpleProtobufEncoder");
+    private ProtobufMessageManager protobufMessageManager;
+
+    public SimpleProtobufEncoder(ProtobufMessageManager protobufMessageManager) {
+        this.protobufMessageManager = protobufMessageManager;
     }
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        NettyConnect nettyConnect=getNettyConnect(ctx);
+
+    @Override
+    protected void encode(ChannelHandlerContext channelHandlerContext, Object object, ByteBuf byteBuf) throws Exception {
         try{
-            if(msg instanceof GeneratedMessageV3){
-                GeneratedMessageV3 v3= (GeneratedMessageV3) msg;
+            if(object instanceof GeneratedMessageV3){
+                GeneratedMessageV3 v3= (GeneratedMessageV3) object;
                 byte[] bbc=v3.toByteArray();
-                int msgType=nettyConnect.getMsgType(v3.getParserForType());
-                ByteBuf byteBuf= Unpooled.compositeBuffer(bbc.length+4+4);
-                byteBuf.writeInt(bbc.length+4);
+                int msgType=protobufMessageManager.getMsgType(v3.getParserForType());
                 byteBuf.writeInt(msgType);
                 byteBuf.writeBytes(bbc);
-                ctx.writeAndFlush(byteBuf,promise);
+            }else{
+                logger.warn("encode:receive a msg but it's not GeneratedMessageV3 msgType={}",object.getClass().getName());
             }
         }catch (Exception e){
-            nettyConnect.error("Head4Encoder err",e);
+            logger.error("encode err",e);
+            throw e;
         }
     }
 }

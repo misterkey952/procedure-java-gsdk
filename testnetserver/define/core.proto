@@ -1,0 +1,21 @@
+syntax="proto3";
+package century.net.test.msg;
+option java_package = "century.net.test.msg";
+option java_outer_classname="TestMessage";
+option java_multiple_files = true;
+
+enum TestEnum{
+    SUCCESS=0;
+    TO_SYSCTL=1;
+    TO_DISCONNECT=2;
+    RR_NO_TIMELINE=3;
+}
+message TestString{
+    string lineKey=1;
+}
+message TestSignature{
+    TestEnum errcode=1;
+    int64 timestamp=2;
+    int64 timecount=3;
+    string sign=4;
+}
