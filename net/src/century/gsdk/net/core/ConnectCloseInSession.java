@@ -1,8 +1,4 @@
-package century.net.test.client;
-
-import century.gsdk.docker.GameDocker;
-import century.gsdk.net.core.Identifier;
-import century.gsdk.net.netty.NettyConnect;
+package century.gsdk.net.core;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -22,8 +18,15 @@ import century.gsdk.net.netty.NettyConnect;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class ClientMain {
-    public static void main(String[] args){
-        GameDocker.getInstance().start(TestClientApplication.getInstance());
+public class ConnectCloseInSession extends NetConnectCloseHook{
+    private ISession session;
+    public ConnectCloseInSession(NetConnect netConnect,ISession session) {
+        this.connect=netConnect;
+        this.session=session;
+    }
+
+    @Override
+    public void onClose() {
+        this.session.onConnectClose(this.connect);
     }
 }

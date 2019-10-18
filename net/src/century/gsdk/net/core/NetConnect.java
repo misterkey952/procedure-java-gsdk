@@ -22,8 +22,6 @@ public interface NetConnect {
     NetAddress getLocalAddress();
     boolean connect();
     void close();
-
-    Identifier getIdentifier();
     void sendMsg(Object msg);
     void syncSendMsg(Object msg);
     void sendMsg(Object msg, NetSendCallBack sendCallBack);

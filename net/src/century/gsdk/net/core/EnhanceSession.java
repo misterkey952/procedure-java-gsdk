@@ -19,6 +19,7 @@ package century.gsdk.net.core;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class EnhanceSession implements ISession{
+
     @Override
     public void addConnect(NetConnect connect, boolean master) {
 
@@ -50,7 +51,37 @@ public class EnhanceSession implements ISession{
     }
 
     @Override
-    public void setSessionInvalid(SessionInvalid sessionInvalid) {
+    public void addSessionInvalid(SessionInvalid sessionInvalid) {
+
+    }
+
+    @Override
+    public void onConnectClose(NetConnect connect) {
+
+    }
+
+    @Override
+    public NetConnect masterConnect() {
+        return null;
+    }
+
+    @Override
+    public void attribute(String key, Object attr) {
+
+    }
+
+    @Override
+    public <T> T attribute(String key) {
+        return null;
+    }
+
+    @Override
+    public <T> T cleanAttr(String key) {
+        return null;
+    }
+
+    @Override
+    public void cleanAllAttr() {
 
     }
 }

@@ -1,6 +1,4 @@
 package century.gsdk.net.core;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +26,12 @@ import java.util.Map;
 public class NetSession implements ISession{
     private Identifier identifier;
     private NetConnect connect;
-    private SessionInvalid sessionInvalid;
+    private Map<String,Object> attrMap=new HashMap<>();
+    private List<SessionInvalid> sessionInvalidList=new ArrayList<>();
     @Override
     public void addConnect(NetConnect connect, boolean master) {
         this.connect=connect;
+        connect.addCloseHook(new ConnectCloseInSession(connect,this));
     }
 
     public void sendMsg(Object msg){
@@ -56,9 +56,39 @@ public class NetSession implements ISession{
     }
 
     @Override
-    public void setSessionInvalid(SessionInvalid sessionInvalid) {
-        this.sessionInvalid=sessionInvalid;
+    public void addSessionInvalid(SessionInvalid sessionInvalid) {
         sessionInvalid.setSession(this);
+        sessionInvalidList.add(sessionInvalid);
+    }
+    @Override
+    public void onConnectClose(NetConnect connect) {
+        for(SessionInvalid sessionInvalid:sessionInvalidList){
+            sessionInvalid.onInvalid();
+        }
     }
 
+    @Override
+    public NetConnect masterConnect() {
+        return connect;
+    }
+
+    @Override
+    public void attribute(String key, Object attr) {
+        attrMap.put(key,attr);
+    }
+
+    @Override
+    public <T> T attribute(String key) {
+        return (T) attrMap.get(key);
+    }
+
+    @Override
+    public <T>T cleanAttr(String key) {
+        return (T) attrMap.remove(key);
+    }
+
+    @Override
+    public void cleanAllAttr() {
+        attrMap.clear();
+    }
 }

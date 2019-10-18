@@ -25,5 +25,12 @@ public interface ISession {
     void sendMsg(Object msg,NetSendCallBack callBack);
     Identifier identifier();
     void setIdentifier(Identifier identifier);
-    void setSessionInvalid(SessionInvalid sessionInvalid);
+    void addSessionInvalid(SessionInvalid sessionInvalid);
+    void onConnectClose(NetConnect connect);
+    NetConnect masterConnect();
+    void attribute(String key,Object attr);
+    <T>T attribute(String key);
+
+    <T>T cleanAttr(String key);
+    void cleanAllAttr();
 }
