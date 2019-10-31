@@ -298,4 +298,14 @@ public  class StringTool {
         e.printStackTrace(new PrintWriter(stringWriter));
         return stringWriter.toString();
     }
+
+    public static String toBinary(byte value){
+        return Integer.toBinaryString((value & 0xFF) + 0x100).substring(1);
+    }
+
+    public static byte binaryToByte(String value){
+        return (byte) Integer.parseInt(value,2);
+    }
+
+
 }
