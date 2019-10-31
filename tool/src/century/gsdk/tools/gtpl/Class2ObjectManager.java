@@ -1,7 +1,7 @@
-package century.gsdk.tools.gtpl.test;
+package century.gsdk.tools.gtpl;
 
-import century.gsdk.tools.gtpl.TemplateClass;
-import century.gsdk.tools.gtpl.TemplateField;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -19,12 +19,19 @@ import century.gsdk.tools.gtpl.TemplateField;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@TemplateClass(name="测试Sheet")
-public class AComponent{
-    @TemplateField(name = "字段1",des = "这个字段的描述")
-    private String field1;
-    @TemplateField(name = "字段2",des = "这个字段的描述2")
-    private int field2;
+public class Class2ObjectManager {
+    private Map<Class,Class2Object> map=new HashMap<>();
+
+    public Class2Object getClass2Object(Class clazz){
+        Class2Object class2Object=map.get(clazz);
+        if(class2Object==null){
+            class2Object=new Class2Object(clazz);
+            map.put(clazz,class2Object);
+        }
+        return class2Object;
+    }
+
+
 }

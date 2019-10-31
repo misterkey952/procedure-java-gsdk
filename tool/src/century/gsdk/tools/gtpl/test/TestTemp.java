@@ -1,7 +1,10 @@
 package century.gsdk.tools.gtpl.test;
 
 import century.gsdk.tools.gtpl.AbstractTemplate;
+import century.gsdk.tools.gtpl.TemplateRelation;
 import century.gsdk.tools.ods.ODSFile;
+
+import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -22,16 +25,9 @@ import century.gsdk.tools.ods.ODSFile;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class TestTemp extends AbstractTemplate {
-
-
+    @TemplateRelation(clazz = AComponent.class,key = "field1",astemplate = true)
+    private Map<String,AComponent> componentMap;
     public TestTemp() {
         super("F:\\century","test","testx");
-
-    }
-
-    @Override
-    protected void onWriteODS(ODSFile odsFile) {
-        AComponent aComponent=new AComponent();
-        odsFile.addSheet(aComponent.generateSheet());
     }
 }

@@ -36,6 +36,9 @@ public abstract class ODSFile {
     }
 
 
+    public ODSSheet getSheet(String key){
+        return sheetMap.get(key);
+    }
 
     public abstract void in();
     public abstract void out();

@@ -1,8 +1,6 @@
-package century.gsdk.tools.gtpl.test;
+package century.gsdk.tools.gtpl;
 
-import century.gsdk.tools.gtpl.TemplateClass;
-import century.gsdk.tools.gtpl.TemplateField;
-
+import java.lang.annotation.*;
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -19,12 +17,13 @@ import century.gsdk.tools.gtpl.TemplateField;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@TemplateClass(name="测试Sheet")
-public class AComponent{
-    @TemplateField(name = "字段1",des = "这个字段的描述")
-    private String field1;
-    @TemplateField(name = "字段2",des = "这个字段的描述2")
-    private int field2;
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Target({ElementType.FIELD })
+public @interface TemplateField {
+    String name();
+    String des();
 }

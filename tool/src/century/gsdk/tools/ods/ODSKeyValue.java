@@ -81,7 +81,7 @@ public class ODSKeyValue {
         return StringTool.convertDate(value);
     }
 
-    public boolean convertBoolean(){
+    public boolean booleanValue(){
         return StringTool.convertBoolean(value);
     }
 }

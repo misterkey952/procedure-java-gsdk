@@ -40,8 +40,7 @@ public class MSODSFile extends ODSFile{
         ODSRecord record=new ODSRecord();
         for(ODSHead head:odsSheet.getOdsHeads()){
             Cell cell=row.getCell(head.getIndex());
-            ODSKeyValue keyValue=new ODSKeyValue(head.getKey(),cell.toString());
-            record.addKV(keyValue);
+            record.addKV(head.getKey(),cell.toString());
         }
         odsSheet.addRecord(record);
     }
@@ -86,12 +85,9 @@ public class MSODSFile extends ODSFile{
         for(int i=0;i<cellCount;i++){
             Cell keyCell=keyRow.getCell(i);
             Cell nameCell=nameRow.getCell(i);
-            ODSHead odsHead=new ODSHead(
-                    keyCell.getStringCellValue(),
+            odsSheet.addHead(keyCell.getStringCellValue(),
                     nameCell.getStringCellValue(),
-                    nameCell.getCellComment().getString().getString()
-            );
-            odsSheet.addHead(odsHead);
+                    nameCell.getCellComment().getString().getString());
         }
 
         Cell classCell=nameRow.getCell(cellCount);

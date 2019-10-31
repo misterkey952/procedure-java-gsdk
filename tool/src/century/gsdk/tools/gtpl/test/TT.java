@@ -21,6 +21,10 @@ package century.gsdk.tools.gtpl.test;
 public class TT {
     public static void main(String[] args){
         TestTemp temp=new TestTemp();
-        temp.writeODS();
+        try {
+            temp.inputFromODS();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

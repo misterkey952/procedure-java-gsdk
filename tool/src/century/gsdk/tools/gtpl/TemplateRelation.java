@@ -1,8 +1,6 @@
 package century.gsdk.tools.gtpl;
 
-import century.gsdk.tools.ods.ODSRecord;
-import century.gsdk.tools.ods.ODSSheet;
-import org.dom4j.Element;
+import java.lang.annotation.*;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -20,12 +18,14 @@ import org.dom4j.Element;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public interface TempleteComponent {
-    ODSSheet generateSheet();
-    ODSRecord generateRecord();
-    void parseRecord(ODSRecord record);
-    void encode(Element element);
-    void decode(Element element);
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Target({ElementType.FIELD })
+public @interface TemplateRelation {
+    Class clazz();
+    boolean astemplate() default false;
+    String key() default "";
 }
