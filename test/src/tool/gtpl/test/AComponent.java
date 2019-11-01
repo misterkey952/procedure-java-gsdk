@@ -1,7 +1,10 @@
-package century.gsdk.tools.gtpl.test;
+package tool.gtpl.test;
 
 import century.gsdk.tools.gtpl.TemplateClass;
 import century.gsdk.tools.gtpl.TemplateField;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -27,4 +30,10 @@ public class AComponent{
     private String field1;
     @TemplateField(name = "字段2",des = "这个字段的描述2")
     private int field2;
+    @TemplateField(ref = "field1",name = "字段3",des = "这个字段的描述3")
+    private BComponent component;
+    @TemplateField(refClass = BComponent.class,ref = "field2",name = "字段3",des = "这个字段的描述3")
+    private List<BComponent> intlist;
+    @TemplateField(refClass = BComponent.class,ref = "field1",name="fdf",des="fdslf")
+    private Map<String,BComponent> map;
 }

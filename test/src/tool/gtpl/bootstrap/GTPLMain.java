@@ -1,10 +1,6 @@
-package century.gsdk.tools.gtpl.test;
+package tool.gtpl.bootstrap;
 
-import century.gsdk.tools.gtpl.AbstractTemplate;
-import century.gsdk.tools.gtpl.TemplateRelation;
-import century.gsdk.tools.ods.ODSFile;
-
-import java.util.Map;
+import century.gsdk.docker.GameDocker;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -24,10 +20,8 @@ import java.util.Map;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class TestTemp extends AbstractTemplate {
-    @TemplateRelation(clazz = AComponent.class,key = "field1",astemplate = true)
-    private Map<String,AComponent> componentMap;
-    public TestTemp() {
-        super("F:\\century","test","testx");
+public class GTPLMain {
+    public static void main(String[] args){
+        GameDocker.getInstance().start(GTPLApplication.getInstance());
     }
 }

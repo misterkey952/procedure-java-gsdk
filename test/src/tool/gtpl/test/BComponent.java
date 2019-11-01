@@ -1,4 +1,7 @@
-package century.gsdk.tools.gtpl.test;
+package tool.gtpl.test;
+
+import century.gsdk.tools.gtpl.TemplateClass;
+import century.gsdk.tools.gtpl.TemplateField;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -18,13 +21,10 @@ package century.gsdk.tools.gtpl.test;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class TT {
-    public static void main(String[] args){
-        TestTemp temp=new TestTemp();
-        try {
-            temp.inputFromODS();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+@TemplateClass(name = "bcom")
+public class BComponent {
+    @TemplateField(name = "NAME1",des = "fjaldff")
+    private String field1;
+    @TemplateField(name = "NAME1",des = "fjaldff")
+    private String field2;
 }

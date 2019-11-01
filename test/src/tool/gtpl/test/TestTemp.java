@@ -1,7 +1,6 @@
-package century.gsdk.tools.gtpl;
+package tool.gtpl.test;
 
-import java.util.HashMap;
-import java.util.Map;
+import century.gsdk.tools.gtpl.AbstractTemplate;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -19,25 +18,17 @@ import java.util.Map;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class Class2ObjectManager {
-    private Map<Class,Class2Object> map=new HashMap<>();
-
-    Class2Object getClass2Object(Class clazz){
-        return map.get(clazz);
+public class TestTemp extends AbstractTemplate {
+    public TestTemp() {
+        super("F:\\century","test","testx");
     }
-
-    Class2Object createClass2Object(Class clazz){
-        Class2Object class2Object=new Class2Object(clazz);
-        map.put(clazz,class2Object);
-        return class2Object;
+    @Override
+    protected Class[] assemble() {
+        return new Class[]{
+                AComponent.class,
+                BComponent.class
+        };
     }
-
-    boolean isRead(Class clazz){
-        return map.containsKey(clazz);
-    }
-
-
-
 }

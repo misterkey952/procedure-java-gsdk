@@ -40,7 +40,12 @@ public class MSODSFile extends ODSFile{
         ODSRecord record=new ODSRecord();
         for(ODSHead head:odsSheet.getOdsHeads()){
             Cell cell=row.getCell(head.getIndex());
-            record.addKV(head.getKey(),cell.toString());
+            if(cell==null){
+                record.addKV(head.getKey(),"");
+            }else{
+                record.addKV(head.getKey(),cell.toString());
+            }
+
         }
         odsSheet.addRecord(record);
     }

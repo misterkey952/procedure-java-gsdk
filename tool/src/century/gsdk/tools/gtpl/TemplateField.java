@@ -1,5 +1,7 @@
 package century.gsdk.tools.gtpl;
 
+import century.gsdk.tools.str.StringTool;
+
 import java.lang.annotation.*;
 /**
  * Copyright (C) <2019>  <Century>
@@ -26,4 +28,6 @@ import java.lang.annotation.*;
 public @interface TemplateField {
     String name();
     String des();
+    String ref() default StringTool.SPACE;
+    Class refClass() default Integer.class;
 }
