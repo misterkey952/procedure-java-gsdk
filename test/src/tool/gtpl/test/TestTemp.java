@@ -1,6 +1,10 @@
 package tool.gtpl.test;
 
 import century.gsdk.tools.gtpl.AbstractTemplate;
+import century.gsdk.tools.gtpl.TemplateAssemble;
+import century.gsdk.tools.gtpl.TemplateField;
+
+import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -21,6 +25,10 @@ import century.gsdk.tools.gtpl.AbstractTemplate;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class TestTemp extends AbstractTemplate {
+
+    @TemplateAssemble(clazz = AComponent.class,key = "field1")
+    private Map<String,AComponent> aComponentMap;
+
     public TestTemp() {
         super("F:\\century","test","testx");
     }

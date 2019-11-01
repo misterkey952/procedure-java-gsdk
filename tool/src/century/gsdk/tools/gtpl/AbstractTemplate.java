@@ -353,7 +353,27 @@ public abstract class AbstractTemplate {
             }
             readClass(comanager,clazz,odsFile);
         }
-        System.out.println("===============");
+
+        Class rootClass=this.getClass();
+        Field[] rootFields=rootClass.getDeclaredFields();
+        for(Field field:rootFields){
+            TemplateAssemble templateField=field.getAnnotation(TemplateAssemble.class);
+            if(templateField!=null){
+                Class2Object class2Object=comanager.getClass2Object(templateField.clazz());
+                if(Map.class.isAssignableFrom(field.getType())){
+                    if(templateField.islist()){
+                        Map lmap=class2Object.getFieldList(templateField.key());
+                        field.set(this,lmap);
+                    }else{
+                        Map map=class2Object.getFieldMap(templateField.key());
+                        field.set(this,map);
+                    }
+                }else if(List.class.isAssignableFrom(field.getType())){
+                    List list=class2Object.getObjectList();
+                    field.set(this,list);
+                }
+            }
+        }
     }
 
 }

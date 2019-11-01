@@ -18,14 +18,14 @@ import java.lang.annotation.*;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Target({ElementType.FIELD })
-public @interface TemplateRelation {
+public @interface TemplateAssemble {
     Class clazz();
-    boolean astemplate() default false;
     String key() default "";
+    boolean islist() default false;
 }
