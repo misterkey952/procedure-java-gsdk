@@ -157,6 +157,9 @@ class Class2Object {
     }
 
     void addObject(Object object){
+        if(objectList.contains(object)){
+            return;
+        }
         objectList.add(object);
     }
 }

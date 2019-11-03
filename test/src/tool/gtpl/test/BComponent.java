@@ -1,7 +1,6 @@
 package tool.gtpl.test;
 
-import century.gsdk.tools.gtpl.TemplateClass;
-import century.gsdk.tools.gtpl.TemplateField;
+import century.gsdk.tools.gtpl.Template;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -21,10 +20,10 @@ import century.gsdk.tools.gtpl.TemplateField;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@TemplateClass(name = "bcom")
+@Template(name = "bcomp",des = "asdkjljflkajsdflksdlkf")
 public class BComponent {
-    @TemplateField(name = "NAME1",des = "fjaldff")
+    @Template(name = "fieName1",des = "djkfkljakldf")
     private String field1;
-    @TemplateField(name = "NAME1",des = "fjaldff")
+    @Template(name = "fffff",des = "djflsdjklfkl")
     private String field2;
 }

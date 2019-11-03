@@ -3,6 +3,7 @@ package century.gsdk.tools.gtpl;
 import century.gsdk.tools.str.StringTool;
 
 import java.lang.annotation.*;
+
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -19,15 +20,16 @@ import java.lang.annotation.*;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * <p>
- * Author' Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@Target({ElementType.FIELD })
-public @interface TemplateField {
+@Target({ElementType.FIELD,ElementType.TYPE})
+public @interface Template {
     String name();
     String des();
     String ref() default StringTool.SPACE;
-    Class refClass() default Integer.class;
+    String key() default StringTool.SPACE;
+
 }

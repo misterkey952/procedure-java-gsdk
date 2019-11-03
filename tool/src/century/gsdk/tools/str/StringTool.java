@@ -1,6 +1,8 @@
 package century.gsdk.tools.str;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 /**
@@ -23,12 +25,23 @@ import java.util.*;
  */
 public  class StringTool {
     public final static String SPACE="";
-    private static Date parseDate(String value){
+    public final static String DEFAULT_SPLIT_OF_ARR=";";
+    private static String encodeDate(long time){
+        StringBuilder stringBuilder=new StringBuilder();
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        calendar.set(Calendar.MILLISECOND,0);
+        stringBuilder.append(calendar.get(Calendar.YEAR)).append("-").append(calendar.get(Calendar.MONTH)+1).append("-")
+                .append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ").append(calendar.get(Calendar.HOUR_OF_DAY)).append(calendar.get(Calendar.MINUTE))
+                .append(calendar.get(Calendar.SECOND));
+        return stringBuilder.toString();
+    }
 
+
+    private static Date decodeDate(String value){
         if(value==null||"".equals(value)){
             return null;
         }
-
         Calendar calendar=Calendar.getInstance();
         calendar.set(Calendar.MILLISECOND,0);
         String[] dateStrs=value.split(" ");
@@ -102,6 +115,56 @@ public  class StringTool {
         return calendar.getTime();
     }
 
+
+    public static String valueOf(boolean[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+    public static String valueOf(byte[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(short[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(int[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(long[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(float[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(double[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+    public static String valueOf(String[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+
+    public static String valueOf(boolean[] value,String split){
+
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static boolean[] convertBooleanArr(String value){
+        return   convertBooleanArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
     public static boolean[] convertBooleanArr(String value,String split){
         if(value==null||"".equals(value)){
             return null;
@@ -119,6 +182,26 @@ public  class StringTool {
         return t;
     }
 
+    public static String valueOf(long[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static long[] convertLongArr(String value){
+        return convertLongArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
     public static long[] convertLongArr(String value, String split){
         if(value==null||"".equals(value)){
             return null;
@@ -131,6 +214,27 @@ public  class StringTool {
         return t;
     }
 
+    public static String valueOf(int[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static int[] convertIntArr(String value){
+        return convertIntArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+
     public static int[] convertIntArr(String value,String split){
         if(value==null||"".equals(value)){
             return null;
@@ -141,6 +245,27 @@ public  class StringTool {
             t[i]=Integer.parseInt(str[i]);
         }
         return t;
+    }
+
+    public static String valueOf(double[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+
+    public static double[] convertDoubleArr(String value){
+        return convertDoubleArr(value,DEFAULT_SPLIT_OF_ARR);
     }
 
     public static double[] convertDoubleArr(String value,String split){
@@ -155,6 +280,27 @@ public  class StringTool {
         return t;
     }
 
+
+    public static String valueOf(byte[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static byte[] convertByteArr(String value){
+        return convertByteArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
     public static byte[] convertByteArr(String value,String split){
         if(value==null||"".equals(value)){
             return null;
@@ -165,6 +311,26 @@ public  class StringTool {
             t[i]=Byte.parseByte(str[i]);
         }
         return t;
+    }
+
+    public static String valueOf(short[] value,String split){
+
+        if(value==null){
+            return "null";
+        }
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static short[] convertShortArr(String value){
+        return convertShortArr(value,DEFAULT_SPLIT_OF_ARR);
     }
 
     public static short[] convertShortArr(String value,String split){
@@ -179,6 +345,26 @@ public  class StringTool {
         return t;
     }
 
+    public static String valueOf(float[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(String.valueOf(value[i]));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+    public static float[] convertFloatArr(String value){
+        return convertFloatArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
     public static float[] convertFloatArr(String value,String split){
         if(value==null||"".equals(value)){
             return null;
@@ -191,6 +377,27 @@ public  class StringTool {
         return t;
     }
 
+    public static String valueOf(String[] value,String split){
+        if(value==null){
+            return "null";
+        }
+
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(value[i]);
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+
+        return stb.toString();
+    }
+
+
+    public static String[] convertStringArr(String value){
+        return convertStringArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
     public static String[] convertStringArr(String value,String split){
         if(value==null){
             return null;
@@ -198,6 +405,10 @@ public  class StringTool {
         return value.trim().split(split);
     }
 
+
+    public static String valueOf(Boolean value){
+        return String.valueOf(value);
+    }
 
     public static boolean convertBoolean(String value){
         if(value==null||"".equals(value)){
@@ -209,12 +420,20 @@ public  class StringTool {
         return false;
     }
 
+    public static String valueOf(Long value){
+        return String.valueOf(value);
+    }
+
 
     public static long convertLong(String value){
         if(value==null||"".equals(value)){
             return 0;
         }
         return Long.parseLong(value.trim());
+    }
+
+    public static String valueOf(Integer value){
+        return String.valueOf(value);
     }
 
     public static int convertInt(String value){
@@ -224,11 +443,19 @@ public  class StringTool {
         return Integer.parseInt(value.trim());
     }
 
+    public static String valueOf(Double value){
+        return String.valueOf(value);
+    }
+
     public static double convertDouble(String value){
         if(value==null||"".equals(value)){
             return 0;
         }
         return Double.parseDouble(value.trim());
+    }
+
+    public static String valueOf(Byte value){
+        return String.valueOf(value);
     }
 
     public static byte convertByte(String value){
@@ -238,11 +465,19 @@ public  class StringTool {
         return Byte.parseByte(value.trim());
     }
 
+    public static String valueOf(Short value){
+        return String.valueOf(value);
+    }
+
     public static short convertShort(String value){
         if(value==null||"".equals(value)){
             return 0;
         }
         return Short.parseShort(value.trim());
+    }
+
+    public static String valueOf(Float value){
+        return String.valueOf(value);
     }
 
     public static float convertFloat(String value){
@@ -259,19 +494,104 @@ public  class StringTool {
         return value.trim();
     }
 
+    public static String valueOf(Date value){
+        if(value==null){
+            return "null";
+        }
+        return encodeDate(value.getTime());
+    }
+
+    public static String valueOf(Timestamp[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+    public static String valueOf(Date[] value){
+        return valueOf(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+    public static String valueOf(Date[] value,String split){
+        if(value==null){
+            return "null";
+        }
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(encodeDate(value[i].getTime()));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+        return stb.toString();
+    }
+
+    public static String valueOf(Timestamp[] value,String split){
+        if(value==null){
+            return "null";
+        }
+        StringBuilder stb=new StringBuilder();
+        for(int i=0;i<value.length;i++){
+            stb.append(encodeDate(value[i].getTime()));
+            if(i<value.length-1){
+                stb.append(split);
+            }
+        }
+        return stb.toString();
+    }
+
+
+    public static Date[] convertDateArr(String value){
+        return convertDateArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+    public static Date[] convertDateArr(String value,String split){
+        if(value==null||"".equals(value)){
+            return null;
+        }
+
+        String[] stbValue=convertStringArr(value,split);
+        Date[] dates=new Date[stbValue.length];
+        for(int i=0;i<dates.length;i++){
+            dates[i]=convertDate(stbValue[i]);
+        }
+        return dates;
+    }
+
+
+    public static Timestamp[] convertTimestampArr(String value){
+        return convertTimestampArr(value,DEFAULT_SPLIT_OF_ARR);
+    }
+
+    public static Timestamp[] convertTimestampArr(String value, String split){
+        if(value==null||"".equals(value)){
+            return null;
+        }
+
+        String[] stbValue=convertStringArr(value,split);
+        Timestamp[] dates=new Timestamp[stbValue.length];
+        for(int i=0;i<dates.length;i++){
+            dates[i]=convertTimestamp(stbValue[i]);
+        }
+        return dates;
+    }
+
     public static Date convertDate(String value){
         if(value==null||"".equals(value)){
             return null;
         }
-        return parseDate(value.trim());
+        return decodeDate(value.trim());
     }
 
+
+    public static String valueOf(Timestamp value){
+        if(value==null){
+            return "null";
+        }
+        return encodeDate(value.getTime());
+    }
 
     public static Timestamp convertTimestamp(String value){
         if(value==null||"".equals(value)){
             return null;
         }
-        return new Timestamp(parseDate(value.trim()).getTime());
+        return new Timestamp(decodeDate(value.trim()).getTime());
     }
 
 
@@ -307,5 +627,94 @@ public  class StringTool {
         return (byte) Integer.parseInt(value,2);
     }
 
+    public static boolean supportType(Class clazz){
+        if(clazz==Byte.class||clazz==byte.class){
+            return true;
+        }else if(clazz==Short.class||clazz==short.class){
+            return true;
+        }else if(clazz==Integer.class||clazz==int.class){
+            return true;
+        }else if(clazz==Long.class||clazz==long.class){
+            return true;
+        }else if(clazz==Float.class||clazz==float.class){
+            return true;
+        }else if(clazz==Double.class||clazz==double.class){
+            return true;
+        }else if(clazz==Boolean.class||clazz==boolean.class){
+            return true;
+        }else if(clazz==Date.class){
+            return true;
+        }else if(clazz==Timestamp.class){
+            return true;
+        }else if(clazz==String.class){
+            return true;
+        }if(clazz==Byte[].class||clazz==byte[].class){
+            return true;
+        }else if(clazz==Short[].class||clazz==short[].class){
+            return true;
+        }else if(clazz==Integer[].class||clazz==int[].class){
+            return true;
+        }else if(clazz==Long[].class||clazz==long[].class){
+            return true;
+        }else if(clazz==Float[].class||clazz==float[].class){
+            return true;
+        }else if(clazz==Double[].class||clazz==double[].class){
+            return true;
+        }else if(clazz==Boolean[].class||clazz==boolean[].class){
+            return true;
+        }else if(clazz==Date[].class){
+            return true;
+        }else if(clazz==Timestamp[].class){
+            return true;
+        }else if(clazz==String[].class){
+            return true;
+        }
+        return false;
+    }
+
+    public static String valueOf(Object object){
+        if(object.getClass()==Byte.class||object.getClass()==byte.class){
+            return valueOf((Byte)object);
+        }else if(object.getClass()==Short.class||object.getClass()==short.class){
+            return valueOf((Short)object);
+        }else if(object.getClass()==Integer.class||object.getClass()==int.class){
+            return valueOf((Integer)object);
+        }else if(object.getClass()==Long.class||object.getClass()==long.class){
+            return valueOf((Long)object);
+        }else if(object.getClass()==Float.class||object.getClass()==float.class){
+            return valueOf((Float) object);
+        }else if(object.getClass()==Double.class||object.getClass()==double.class){
+            return valueOf((Double) object);
+        }else if(object.getClass()==Boolean.class||object.getClass()==boolean.class){
+            return valueOf((Boolean)object);
+        }else if(object.getClass()==Date.class){
+            return valueOf((Date)object);
+        }else if(object.getClass()==Timestamp.class){
+            return valueOf((Timestamp)object);
+        }else if(object.getClass()==String.class){
+            return object.toString();
+        }if(object.getClass()==Byte[].class||object.getClass()==byte[].class){
+            return valueOf((byte[])object);
+        }else if(object.getClass()==Short[].class||object.getClass()==short[].class){
+            return valueOf((short[])object);
+        }else if(object.getClass()==Integer[].class||object.getClass()==int[].class){
+            return valueOf((int[])object);
+        }else if(object.getClass()==Long[].class||object.getClass()==long[].class){
+            return valueOf((long[])object);
+        }else if(object.getClass()==Float[].class||object.getClass()==float[].class){
+            return valueOf((float[]) object);
+        }else if(object.getClass()==Double[].class||object.getClass()==double[].class){
+            return valueOf((double[]) object);
+        }else if(object.getClass()==Boolean[].class||object.getClass()==boolean[].class){
+            return valueOf((boolean[]) object);
+        }else if(object.getClass()==Date[].class){
+            return valueOf((Date[])object);
+        }else if(object.getClass()==Timestamp[].class){
+            return valueOf((Timestamp[])object);
+        }else if(object.getClass()==String[].class){
+            return valueOf((String[])object);
+        }
+        return "null";
+    }
 
 }

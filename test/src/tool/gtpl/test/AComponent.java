@@ -1,10 +1,8 @@
 package tool.gtpl.test;
 
-import century.gsdk.tools.gtpl.TemplateClass;
-import century.gsdk.tools.gtpl.TemplateField;
+import century.gsdk.tools.gtpl.Template;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -24,16 +22,16 @@ import java.util.Map;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@TemplateClass(name="测试Sheet")
+@Template(name="acomp",des = "this is a test component")
 public class AComponent{
-    @TemplateField(name = "字段1",des = "这个字段的描述")
+    @Template(name = "fieldName1",des = "laljdkljfljalksjdlkfj")
     private String field1;
-    @TemplateField(name = "字段2",des = "这个字段的描述2")
+    @Template(name = "fieldName2",des = "laljdkljfljalksjdlkfj")
     private int field2;
-    @TemplateField(ref = "field1",name = "字段3",des = "这个字段的描述3")
+    @Template(name = "fieldName3",des = "laljdkljfljalksjdlkfj")
     private BComponent component;
-    @TemplateField(refClass = BComponent.class,ref = "field2",name = "字段3",des = "这个字段的描述3")
+    @Template(name = "fieldName4",des = "laljdkljfljalksjdlkfj")
     private List<BComponent> intlist;
-    @TemplateField(refClass = BComponent.class,ref = "field1",name="fdf",des="fdslf")
-    private Map<String,BComponent> map;
+    @Template(name = "fieldName5",des = "laljdkljfljalksjdlkfj")
+    private List<BComponent> map;
 }

@@ -1,7 +1,5 @@
 package century.gsdk.tools.gtpl;
 
-import java.lang.annotation.*;
-
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -20,12 +18,5 @@ import java.lang.annotation.*;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Target({ElementType.FIELD })
-public @interface TemplateAssemble {
-    Class clazz();
-    String key() default "";
-    boolean islist() default false;
+public class XMLCoder {
 }
