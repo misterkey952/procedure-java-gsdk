@@ -38,8 +38,9 @@ public class GTPLApplication extends GameApplication {
     public void initialize() {
         testTemp=new TestTemp();
         try {
-           // testTemp.saveStructODS();
+            //testTemp.saveStructODS();
             testTemp.readFromODS();
+            System.out.println("================");
         } catch (Exception e) {
             error("initialize err",e);
         }

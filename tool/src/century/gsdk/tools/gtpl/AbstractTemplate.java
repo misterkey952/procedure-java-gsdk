@@ -358,6 +358,8 @@ public abstract class AbstractTemplate {
         Field[] rootFields=rootClass.getDeclaredFields();
         for(Field field:rootFields){
             TemplateAssemble templateField=field.getAnnotation(TemplateAssemble.class);
+            boolean accessiable=field.isAccessible();
+            field.setAccessible(true);
             if(templateField!=null){
                 Class2Object class2Object=comanager.getClass2Object(templateField.clazz());
                 if(Map.class.isAssignableFrom(field.getType())){
@@ -373,6 +375,7 @@ public abstract class AbstractTemplate {
                     field.set(this,list);
                 }
             }
+            field.setAccessible(accessiable);
         }
     }
 

@@ -1,5 +1,6 @@
 package tool.gtpl.test;
 
+import century.gsdk.docker.GameDocker;
 import century.gsdk.tools.gtpl.AbstractTemplate;
 import century.gsdk.tools.gtpl.TemplateAssemble;
 import century.gsdk.tools.gtpl.TemplateField;
@@ -30,7 +31,7 @@ public class TestTemp extends AbstractTemplate {
     private Map<String,AComponent> aComponentMap;
 
     public TestTemp() {
-        super("F:\\century","test","testx");
+        super(GameDocker.getInstance().getResPath(),"test","testx");
     }
     @Override
     protected Class[] assemble() {
