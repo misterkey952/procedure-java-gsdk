@@ -40,7 +40,6 @@ public class GTPLApplication extends GameApplication {
         try {
             //testTemp.saveStructODS();
             testTemp.readFromODS();
-            System.out.println("================");
         } catch (Exception e) {
             error("initialize err",e);
         }
