@@ -41,4 +41,9 @@ public abstract class AbstractTemplate {
         odsCoder.decode(this);
     }
 
+    public void inputODS() throws Exception {
+        ODSCoder odsCoder=new MSODSCoder(name,directory);
+        odsCoder.encode(this);
+    }
+
 }

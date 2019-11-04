@@ -62,7 +62,7 @@ public class MSODSFile extends ODSFile{
                 odsSheet.setName_zh(sheet.getSheetName());
                 int rowIndex=inHead(sheet,odsSheet);
                 int rowCount=sheet.getLastRowNum();
-                for(;rowIndex<rowCount;rowIndex++){
+                for(;rowIndex<=rowCount;rowIndex++){
                     Row row=sheet.getRow(rowIndex);
                     fillRecord(row,odsSheet);
                 }

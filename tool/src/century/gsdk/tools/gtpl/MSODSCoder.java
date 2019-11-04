@@ -49,6 +49,10 @@ public class MSODSCoder extends ODSCoder{
 
     @Override
     protected void encode(Object object) throws Exception{
-
+        odsFile.in();
+        Field[] fields=object.getClass().getDeclaredFields();
+        for(Field field:fields){
+            input(field,object);
+        }
     }
 }

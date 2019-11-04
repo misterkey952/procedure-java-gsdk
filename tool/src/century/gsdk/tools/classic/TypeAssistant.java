@@ -48,4 +48,40 @@ public class TypeAssistant {
             return field.getType();
         }
     }
+
+
+    public static Class getKeyTypeInMap(Field field){
+        if(Map.class.isAssignableFrom(field.getType())){
+            Type type=field.getGenericType();
+            if(type instanceof ParameterizedTypeImpl){
+                ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) type;
+                Type subType=ppt.getActualTypeArguments()[0];
+                if(subType instanceof ParameterizedTypeImpl){
+                    ppt= (ParameterizedTypeImpl) subType;
+                    return ppt.getRawType();
+                }else{
+                    return (Class) subType;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Class getValueTypeInMap(Field field){
+        if(Map.class.isAssignableFrom(field.getType())){
+            Type type=field.getGenericType();
+            if(type instanceof ParameterizedTypeImpl){
+                ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) type;
+                Type subType=ppt.getActualTypeArguments()[1];
+                if(subType instanceof ParameterizedTypeImpl){
+                    ppt= (ParameterizedTypeImpl) subType;
+                    return ppt.getRawType();
+                }else{
+                    return (Class) subType;
+                }
+            }
+        }
+        return null;
+    }
+
 }

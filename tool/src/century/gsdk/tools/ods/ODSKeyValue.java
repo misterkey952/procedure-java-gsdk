@@ -40,48 +40,33 @@ public class ODSKeyValue {
         return value;
     }
 
-    public byte byteValue(){
-        if(value.contains(".")){
-            return StringTool.convertByte(value.substring(0,value.indexOf(".")));
+
+    public Object convert(Class clazz){
+        if(clazz==Byte.class||clazz==byte.class||clazz==Short.class||clazz==short.class||clazz==int.class||clazz==Integer.class||clazz==long.class||clazz==Long.class){
+            if(value.contains(".")){
+                value=value.substring(0,value.indexOf("."));
+            }
         }
-        return StringTool.convertByte(value);
+
+        return StringTool.convert(value,clazz);
     }
-    public short shortValue(){
-        if(value.contains(".")){
-            return StringTool.convertShort(value.substring(0,value.indexOf(".")));
+
+    public Object keyValueOf(Class clazz){
+        if(clazz==Byte.class||clazz==byte.class){
+            return convert(clazz);
+        }else if(clazz==Integer.class||clazz==int.class){
+            return convert(clazz);
+        }else if(clazz==Short.class||clazz==short.class){
+            return convert(clazz);
+        }else if(clazz==Long.class||clazz==long.class){
+            return convert(clazz);
+        }else if(clazz==Float.class||clazz==float.class){
+            return convert(clazz);
+        }else if(clazz==Double.class||clazz==double.class){
+            return convert(clazz);
+        }else if(clazz==String.class){
+            return convert(clazz);
         }
-        return StringTool.convertShort(value);
-    }
-    public int intValue(){
-        if(value.contains(".")){
-            return StringTool.convertInt(value.substring(0,value.indexOf(".")));
-        }
-        return StringTool.convertInt(value);
-    }
-
-    public long longValue(){
-        if(value.contains(".")){
-            return StringTool.convertLong(value.substring(0,value.indexOf(".")));
-        }
-        return StringTool.convertLong(value);
-    }
-
-    public float floatValue(){
-        return StringTool.convertFloat(value);
-    }
-
-    public double doubleValue(){
-        return StringTool.convertDouble(value);
-    }
-
-    public Timestamp convertTimestamp(){
-        return StringTool.convertTimestamp(value);
-    }
-    public Date convertDate(){
-        return StringTool.convertDate(value);
-    }
-
-    public boolean booleanValue(){
-        return StringTool.convertBoolean(value);
+        return null;
     }
 }

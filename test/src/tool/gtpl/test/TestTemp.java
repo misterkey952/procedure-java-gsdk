@@ -1,7 +1,12 @@
 package tool.gtpl.test;
 
 import century.gsdk.tools.gtpl.AbstractTemplate;
+import century.gsdk.tools.gtpl.Template;
+import century.gsdk.tools.str.StringTool;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,8 +28,30 @@ import java.util.Map;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class TestTemp extends AbstractTemplate {
+    @Template(key = "field1")
     private Map<String,AComponent> aComponentMap;
     public TestTemp() {
         super("test1","mmo");
+
+//        aComponentMap=new HashMap<>();
+//
+//        Map<String,BComponent> bcomList=new HashMap<>();
+//        for(int i=0;i<10;i++){
+//            BComponent bco=new BComponent();
+//            bco.setField1(StringTool.valueOf(i));
+//            bco.setField2(StringTool.valueOf(i%3));
+//            bco.setField3(i%4);
+//            bcomList.put(bco.getField1(),bco);
+//        }
+//
+//        for(int i=0;i<10;i++){
+//            AComponent aComponent=new AComponent();
+//            aComponent.setField1(StringTool.valueOf(i));
+//            aComponent.setField2(i*5);
+//            aComponent.setComponent(bcomList.get(StringTool.valueOf(i)));
+//            aComponent.getIntlist().addAll(bcomList.values());
+//            aComponent.getMap().putAll(bcomList);
+//            aComponentMap.put(aComponent.getField1(),aComponent);
+//        }
     }
 }

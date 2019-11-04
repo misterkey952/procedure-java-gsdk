@@ -27,8 +27,8 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.FIELD,ElementType.TYPE})
 public @interface Template {
-    String name();
-    String des();
+    String name() default StringTool.SPACE;
+    String des() default StringTool.SPACE;
     String ref() default StringTool.SPACE;
     String key() default StringTool.SPACE;
 

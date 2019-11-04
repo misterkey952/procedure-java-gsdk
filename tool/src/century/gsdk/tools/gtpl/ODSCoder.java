@@ -6,10 +6,7 @@ import century.gsdk.tools.ods.ODSKeyValue;
 import century.gsdk.tools.ods.ODSRecord;
 import century.gsdk.tools.ods.ODSSheet;
 import century.gsdk.tools.str.StringTool;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.Field;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -35,11 +32,55 @@ public abstract class ODSCoder{
     String directory;
     ODSFile odsFile;
     Set<Object> records=new HashSet<>();
+    Class2ObjectManager comanager=new Class2ObjectManager();
     ODSCoder(String name, String directory) {
         this.name = name;
         this.directory = directory;
     }
 
+
+    Class2Object readAsClass2Object(Class clazz) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+        Class2Object class2Object=comanager.getClass2Object(clazz);
+        if(class2Object==null){
+            ODSSheet sheet=getSheet(clazz);
+            class2Object=comanager.createClass2Object(clazz);
+            for(ODSRecord record:sheet.getRecordList()){
+                class2Object.addObject(record2Object(record,clazz));
+            }
+        }
+        return class2Object;
+    }
+
+
+    void input(Field dataField,Object object) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+        Class dataClass= TypeAssistant.getFieldClass(dataField);
+        Template template= (Template) dataClass.getAnnotation(Template.class);
+        if(template==null){
+            return;
+        }
+
+        Template templateField=dataField.getAnnotation(Template.class);
+        if(templateField==null){
+            return;
+        }
+
+        boolean accessible=dataField.isAccessible();
+        dataField.setAccessible(true);
+        if(!comanager.isRead(dataClass)){
+            readAsClass2Object(dataClass);
+        }
+        Class2Object class2Object=comanager.getClass2Object(dataClass);
+        if(Map.class.isAssignableFrom(dataField.getType())){
+            if(List.class.isAssignableFrom(TypeAssistant.getValueTypeInMap(dataField))){
+                dataField.set(object,class2Object.getGroupMap(templateField.key()));
+            }else{
+                dataField.set(object,class2Object.getKeyMap(templateField.key()));
+            }
+        }else if(List.class.isAssignableFrom(dataField.getType())){
+            dataField.set(object,class2Object.getObjectList());
+        }
+        dataField.setAccessible(accessible);
+    }
 
     void output(Field dataField,Object object) throws IllegalAccessException, NoSuchFieldException {
         Class dataClass= TypeAssistant.getFieldClass(dataField);
@@ -83,6 +124,96 @@ public abstract class ODSCoder{
         dataField.setAccessible(accessible);
     }
 
+
+    void readCompositeType(Field field,ODSKeyValue keyValue,Object object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+        Template template=field.getAnnotation(Template.class);
+        if(template==null){
+            return;
+        }
+        Class dataClazz=TypeAssistant.getFieldClass(field);
+        Class2Object class2Object=readAsClass2Object(dataClazz);
+
+
+        Field refField=dataClazz.getDeclaredField(template.ref());
+        String[] keyStrArr= (String[]) keyValue.convert(String[].class);
+
+        if(Map.class.isAssignableFrom(field.getType())){
+            Field keyField=dataClazz.getDeclaredField(template.key());
+            boolean keyAcc=keyField.isAccessible();
+            keyField.setAccessible(true);
+            Class valueType=TypeAssistant.getValueTypeInMap(field);
+            if(List.class.isAssignableFrom(valueType)){
+                Map<Object,List<Object>> map=class2Object.getGroupMap(template.ref());
+                List<Object> tmpList=new ArrayList<>();
+                for(String refKey:keyStrArr){
+                    Object kk=StringTool.convert(refKey,refField.getType());
+                    tmpList.addAll(map.get(kk));
+                }
+
+                Map<Object,List<Object>> objMap=new HashMap<>();
+                for(Object objj:tmpList){
+                    Object objKk=keyField.get(objj);
+                    List<Object> ll=objMap.get(objKk);
+                    if(ll==null){
+                        ll=new ArrayList<>();
+                        objMap.put(objKk,ll);
+                    }
+                    ll.add(objj);
+                }
+                field.set(object,objMap);
+            }else{
+                Map<Object,List<Object>> map=class2Object.getGroupMap(template.ref());
+                List<Object> tmpList=new ArrayList<>();
+                for(String refKey:keyStrArr){
+                    Object kk=StringTool.convert(refKey,refField.getType());
+                    tmpList.addAll(map.get(kk));
+                }
+
+                Map<Object,Object> objMap=new HashMap<>();
+                for(Object objj:tmpList){
+                    Object objKk=keyField.get(objj);
+                    if(!objMap.containsKey(objKk)){
+                        objMap.put(objKk,objj);
+                    }
+                }
+                field.set(object,objMap);
+            }
+
+            keyField.setAccessible(keyAcc);
+        }else if(List.class.isAssignableFrom(field.getType())){
+            Map<Object,List<Object>> map=class2Object.getGroupMap(template.ref());
+            List<Object> tmpList=new ArrayList<>();
+            for(String refKey:keyStrArr){
+                Object kk=StringTool.convert(refKey,refField.getType());
+                tmpList.addAll(map.get(kk));
+            }
+            field.set(object,tmpList);
+        }else{
+            Map<Object,Object> map=class2Object.getKeyMap(template.ref());
+            Object oomb=map.get(keyValue.keyValueOf(refField.getType()));
+            field.set(object,oomb);
+        }
+    }
+
+    Object record2Object(ODSRecord odsRecord,Class clazz) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+        Field[] fields=clazz.getDeclaredFields();
+        Object object=clazz.newInstance();
+        for(Field field:fields){
+            boolean accessible=field.isAccessible();
+            field.setAccessible(true);
+            ODSKeyValue keyValue=odsRecord.getKeyValue(field.getName());
+            if(keyValue==null){
+                continue;
+            }
+            if(StringTool.supportType(field.getType())){
+                field.set(object,keyValue.convert(field.getType()));
+            }else{
+                readCompositeType(field,keyValue,object);
+            }
+            field.setAccessible(accessible);
+        }
+        return object;
+    }
     void convertRecord(Object obj,ODSSheet sheet) throws IllegalAccessException, NoSuchFieldException {
         if(records.contains(obj)){
             return;
@@ -128,7 +259,7 @@ public abstract class ODSCoder{
                     for(Object key:refSet){
                         i++;
                         stb.append(StringTool.valueOf(key));
-                        if(i<map.size()){
+                        if(i<refSet.size()){
                             stb.append(StringTool.DEFAULT_SPLIT_OF_ARR);
                         }
                     }
@@ -152,7 +283,7 @@ public abstract class ODSCoder{
                     for(Object key:refSet){
                         i++;
                         stb.append(StringTool.valueOf(key));
-                        if(i<list.size()){
+                        if(i<refSet.size()){
                             stb.append(StringTool.DEFAULT_SPLIT_OF_ARR);
                         }
                     }

@@ -672,6 +672,52 @@ public  class StringTool {
         return false;
     }
 
+    public static Object convert(String value,Class clazz){
+        if(clazz==Byte.class||clazz==byte.class){
+            return convertByte(value);
+        }else if(clazz==Short.class||clazz==short.class){
+            return convertShort(value);
+        }else if(clazz==Integer.class||clazz==int.class){
+            return convertInt(value);
+        }else if(clazz==Long.class||clazz==long.class){
+            return convertLong(value);
+        }else if(clazz==Float.class||clazz==float.class){
+            return convertFloat(value);
+        }else if(clazz==Double.class||clazz==double.class){
+            return convertDouble(value);
+        }else if(clazz==Boolean.class||clazz==boolean.class){
+            return convertBoolean(value);
+        }else if(clazz==Date.class){
+            return convertDate(value);
+        }else if(clazz==Timestamp.class){
+            return convertTimestamp(value);
+        }else if(clazz==String.class){
+            return convertString(value);
+        }if(clazz==Byte[].class||clazz==byte[].class){
+            return convertByteArr(value);
+        }else if(clazz==Short[].class||clazz==short[].class){
+            return convertShortArr(value);
+        }else if(clazz==Integer[].class||clazz==int[].class){
+            return convertIntArr(value);
+        }else if(clazz==Long[].class||clazz==long[].class){
+            return convertLongArr(value);
+        }else if(clazz==Float[].class||clazz==float[].class){
+            return convertFloatArr(value);
+        }else if(clazz==Double[].class||clazz==double[].class){
+            return convertDoubleArr(value);
+        }else if(clazz==Boolean[].class||clazz==boolean[].class){
+            return convertBooleanArr(value);
+        }else if(clazz==Date[].class){
+            return convertDateArr(value);
+        }else if(clazz==Timestamp[].class){
+            return convertTimestampArr(value);
+        }else if(clazz==String[].class){
+            return convertStringArr(value);
+        }
+        return null;
+    }
+
+
     public static String valueOf(Object object){
         if(object.getClass()==Byte.class||object.getClass()==byte.class){
             return valueOf((Byte)object);
