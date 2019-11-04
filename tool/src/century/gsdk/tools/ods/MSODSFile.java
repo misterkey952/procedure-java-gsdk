@@ -1,5 +1,6 @@
 package century.gsdk.tools.ods;
 
+import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -120,9 +121,11 @@ public class MSODSFile extends ODSFile{
             }
             keyCell.setCellValue(odsHead.getKey());
             nameCell.setCellValue(odsHead.getName());
-            Comment comment = drawing.createCellComment(new XSSFClientAnchor(0, 0, 0,0, (short) 3, 3, (short) 5, 6));
-            comment.setString(new XSSFRichTextString(odsHead.getDes()));
-            nameCell.setCellComment(comment);
+            if(!StringTool.SPACE.equals(odsHead.getDes())){
+                Comment comment = drawing.createCellComment(new XSSFClientAnchor(0, 0, 0,0, (short) 3, 3, (short) 5, 6));
+                comment.setString(new XSSFRichTextString(odsHead.getDes()));
+                nameCell.setCellComment(comment);
+            }
         }
         Cell classCell=nameRow.createCell(odsSheet.getOdsHeads().size());
         classCell.setCellValue(odsSheet.getName_en());
