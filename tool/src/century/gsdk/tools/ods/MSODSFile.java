@@ -1,7 +1,13 @@
 package century.gsdk.tools.ods;
 
+import century.gsdk.tools.xml.XMLTool;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -51,10 +58,10 @@ public class MSODSFile extends ODSFile{
     }
 
     @Override
-    public void in() {
+    public void inXLSX() {
         Workbook workbook=null;
         try {
-            workbook=new XSSFWorkbook(new FileInputStream(new File(getPathWithNameZH())));
+            workbook=new XSSFWorkbook(new FileInputStream(new File(getPathWithNameXLSX())));
             int sheetCount=workbook.getNumberOfSheets();
             for(int i=0;i<sheetCount;i++){
                 Sheet sheet=workbook.getSheetAt(i);
@@ -69,18 +76,17 @@ public class MSODSFile extends ODSFile{
                 addSheet(odsSheet);
             }
         } catch (Exception e) {
-            logger.error("in err",e);
+            logger.error("inXLSX err",e);
         }finally {
             if(workbook!=null){
                 try {
                     workbook.close();
                 } catch (IOException e) {
-                    logger.error("in workbook.close() err",e);
+                    logger.error("inXLSX workbook.close() err",e);
                 }
             }
         }
     }
-
 
     private int inHead(Sheet sheet,ODSSheet odsSheet){
         Row keyRow=sheet.getRow(0);
@@ -126,7 +132,7 @@ public class MSODSFile extends ODSFile{
     }
 
     @Override
-    public void out() {
+    public void outXLSX() {
         Workbook workbook=null;
         try{
             workbook=new XSSFWorkbook();
@@ -144,24 +150,66 @@ public class MSODSFile extends ODSFile{
                     rowIndex++;
                 }
             }
-            workbook.write(new FileOutputStream(new File(getPathWithNameZH())));
+            workbook.write(new FileOutputStream(new File(getPathWithNameXLSX())));
         }catch (Exception e){
-            logger.error("out err",e);
+            logger.error("outXLSX err",e);
         }finally {
             if(workbook!=null){
                 try {
                     workbook.close();
                 } catch (IOException e) {
-                    logger.error("out workbook.close() err",e);
+                    logger.error("outXLSX workbook.close() err",e);
                 }
             }
         }
 
     }
 
+    @Override
+    public void outXML() {
+        Document document= DocumentHelper.createDocument();
+        OutputFormat format = OutputFormat.createPrettyPrint();
 
-    public String getPathWithNameZH(){
-        return directory+File.separator+name+".xlsx";
+        XMLWriter writer=null;
+        try{
+
+            Element root=document.addElement("root");
+            for(ODSSheet sheet:sheetList){
+                sheet.encodeElement(root);
+            }
+
+            writer = new XMLWriter( new FileOutputStream(getPathWithNameXML()), format);
+            writer.write(document);
+            writer.flush();
+        }catch (Exception e){
+            logger.error("outXML err",e);
+        }finally{
+            try {
+                if(writer!=null){
+                    writer.close();
+                }
+
+            } catch (IOException e) {
+                logger.error("outXML close err",e);
+            }
+        }
+
+    }
+    @Override
+    public void inXML() {
+        Element root= XMLTool.getRootElement(getPathWithNameXML());
+        List<Element> elementList=root.elements("sheet");
+        for(Element sheetElement:elementList){
+            ODSSheet odsSheet=new ODSSheet();
+            odsSheet.decodeElement(sheetElement);
+            addSheet(odsSheet);
+        }
     }
 
+    public String getPathWithNameXLSX(){
+        return directory+File.separator+name+".xlsx";
+    }
+    public String getPathWithNameXML(){
+        return directory+File.separator+name+".xml";
+    }
 }

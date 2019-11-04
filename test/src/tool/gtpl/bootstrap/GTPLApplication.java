@@ -38,7 +38,9 @@ public class GTPLApplication extends GameApplication {
     public void initialize() {
         testTemp=new TestTemp();
         try {
-            testTemp.inputODS();
+//            testTemp.inputODS();
+//            testTemp.outputXML();
+            testTemp.inputXML();
             System.out.println("===========");
         } catch (Exception e) {
             error("initialize err",e);

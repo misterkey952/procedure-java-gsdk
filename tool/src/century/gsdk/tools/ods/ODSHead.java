@@ -1,5 +1,8 @@
 package century.gsdk.tools.ods;
 
+import century.gsdk.tools.str.StringTool;
+import org.dom4j.Element;
+
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -29,6 +32,26 @@ public class ODSHead {
         this.name = name;
         this.des = des;
     }
+
+    public ODSHead() {
+    }
+
+    public void decodeElement(Element element){
+        this.key=StringTool.valueOf(element.attributeValue("key"));
+        this.name=StringTool.valueOf(element.attributeValue("name"));
+        this.des=StringTool.valueOf(element.attributeValue("des"));
+        this.index=StringTool.convertInt(element.attributeValue("index"));
+    }
+
+
+    public void encodeElement(Element superElement){
+        Element element=superElement.addElement("odsHead");
+        element.addAttribute("key",key);
+        element.addAttribute("name",name);
+        element.addAttribute("index", StringTool.valueOf(index));
+        element.addAttribute("des",des);
+    }
+
 
     void index(int index){
         this.index=index;

@@ -36,13 +36,28 @@ public abstract class AbstractTemplate {
         this.directory= GameDocker.getInstance().getResPath()+ File.separator+category;
     }
 
+
+    public void outputXML()throws Exception{
+        ODSCoder odsCoder=new MSODSCoder(name,directory);
+        odsCoder.decode(this);
+        odsCoder.getOdsFile().outXML();
+    }
+
+    public void inputXML()throws Exception{
+        ODSCoder odsCoder=new MSODSCoder(name,directory);
+        odsCoder.getOdsFile().inXML();
+        odsCoder.encode(this);
+    }
+
     public void outputODS() throws Exception {
         ODSCoder odsCoder=new MSODSCoder(name,directory);
         odsCoder.decode(this);
+        odsCoder.getOdsFile().outXLSX();
     }
 
     public void inputODS() throws Exception {
         ODSCoder odsCoder=new MSODSCoder(name,directory);
+        odsCoder.getOdsFile().inXLSX();
         odsCoder.encode(this);
     }
 

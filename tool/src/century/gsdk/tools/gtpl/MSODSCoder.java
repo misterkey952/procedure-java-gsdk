@@ -1,17 +1,6 @@
 package century.gsdk.tools.gtpl;
-
 import century.gsdk.tools.ods.MSODSFile;
-import century.gsdk.tools.ods.ODSFile;
-import century.gsdk.tools.ods.ODSRecord;
-import century.gsdk.tools.ods.ODSSheet;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -43,13 +32,12 @@ public class MSODSCoder extends ODSCoder{
         for(Field field:fields){
            output(field,object);
         }
-
-        odsFile.out();
     }
+
+
 
     @Override
     protected void encode(Object object) throws Exception{
-        odsFile.in();
         Field[] fields=object.getClass().getDeclaredFields();
         for(Field field:fields){
             input(field,object);

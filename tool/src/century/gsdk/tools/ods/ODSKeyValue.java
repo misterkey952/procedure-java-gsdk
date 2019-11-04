@@ -1,6 +1,7 @@
 package century.gsdk.tools.ods;
 
 import century.gsdk.tools.str.StringTool;
+import org.dom4j.Element;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -26,6 +27,13 @@ import java.util.Date;
 public class ODSKeyValue {
     private String key;
     private String value;
+
+
+    public void encodeElement(Element superElement){
+        Element element=superElement.addElement("field");
+        element.addAttribute("key",key);
+        element.addAttribute("value",value);
+    }
 
     public ODSKeyValue(String key, String value) {
         this.key = key;

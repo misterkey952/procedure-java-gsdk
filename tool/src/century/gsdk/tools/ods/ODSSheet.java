@@ -1,5 +1,7 @@
 package century.gsdk.tools.ods;
 
+import org.dom4j.Element;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,42 @@ public class ODSSheet {
 
 
 
+
+
+    public void encodeElement(Element superElement){
+        Element element=superElement.addElement("sheet");
+        element.addAttribute("name_en",name_en);
+        element.addAttribute("name_zh",name_zh);
+        for(ODSHead odsHead:odsHeads){
+            odsHead.encodeElement(element);
+        }
+
+        for(ODSRecord odsRecord:recordList){
+            odsRecord.encodeElement(element);
+        }
+    }
+
+    public void decodeElement(Element element){
+        this.name_zh=element.attributeValue("name_zh");
+        this.name_en=element.attributeValue("name_en");
+        List<Element> headElementList=element.elements("odsHead");
+
+        for(Element odsHeadEle:headElementList){
+            ODSHead head=new ODSHead();
+            head.decodeElement(odsHeadEle);
+            odsHeads.add(head);
+            headMap.put(head.getKey(),head);
+        }
+
+        List<Element> recElements=element.elements("record");
+        for(Element ele:recElements){
+            ODSRecord odsRecord=new ODSRecord();
+            odsRecord.decodeElement(ele);
+            recordList.add(odsRecord);
+        }
+
+
+    }
 
     public ODSSheet() {
         odsHeads=new ArrayList<>();

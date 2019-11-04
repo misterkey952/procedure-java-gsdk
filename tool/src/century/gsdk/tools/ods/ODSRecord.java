@@ -1,5 +1,7 @@
 package century.gsdk.tools.ods;
 
+import org.dom4j.Element;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,21 @@ import java.util.Map;
 public class ODSRecord {
     private List<ODSKeyValue> kvList;
     private Map<String, ODSKeyValue> kvmap;
+
+
+    public void decodeElement(Element element){
+        List<Element> fieldList=element.elements("field");
+        for(Element fele:fieldList){
+            addKV(fele.attributeValue("key"),fele.attributeValue("value"));
+        }
+    }
+
+    public void encodeElement(Element superElement){
+        Element element=superElement.addElement("record");
+        for(ODSKeyValue kv:kvList){
+            kv.encodeElement(element);
+        }
+    }
 
     public ODSRecord() {
         kvList=new ArrayList<>();

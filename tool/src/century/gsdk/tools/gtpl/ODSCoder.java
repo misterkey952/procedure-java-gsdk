@@ -360,6 +360,10 @@ public abstract class ODSCoder{
         return sheet;
     }
 
+    public ODSFile getOdsFile() {
+        return odsFile;
+    }
+
     protected abstract void decode(Object object)throws Exception;
     protected abstract void encode(Object object)throws Exception;
 }

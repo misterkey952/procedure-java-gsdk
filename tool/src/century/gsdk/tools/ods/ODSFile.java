@@ -40,8 +40,10 @@ public abstract class ODSFile {
         return sheetMap.get(key);
     }
 
-    public abstract void in();
-    public abstract void out();
+    public abstract void inXLSX();
+    public abstract void inXML();
+    public abstract void outXLSX();
+    public abstract void outXML();
     public void addSheet(ODSSheet sheet){
         sheetList.add(sheet);
         sheetMap.put(sheet.getName_en(),sheet);
