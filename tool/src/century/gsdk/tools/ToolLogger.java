@@ -1,9 +1,7 @@
-package century.gsdk.tools.gtpl;
+package century.gsdk.tools;
 
-import century.gsdk.tools.classic.IEnum;
-import century.gsdk.tools.str.StringTool;
-
-import java.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -23,13 +21,9 @@ import java.lang.annotation.*;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Target({ElementType.FIELD,ElementType.TYPE})
-public @interface Template {
-    String name() default StringTool.SPACE;
-    String des() default StringTool.SPACE;
-    String ref() default StringTool.SPACE;
-    String key() default StringTool.SPACE;
+public class ToolLogger {
+    private static final Logger logger= LoggerFactory.getLogger("ToolLogger");
+    public static void error(Class clazz,String msg,Throwable e){
+        logger.error("["+clazz.getName()+"] "+msg,e);
+    }
 }

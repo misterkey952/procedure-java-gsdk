@@ -1,7 +1,13 @@
 package century.gsdk.tools.str;
+import century.gsdk.tools.ToolLogger;
+import century.gsdk.tools.classic.IEnum;
+import org.slf4j.Logger;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
@@ -668,6 +674,10 @@ public  class StringTool {
             return true;
         }else if(clazz==String[].class){
             return true;
+        }else if(IEnum.class.isAssignableFrom(clazz)){
+            return true;
+        }else if(IEnum[].class.isAssignableFrom(clazz)){
+            return true;
         }
         return false;
     }
@@ -713,6 +723,40 @@ public  class StringTool {
             return convertTimestampArr(value);
         }else if(clazz==String[].class){
             return convertStringArr(value);
+        }else if(IEnum.class.isAssignableFrom(clazz)){
+            try{
+                int enumValue=convertInt(value);
+                Method method=clazz.getDeclaredMethod("values");
+                IEnum[] enums= (IEnum[]) method.invoke(null);
+                for(IEnum ie:enums){
+                    if(ie.value()==enumValue){
+                        return ie;
+                    }
+                }
+            }catch(Exception e){
+                ToolLogger.error(StringTool.class,"convert IEnum err",e);
+            }
+        }else if(IEnum[].class.isAssignableFrom(clazz)){
+            int[] evumValues=convertIntArr(value);
+            try{
+                Class ccc=Class.forName(clazz.getTypeName().substring(0,clazz.getTypeName().length()-2));
+                Method method=ccc.getDeclaredMethod("values");
+                IEnum[] enums= (IEnum[]) method.invoke(null);
+
+                IEnum[] enumss= (IEnum[]) Array.newInstance(ccc,evumValues.length);
+                for(int i=0;i<enumss.length;i++){
+                    int vv=evumValues[i];
+                    for(int j=0;j<enums.length;j++){
+                        if(enums[j].value()==vv){
+                            enumss[i]=enums[j];
+                        }
+                    }
+                }
+                return enumss;
+            }catch(Exception e){
+                ToolLogger.error(StringTool.class,"convert IEnum[] err",e);
+            }
+
         }
         return null;
     }
@@ -759,6 +803,17 @@ public  class StringTool {
             return valueOf((Timestamp[])object);
         }else if(object.getClass()==String[].class){
             return valueOf((String[])object);
+        }else if(IEnum.class.isAssignableFrom(object.getClass())){
+            return valueOf(((IEnum)object).value());
+        }else if(IEnum[].class.isAssignableFrom(object.getClass())){
+            IEnum[] iEnums= (IEnum[]) object;
+            int[] iis=new int[iEnums.length];
+            for(int i=0;i<iis.length;i++){
+                iis[i]=iEnums[i].value();
+            }
+
+            return valueOf(iis);
+
         }
         return "null";
     }

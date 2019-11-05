@@ -1,5 +1,6 @@
 package century.gsdk.tools.gtpl;
 
+import century.gsdk.tools.classic.IEnum;
 import century.gsdk.tools.classic.TypeAssistant;
 import century.gsdk.tools.ods.ODSFile;
 import century.gsdk.tools.ods.ODSKeyValue;
@@ -7,6 +8,8 @@ import century.gsdk.tools.ods.ODSRecord;
 import century.gsdk.tools.ods.ODSSheet;
 import century.gsdk.tools.str.StringTool;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -39,7 +42,7 @@ public abstract class ODSCoder{
     }
 
 
-    Class2Object readAsClass2Object(Class clazz) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+    Class2Object readAsClass2Object(Class clazz) throws Exception {
         Class2Object class2Object=comanager.getClass2Object(clazz);
         if(class2Object==null){
             ODSSheet sheet=getSheet(clazz);
@@ -52,7 +55,7 @@ public abstract class ODSCoder{
     }
 
 
-    void input(Field dataField,Object object) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+    void input(Field dataField,Object object) throws Exception {
         Class dataClass= TypeAssistant.getFieldClass(dataField);
         Template template= (Template) dataClass.getAnnotation(Template.class);
         if(template==null){
@@ -82,7 +85,7 @@ public abstract class ODSCoder{
         dataField.setAccessible(accessible);
     }
 
-    void output(Field dataField,Object object) throws IllegalAccessException, NoSuchFieldException {
+    void output(Field dataField,Object object) throws Exception {
         Class dataClass= TypeAssistant.getFieldClass(dataField);
         Template template= (Template) dataClass.getAnnotation(Template.class);
         if(template==null){
@@ -125,7 +128,7 @@ public abstract class ODSCoder{
     }
 
 
-    void readCompositeType(Field field,ODSKeyValue keyValue,Object object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+    void readCompositeType(Field field,ODSKeyValue keyValue,Object object) throws Exception{
         Template template=field.getAnnotation(Template.class);
         if(template==null){
             return;
@@ -195,7 +198,7 @@ public abstract class ODSCoder{
         }
     }
 
-    Object record2Object(ODSRecord odsRecord,Class clazz) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+    Object record2Object(ODSRecord odsRecord,Class clazz) throws Exception {
         Field[] fields=clazz.getDeclaredFields();
         Object object=clazz.newInstance();
         for(Field field:fields){
@@ -214,7 +217,7 @@ public abstract class ODSCoder{
         }
         return object;
     }
-    void convertRecord(Object obj,ODSSheet sheet) throws IllegalAccessException, NoSuchFieldException {
+    void convertRecord(Object obj,ODSSheet sheet) throws Exception {
         if(records.contains(obj)){
             return;
         }
@@ -307,7 +310,7 @@ public abstract class ODSCoder{
         return records.contains(object);
     }
 
-    void genSheetItera(Class rootClass){
+    void genSheetItera(Class rootClass) throws Exception {
         Field[] fields=rootClass.getDeclaredFields();
         for(Field field:fields){
             Class clazz=TypeAssistant.getFieldClass(field);
@@ -321,7 +324,7 @@ public abstract class ODSCoder{
     }
 
 
-    ODSSheet genSheet(Class clazz){
+    ODSSheet genSheet(Class clazz) throws Exception{
         Template template= (Template) clazz.getAnnotation(Template.class);
         if(template==null){
             return null;
@@ -338,21 +341,45 @@ public abstract class ODSCoder{
         Field[] fields=clazz.getDeclaredFields();
         for(Field field:fields){
             template=field.getAnnotation(Template.class);
+            if(template==null){
+                continue;
+            }
+
+            StringBuilder desBuild=new StringBuilder();
+            if(!StringTool.SPACE.equals(template.des())){
+                desBuild.append(template.des());
+            }
+
+            Class ienumClass=null;
+            if(IEnum.class.isAssignableFrom(field.getType())){
+                ienumClass=field.getType();
+            }else if(IEnum[].class.isAssignableFrom(field.getType())){
+                ienumClass=Class.forName(field.getType().getTypeName().substring(0,field.getType().getTypeName().length()-2));
+            }
+
+
+            if(ienumClass!=null){
+                desBuild.append("\r\n[").append(ienumClass.getSimpleName());
+                Method method=ienumClass.getDeclaredMethod("values");
+                IEnum[] enums= (IEnum[]) method.invoke(null);
+                for(IEnum enu:enums){
+                    desBuild.append("\r\n").append(enu.value()).append(":").append(enu.des());
+                }
+                desBuild.append("]");
+            }
+
             Class refClass=TypeAssistant.getFieldClass(field);
             Template refTemplate= (Template) refClass.getAnnotation(Template.class);
             if(refTemplate!=null){
-                StringBuilder desBuild=new StringBuilder();
-                desBuild.append("please ref to the field ["+template.ref()+"] in the sheet ["+refTemplate.name()+"]");
-                sheet.addHead(field.getName(),template.name(),desBuild.toString());
-            }else{
-                sheet.addHead(field.getName(),template.name(),template.des());
+                desBuild.append("\r\nplease ref to the field ["+template.ref()+"] in the sheet ["+refTemplate.name()+"]");
             }
+            sheet.addHead(field.getName(),template.name(),desBuild.toString());
         }
         return sheet;
     }
 
 
-    ODSSheet getSheet(Class clazz){
+    ODSSheet getSheet(Class clazz) throws Exception {
         ODSSheet sheet=odsFile.getSheet(clazz.getName());
         if(sheet==null){
             sheet=genSheet(clazz);

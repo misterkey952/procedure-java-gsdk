@@ -1,9 +1,4 @@
-package century.gsdk.tools.gtpl;
-
-import century.gsdk.tools.classic.IEnum;
-import century.gsdk.tools.str.StringTool;
-
-import java.lang.annotation.*;
+package century.gsdk.tools.classic;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -23,13 +18,7 @@ import java.lang.annotation.*;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Target({ElementType.FIELD,ElementType.TYPE})
-public @interface Template {
-    String name() default StringTool.SPACE;
-    String des() default StringTool.SPACE;
-    String ref() default StringTool.SPACE;
-    String key() default StringTool.SPACE;
+public interface IEnum {
+    int value();
+    String des();
 }
