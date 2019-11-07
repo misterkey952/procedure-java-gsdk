@@ -1,0 +1,8 @@
+apply plugin: 'application'
+mainClassName = 'http.NetHttpTest'
+dependencies {
+    compile fileTree(dir:'../libs',include:['*.jar'])
+    compile project(':docker')
+    compile project(':tool')
+    compile project(':net')
+}

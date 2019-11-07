@@ -1,5 +1,6 @@
 package century.gsdk.tools.ods;
 
+import century.gsdk.tools.ToolLogger;
 import century.gsdk.tools.str.StringTool;
 import century.gsdk.tools.xml.XMLTool;
 import org.apache.poi.ss.usermodel.*;
@@ -38,7 +39,7 @@ import java.util.List;
  */
 public class MSODSFile extends ODSFile{
 
-    private static final Logger logger= LoggerFactory.getLogger(MSODSFile.class);
+    
     public MSODSFile(String name, String directory) {
         super(name, directory);
     }
@@ -77,13 +78,13 @@ public class MSODSFile extends ODSFile{
                 addSheet(odsSheet);
             }
         } catch (Exception e) {
-            logger.error("inXLSX err",e);
+            ToolLogger.ODSFile.error("inXLSX err",e);
         }finally {
             if(workbook!=null){
                 try {
                     workbook.close();
                 } catch (IOException e) {
-                    logger.error("inXLSX workbook.close() err",e);
+                    ToolLogger.ODSFile.error("inXLSX workbook.close() err",e);
                 }
             }
         }
@@ -155,13 +156,13 @@ public class MSODSFile extends ODSFile{
             }
             workbook.write(new FileOutputStream(new File(getPathWithNameXLSX())));
         }catch (Exception e){
-            logger.error("outXLSX err",e);
+            ToolLogger.ODSFile.error("outXLSX err",e);
         }finally {
             if(workbook!=null){
                 try {
                     workbook.close();
                 } catch (IOException e) {
-                    logger.error("outXLSX workbook.close() err",e);
+                    ToolLogger.ODSFile.error("outXLSX workbook.close() err",e);
                 }
             }
         }
@@ -185,7 +186,7 @@ public class MSODSFile extends ODSFile{
             writer.write(document);
             writer.flush();
         }catch (Exception e){
-            logger.error("outXML err",e);
+            ToolLogger.ODSFile.error("outXML err",e);
         }finally{
             try {
                 if(writer!=null){
@@ -193,7 +194,7 @@ public class MSODSFile extends ODSFile{
                 }
 
             } catch (IOException e) {
-                logger.error("outXML close err",e);
+                ToolLogger.ODSFile.error("outXML close err",e);
             }
         }
 

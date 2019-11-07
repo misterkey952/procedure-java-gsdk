@@ -734,7 +734,7 @@ public  class StringTool {
                     }
                 }
             }catch(Exception e){
-                ToolLogger.error(StringTool.class,"convert IEnum err",e);
+                ToolLogger.StringTool.error("convert IEnum err",e);
             }
         }else if(IEnum[].class.isAssignableFrom(clazz)){
             int[] evumValues=convertIntArr(value);
@@ -754,7 +754,7 @@ public  class StringTool {
                 }
                 return enumss;
             }catch(Exception e){
-                ToolLogger.error(StringTool.class,"convert IEnum[] err",e);
+                ToolLogger.StringTool.error("convert IEnum[] err",e);
             }
 
         }

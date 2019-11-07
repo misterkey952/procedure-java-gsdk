@@ -21,21 +21,14 @@ import java.util.Map;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public interface IHttp {
-	
-	
-	public void setTimeOut(int timeOut);
-	
-	public String doPost(String uri, Map<String, String> param);
+	String post(String uri, Map<String, String> param);
 
-	public String postHttps(String uri, String data);
+	String httpsPost(String uri, String data);
 
-	public String post(String uri, String data);
+	String post(String uri, String data);
 
+	String get(String uri);
 
-	public String doGet(String uri);
+	String get(String uri, String charter);
 
-	public String doGet(String uri, String charter);
-	
-	public void reset();
-	
 }

@@ -1,7 +1,6 @@
 package century.gsdk.tools.compress;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import century.gsdk.tools.ToolLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,7 +26,6 @@ import java.util.zip.GZIPOutputStream;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class CompressTool {
-	private static final Logger logger= LoggerFactory.getLogger("CompressTool");
 	public static byte[] compressGzip(byte[] data){
 		if(data==null||data.length==0) {
 			return data;
@@ -41,14 +39,14 @@ public class CompressTool {
 			gzipOutputStream.close();
 			return byteOutputStream.toByteArray();
 		}catch(Exception e) {
-			logger.error("compressGzip err",e);
+			ToolLogger.CompressTool.error("compressGzip err",e);
 			return data;
 		}finally {
 			if(byteOutputStream!=null) {
 				try {
 					byteOutputStream.close();
 				} catch (IOException e) {
-					logger.error("compressGzip close stream err",e);
+					ToolLogger.CompressTool.error("compressGzip close stream err",e);
 				}
 			}
 		}
@@ -74,14 +72,14 @@ public class CompressTool {
 			}
 			return out.toByteArray();
 		}catch(Exception e) {
-			logger.error("unCompressGzip err",e);
+			ToolLogger.CompressTool.error("unCompressGzip err",e);
 			return data;
 		}finally {
 			if(out!=null) {
 				try {
 					out.close();
 				} catch (IOException e) {
-					logger.error("unCompressGzip close outstream err",e);
+					ToolLogger.CompressTool.error("unCompressGzip close outstream err",e);
 				}
 			}
 			
@@ -89,7 +87,7 @@ public class CompressTool {
 				try {
 					in.close();
 				} catch (IOException e) {
-					logger.error("unCompressGzip close instream err",e);
+					ToolLogger.CompressTool.error("unCompressGzip close instream err",e);
 				}
 			}
 			
@@ -97,7 +95,7 @@ public class CompressTool {
 				try {
 					ungzip.close();
 				} catch (IOException e) {
-					logger.error("unCompressGzip close ungzip err",e);
+					ToolLogger.CompressTool.error("unCompressGzip close ungzip err",e);
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package century.gsdk.tools.xml;
 
+import century.gsdk.tools.ToolLogger;
 import century.gsdk.tools.str.StringTool;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -31,7 +32,6 @@ import java.util.*;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class XMLTool {
-    private static final Logger logger= LoggerFactory.getLogger("XMLTOOL");
     public static Element getRootElement(File file){
         FileInputStream fileInputStream=null;
         try{
@@ -41,13 +41,13 @@ public class XMLTool {
             Element rootElement = doc.getRootElement();
             return rootElement;
         }catch (Exception e){
-            logger.error("getRootElement err",e);
+            ToolLogger.XMLTool.error("getRootElement err",e);
         }finally {
             if(fileInputStream!=null){
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    logger.error("getRootElement close err",e);
+                    ToolLogger.XMLTool.error("getRootElement close err",e);
                 }
             }
         }

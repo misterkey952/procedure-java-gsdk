@@ -21,12 +21,7 @@ import javax.net.ssl.SSLSession;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class XHostnameVerifier implements HostnameVerifier{
-
-
-
 	public boolean verify(String hostname, SSLSession session) {
-		return true;//不校验 全返回true
+		return true;
 	}
-
-
 }

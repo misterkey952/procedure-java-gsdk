@@ -1,9 +1,11 @@
 package century.gsdk.docker;
 
+import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+
 /**
  *     Copyright (C) <2019>  <Century>
  *
@@ -23,16 +25,29 @@ import java.io.File;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public abstract class GameApplication {
-
     private static final Logger logger=LoggerFactory.getLogger("GameApplication");
     private String appName;
-
-
-    public GameApplication(String appName) {
-        this.appName = appName;
+    private String curPath;
+    private String appPath;
+    private String resPath;
+    private String cfgPath;
+    private String datPath;
+    public GameApplication() {
+        this.appName = this.getClass().getSimpleName();
+        curPath=System.getProperty("user.dir");
+        appPath=curPath.replace(File.separator+"bin","");
+        resPath=appPath+File.separator+"res";
+        cfgPath=appPath+File.separator+"cfg";
+        datPath=appPath+File.separator+"dat";
     }
 
-    public abstract void initialize();
+
+    public void start(){
+        DOMConfigurator.configure(getCfgPath()+ File.separator +"log4j.xml");
+        initialize();
+    }
+
+    protected abstract void initialize();
 
     public void error(String msg,Throwable e){
         logger.error("[{}]"+msg,appName,e);
@@ -48,5 +63,26 @@ public abstract class GameApplication {
 
     public void info(String msg,Object... vars){
         logger.info("[{}]"+msg,appName,vars);
+    }
+
+
+    public String getCurPath() {
+        return curPath;
+    }
+
+    public String getAppPath() {
+        return appPath;
+    }
+
+    public String getResPath() {
+        return resPath;
+    }
+
+    public String getCfgPath() {
+        return cfgPath;
+    }
+
+    public String getDatPath() {
+        return datPath;
     }
 }

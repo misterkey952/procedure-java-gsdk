@@ -11,9 +11,10 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import century.gsdk.tools.ToolLogger;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
@@ -49,36 +50,42 @@ public class XHttp implements IHttp{
 		params.setSoTimeout(DEFAULT_TIMEOUT);
 		params.setMaxTotalConnections(DEFAULT_CONNECTS);
 		manager.setParams(params);
-		
-	
 	}
-	
-	
+
+
+	private NameValuePair[] parseParamFromMap(Map<String,String> param){
+
+		NameValuePair[] nameValuePairs = new NameValuePair[param.size()];
+		int i = 0;
+		for (String key : param.keySet()) {
+			NameValuePair nValuePair = new NameValuePair(key, param.get(key));
+			nameValuePairs[i] = nValuePair;
+			i++;
+		}
+
+		return nameValuePairs;
+	}
+
 	@Override
-	public String doPost(String uri, Map<String, String> param) {
+	public String post(String uri, Map<String, String> param) {
 
 		PostMethod postMethod = new PostMethod(uri);
-		postMethod.setRequestBody(XHttpTool.parseParamFromMap(param));
+		postMethod.setRequestBody(parseParamFromMap(param));
 		try {
 			postMethod.getParams().setContentCharset("UTF-8");
 			httpClient.executeMethod(postMethod);
 			String resString = postMethod.getResponseBodyAsString();
 			return resString;
-		} catch (HttpException e) {
-			System.out.println("HttpException e");
+		} catch (Exception e) {
+			ToolLogger.HTTP.error("Http.doPost err",e);
 			return e.getMessage();
-		} catch (IOException e) {
-			System.out.println("IOException e");
-			return e.getMessage();
-		}finally{
+		} finally{
 			postMethod.releaseConnection();
 		}
-
-	
 	}
 
 	@Override
-	public String postHttps(String uri, String data) {
+	public String httpsPost(String uri, String data) {
 		PrintWriter out = null;
 		BufferedReader in = null;
 		StringBuffer result = new StringBuffer();
@@ -108,10 +115,8 @@ public class XHttp implements IHttp{
 				result.append(line);
 			}
 		} catch (Exception e) {
-			System.out.println("发送 POST 请求出现异常！" + e);
-			e.printStackTrace();
+			ToolLogger.HTTP.error("Http.postHttps err",e);
 		}
-		// 使用finally块来关闭输出流、输入流
 		finally {
 			try {
 				if (out != null) {
@@ -121,7 +126,7 @@ public class XHttp implements IHttp{
 					in.close();
 				}
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				ToolLogger.HTTP.error("Http.postHttps close err",ex);
 			}
 		}
 		return result.toString();
@@ -159,8 +164,7 @@ public class XHttp implements IHttp{
 				result.append(line);
 			}
 		} catch (Exception e) {
-			System.out.println("发送 POST 请求出现异常！" + e);
-			e.printStackTrace();
+			ToolLogger.HTTP.error("Http.post err",e);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {
@@ -172,7 +176,7 @@ public class XHttp implements IHttp{
 					in.close();
 				}
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				ToolLogger.HTTP.error("Http.post close err",ex);
 			}
 		}
 		return result.toString();
@@ -180,7 +184,7 @@ public class XHttp implements IHttp{
 	}
 
 	@Override
-	public String doGet(String uri) {
+	public String get(String uri) {
 		GetMethod postMethod = new GetMethod(uri);
 		String tmpRes = "";
 		InputStream inputStream = null;
@@ -196,14 +200,13 @@ public class XHttp implements IHttp{
 			readber.close();
 			return stb.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			ToolLogger.HTTP.error("Http.doGet err",e);
 		} finally {
 			if(inputStream != null){
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					
-					e.printStackTrace();
+					ToolLogger.HTTP.error("Http.doGet close err",e);
 				}
 			}
 			postMethod.releaseConnection();
@@ -212,7 +215,7 @@ public class XHttp implements IHttp{
 	}
 
 	@Override
-	public String doGet(String uri, String charter) {
+	public String get(String uri, String charter) {
 		GetMethod postMethod = new GetMethod(uri);
 		String tmpRes = "";
 		InputStream inputStream = null;
@@ -228,31 +231,29 @@ public class XHttp implements IHttp{
 			readber.close();
 			return stb.toString();
 		} catch (Exception e) {
-			return null;
+			ToolLogger.HTTP.error("Http.doGet err charter",e);
+			return stb.toString();
 		} finally {
 			if(inputStream != null){
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					
-					e.printStackTrace();
+
+					ToolLogger.HTTP.error("Http.doGet close err charter",e);
 				}
 			}
 			postMethod.releaseConnection();
 		}
 	}
 
-	@Override
 	public void setTimeOut(int timeOut) {
 		manager.getParams().setConnectionTimeout(timeOut);
 		manager.getParams().setSoTimeout(timeOut);
 	}
 
-	@Override
 	public void reset() {
 		manager.getParams().setConnectionTimeout(DEFAULT_TIMEOUT);
 		manager.getParams().setSoTimeout(DEFAULT_TIMEOUT);
-		
 	}
 
 }

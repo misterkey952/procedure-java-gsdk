@@ -69,26 +69,6 @@ public class GDigestTool {
 
     }
 
-    public static String firstUp(String str){
-
-        if (str == null || str.isEmpty()) {
-            return null;
-        }
-        return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
-
-    }
-
-    public static String firstLower(String str){
-
-        if (str == null || str.isEmpty()) {
-            return null;
-        }
-        return str.substring(0, 1).toLowerCase() + str.substring(1, str.length());
-
-    }
-
-
-
     public static String convertBytesToASCII(byte[] datas){
         StringBuffer stb=new StringBuffer();
         for(int i=0;i<datas.length;i++){

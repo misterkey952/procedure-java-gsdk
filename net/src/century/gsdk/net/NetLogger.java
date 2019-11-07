@@ -1,10 +1,7 @@
-package century.gsdk.tools.classic;
+package century.gsdk.net;
 
-import century.gsdk.tools.ToolLogger;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -24,18 +21,6 @@ import java.util.Map;
  * <p>
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public interface IEnum {
-    int value();
-    static void init(Class clazz,Map map){
-        try {
-            Method method=clazz.getMethod("values");
-            IEnum[] iEnums= (IEnum[]) method.invoke(null);
-            for(IEnum iEnum:iEnums){
-                map.put(iEnum.value(),iEnum);
-            }
-        } catch (Exception e) {
-            ToolLogger.CLASSIC.error("init enum err",e);
-        }
-    }
-    String des();
+public class NetLogger {
+    public static final Logger LightHttpServer= LoggerFactory.getLogger("LightHttpServer");
 }

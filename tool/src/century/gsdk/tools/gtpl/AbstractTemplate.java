@@ -1,9 +1,5 @@
 package century.gsdk.tools.gtpl;
 
-import century.gsdk.docker.GameDocker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 
 
@@ -26,14 +22,13 @@ import java.io.File;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public abstract class AbstractTemplate {
-    private static final Logger logger= LoggerFactory.getLogger(AbstractTemplate.class);
     private String name;
     private String category;
     private String directory;
-    public AbstractTemplate(String name, String category) {
+    public AbstractTemplate(String name, String category,String directory) {
         this.name = name;
         this.category = category;
-        this.directory= GameDocker.getInstance().getResPath()+ File.separator+category;
+        this.directory= directory+ File.separator+category;
     }
 
 

@@ -22,8 +22,10 @@ import org.slf4j.LoggerFactory;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class ToolLogger {
-    private static final Logger logger= LoggerFactory.getLogger("ToolLogger");
-    public static void error(Class clazz,String msg,Throwable e){
-        logger.error("["+clazz.getName()+"] "+msg,e);
-    }
+    public static final Logger StringTool= LoggerFactory.getLogger("StringTool");
+    public static final Logger XMLTool = LoggerFactory.getLogger("XMLTool");
+    public static final Logger ODSFile = LoggerFactory.getLogger("ODSFile");
+    public static final Logger HTTP=LoggerFactory.getLogger("HTTP");
+    public static final Logger CLASSIC=LoggerFactory.getLogger("CLASSIC");
+    public static final Logger CompressTool=LoggerFactory.getLogger("CompressTool");
 }
