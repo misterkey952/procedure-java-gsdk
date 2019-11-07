@@ -1,7 +1,4 @@
 rootProject.name = 'gsdk'
-include 'docker'
 include 'net'
 include 'storage'
-include 'thread'
 include 'tool'
-include 'test'
