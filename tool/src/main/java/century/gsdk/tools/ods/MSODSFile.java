@@ -100,7 +100,7 @@ public class MSODSFile extends ODSFile{
             Cell nameCell=nameRow.getCell(i);
             odsSheet.addHead(keyCell.getStringCellValue(),
                     nameCell.getStringCellValue(),
-                    nameCell.getCellComment().getString().getString());
+                    nameCell.getCellComment()==null?"":nameCell.getCellComment().getString().getString());
         }
 
         Cell classCell=nameRow.getCell(cellCount);
@@ -155,6 +155,13 @@ public class MSODSFile extends ODSFile{
                 }
             }
 
+            File dir=new File(directory);
+            if(!dir.exists()){
+                dir.mkdirs();
+            }
+
+
+
             File file=new File(getPathWithNameXLSX());
             if(file.exists()){
                 SimpleDateFormat sdf=new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -189,6 +196,12 @@ public class MSODSFile extends ODSFile{
             Element root=document.addElement("root");
             for(ODSSheet sheet:sheetList){
                 sheet.encodeElement(root);
+            }
+
+
+            File dir=new File(directory);
+            if(!dir.exists()){
+                dir.mkdirs();
             }
 
 

@@ -1,5 +1,6 @@
 package century.gsdk.tools.gtpl;
 
+import century.gsdk.tools.classic.TypeAssistant;
 import century.gsdk.tools.ods.ODSKeyValue;
 
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
@@ -29,6 +30,7 @@ import java.util.Map;
  */
 class Class2Object {
     private Class clazz;
+    private Map<String,Field> fieldsMap;
     private List<Object> objectList;
     private Map<String,Map<Object,Object>> fieldMap;
     private Map<String,Map<Object,List<Object>>> fieldListMap;
@@ -37,6 +39,11 @@ class Class2Object {
         objectList=new ArrayList<>();
         fieldMap=new HashMap<>();
         fieldListMap=new HashMap<>();
+        fieldsMap= TypeAssistant.getFieldMapByAnnotation(clazz,Template.class);
+    }
+
+    public Field getField(String key){
+        return fieldsMap.get(key);
     }
 
 
@@ -45,7 +52,7 @@ class Class2Object {
         if(map==null){
             map=new HashMap<>();
             fieldMap.put(keyField,map);
-            Field field=clazz.getDeclaredField(keyField);
+            Field field=getField(keyField);
             boolean ai=field.isAccessible();
             field.setAccessible(true);
             for(Object obj:objectList){
@@ -65,7 +72,7 @@ class Class2Object {
         if(objectListMap==null){
             objectListMap=new HashMap<>();
             fieldListMap.put(groupField,objectListMap);
-            Field field=clazz.getDeclaredField(groupField);
+            Field field=getField(groupField);
             boolean ai=field.isAccessible();
             field.setAccessible(true);
             for(Object obj:objectList){

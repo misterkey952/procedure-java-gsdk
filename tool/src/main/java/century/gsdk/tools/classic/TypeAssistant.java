@@ -1,5 +1,6 @@
 package century.gsdk.tools.classic;
 
+import org.apache.commons.collections4.map.HashedMap;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Field;
@@ -113,6 +114,16 @@ public class TypeAssistant {
             }
         }
         return list;
+    }
+
+    public static Map<String,Field> getFieldMapByAnnotation(Class clazz,Class annClazz){
+
+        Map<String,Field> map=new HashedMap<>();
+        List<Field> list=getFieldByAnnotation(clazz,annClazz);
+        for(Field field:list){
+            map.put(field.getName(),field);
+        }
+        return map;
     }
 
 }
