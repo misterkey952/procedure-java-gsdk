@@ -1,5 +1,6 @@
 package century.gsdk.net;
 
+import century.gsdk.tools.LogAssisant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,4 +25,8 @@ import org.slf4j.LoggerFactory;
 public class NetLogger {
     public static final Logger LightHttpServer= LoggerFactory.getLogger("LightHttpServer");
     public static final Logger NetLog=LoggerFactory.getLogger("NetLog");
+
+    static {
+        LogAssisant.listLogger(NetLogger.class);
+    }
 }

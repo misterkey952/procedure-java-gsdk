@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public abstract class GameThreadPool {
-    private static final Logger logger= LoggerFactory.getLogger("GameThreadPool");
+
     private Executor executor;
     private GameThreadFactory factory;
 
@@ -38,7 +38,7 @@ public abstract class GameThreadPool {
         try {
             executor.execute(run);
         } catch (Exception e) {
-            logger.error("execute err",e);
+            AppFrameLogger.GameThreadPool.error("execute err",e);
         }
     }
 

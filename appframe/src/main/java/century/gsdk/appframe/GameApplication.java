@@ -25,7 +25,7 @@ import java.io.File;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public abstract class GameApplication {
-    private static final Logger logger=LoggerFactory.getLogger("GameApplication");
+
     private String appName;
     private String curPath;
     private String appPath;
@@ -50,19 +50,19 @@ public abstract class GameApplication {
     protected abstract void initialize();
 
     public void error(String msg,Throwable e){
-        logger.error("[{}]"+msg,appName,e);
+        AppFrameLogger.GameApplication.error("[{}]"+msg,appName,e);
     }
 
     public void debug(String msg,Object... vars){
-        logger.debug("[{}]"+msg,appName,vars);
+        AppFrameLogger.GameApplication.debug("[{}]"+msg,appName,vars);
     }
 
     public void warn(String msg,Object... vars){
-        logger.warn("[{}]"+msg,appName,vars);
+        AppFrameLogger.GameApplication.warn("[{}]"+msg,appName,vars);
     }
 
     public void info(String msg,Object... vars){
-        logger.info("[{}]"+msg,appName,vars);
+        AppFrameLogger.GameApplication.info("[{}]"+msg,appName,vars);
     }
 
 

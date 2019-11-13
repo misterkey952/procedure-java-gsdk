@@ -1,14 +1,11 @@
 package century.gsdk.tools.str;
 import century.gsdk.tools.ToolLogger;
 import century.gsdk.tools.classic.IEnum;
-import org.slf4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 /**

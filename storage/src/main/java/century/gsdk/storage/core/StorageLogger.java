@@ -1,5 +1,6 @@
 package century.gsdk.storage.core;
 
+import century.gsdk.tools.LogAssisant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,4 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StorageLogger {
     public static final Logger Stroage= LoggerFactory.getLogger("Storage");
+    static {
+        LogAssisant.listLogger(StorageLogger.class);
+    }
 }

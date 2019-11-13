@@ -28,4 +28,9 @@ public class ToolLogger {
     public static final Logger HTTP=LoggerFactory.getLogger("HTTP");
     public static final Logger CLASSIC=LoggerFactory.getLogger("CLASSIC");
     public static final Logger CompressTool=LoggerFactory.getLogger("CompressTool");
+
+
+    static {
+        LogAssisant.listLogger(ToolLogger.class);
+    }
 }
