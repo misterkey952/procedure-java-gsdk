@@ -25,12 +25,11 @@ public class GameThreadFactory implements ThreadFactory {
     private final String namePrefix;
     final AtomicInteger threadNumber = new AtomicInteger(1);
 
-    public GameThreadFactory(String namePrefix) {
+    GameThreadFactory(String namePrefix) {
         SecurityManager s = System.getSecurityManager();
         group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
         this.namePrefix = namePrefix + "_thread_";
     }
-
 
     @Override
     public Thread newThread(Runnable r) {

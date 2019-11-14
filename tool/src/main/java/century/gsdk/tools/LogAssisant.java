@@ -15,11 +15,10 @@ public class LogAssisant {
             for(Field field:fields){
                 Object o=field.get(null);
                 Method method=o.getClass().getMethod("getName");
-                std.info("{} has a logger named {}",clazz.getSimpleName(),method.invoke(null).toString());
+                std.info("{} has a logger named {}",clazz.getSimpleName(),method.invoke(o).toString());
             }
         }catch(Exception e){
-            std.error("listLogger");
+            std.error("listLogger",e);
         }
-
     }
 }
