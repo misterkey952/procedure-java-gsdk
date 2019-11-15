@@ -29,23 +29,30 @@ import io.netty.util.concurrent.GenericFutureListener;
  *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class NettyClientConnect implements NetConnect {
+    private Identifier identifier;
     private EventLoopGroup workGroup;
     private ChannelInitializer<SocketChannel> channelInitializer;
     private int threadCount;
     private SocketChannel channel;
     private NetAddress remoteAddress;
     private NetAddress localAddress;
-    public NettyClientConnect(String ip, int port, int threadCount, ChannelInitializer<SocketChannel> channelInitializer) {
+    public NettyClientConnect(Identifier identifier,String ip, int port, int threadCount, ChannelInitializer<SocketChannel> channelInitializer) {
+        this.identifier=identifier;
         this.remoteAddress=new NetAddress(ip,port);
         this.channelInitializer=channelInitializer;
         this.threadCount=threadCount;
     }
 
 
-    public NettyClientConnect(String ip, int port, ChannelInitializer<SocketChannel> channelInitializer) {
+    public NettyClientConnect(Identifier identifier,String ip, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         this.remoteAddress=new NetAddress(ip,port);
         this.channelInitializer=channelInitializer;
         threadCount=1;
+    }
+
+    @Override
+    public Identifier identifier() {
+        return identifier;
     }
 
     @Override
@@ -123,4 +130,7 @@ public class NettyClientConnect implements NetConnect {
         channel.closeFuture().addListener(new NettyConnectCloseHook(connectCloseHook));
     }
 
+    public Identifier getIdentifier() {
+        return identifier;
+    }
 }

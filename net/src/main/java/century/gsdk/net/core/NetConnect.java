@@ -18,6 +18,7 @@ package century.gsdk.net.core;
  *     Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public interface NetConnect {
+    Identifier identifier();
     NetAddress getRemoteAddress();
     NetAddress getLocalAddress();
     boolean connect();

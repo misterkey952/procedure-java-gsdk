@@ -23,12 +23,13 @@ import io.netty.channel.socket.SocketChannel;
  * Author's Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class NettyConnect implements NetConnect {
-
+    private Identifier identifier;
     private SocketChannel channel;
     private NetAddress remoteAddress;
     private NetAddress localAddress;
-    public NettyConnect(SocketChannel channel) {
+    public NettyConnect(Identifier identifier,SocketChannel channel) {
         this.channel = channel;
+        this.identifier=identifier;
         remoteAddress=new NetAddress(channel.remoteAddress().getAddress().getHostAddress(),channel.remoteAddress().getPort());
         localAddress=new NetAddress(channel.localAddress().getAddress().getHostAddress(),channel.localAddress().getPort());
     }
@@ -37,6 +38,11 @@ public class NettyConnect implements NetConnect {
         return channel;
     }
 
+
+    @Override
+    public Identifier identifier() {
+        return identifier;
+    }
 
     @Override
     public NetAddress getRemoteAddress() {

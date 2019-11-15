@@ -39,4 +39,8 @@ public class Identifier {
         return category+"/"+name;
     }
 
+    public Identifier copy(){
+        return new Identifier(name,category);
+    }
+
 }
