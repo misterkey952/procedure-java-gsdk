@@ -18,20 +18,6 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public abstract class Behavior {
-    private Identifier identifier;
+public abstract class BehaviorDelay {
 
-    public Behavior(String name,String category) {
-        identifier=new Identifier(name,category);
-    }
-
-    protected abstract BehaviorResult execute();
-
-    protected BehaviorResult success(){
-        return new BehaviorResult();
-    }
-
-    protected BehaviorResult errResult(int code,String msg){
-        return new BehaviorResult(code,msg);
-    }
 }
