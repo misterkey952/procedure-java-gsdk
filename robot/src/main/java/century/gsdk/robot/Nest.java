@@ -1,5 +1,6 @@
 package century.gsdk.robot;
 
+import century.gsdk.net.core.Identifier;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
 
