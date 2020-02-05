@@ -1,5 +1,7 @@
 package century.gsdk.robot;
 
+import century.gsdk.net.core.Identifier;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +25,11 @@ import java.util.Map;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class BehaviorUnit {
+public class Component {
     private Identifier identifier;
     private List<Behavior> allBehaviorOrder=new ArrayList<>();
-    public BehaviorUnit(String name,String category){
+    private int lifeCycle;
+    public Component(String name, String category){
         identifier=new Identifier(name,category);
     }
 

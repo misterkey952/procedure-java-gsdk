@@ -1,5 +1,7 @@
 package century.gsdk.robot;
 
+import century.gsdk.net.core.Identifier;
+
 /**
  * Copyright (C) <2019>  <Century>
  * <p>
@@ -25,13 +27,19 @@ public abstract class Behavior {
         identifier=new Identifier(name,category);
     }
 
-    protected abstract BehaviorResult execute();
+    protected abstract Result execute();
 
-    protected BehaviorResult success(){
-        return new BehaviorResult();
+    void waitFor(){
+
     }
 
-    protected BehaviorResult errResult(int code,String msg){
-        return new BehaviorResult(code,msg);
+    protected abstract Result onWaitFor(RobotEvent event);
+
+    protected Result success(){
+        return new Result();
+    }
+
+    protected Result errResult(int code, String msg){
+        return new Result(code,msg);
     }
 }

@@ -1,5 +1,6 @@
 package century.gsdk.robot;
 
+import century.gsdk.net.core.Identifier;
 import century.gsdk.tools.xml.XMLTool;
 import org.dom4j.Element;
 
@@ -28,25 +29,37 @@ import java.util.Map;
  */
 public abstract class Robot {
     private Identifier identifier;
-    private List<BehaviorUnit> behaviorUnits=new ArrayList<>();
-    private BehaviorUnit startUnit;
-
+    private List<Component> components=new ArrayList<>();
+    private Component startUnit;
+    private Component shutdownUnit;
+    private Map<String,Object> attribute=new HashMap<>();
     void init(Element element){
         identifier=new Identifier(
                 XMLTool.getStrAttrValue(element,"name"),
                 XMLTool.getStrAttrValue(element,"category")
         );
+        initialize(element);
+        this.startUnit=returnStartComponent();
+        this.shutdownUnit=returnShutdownComponent();
         consist();
     }
 
-    protected void addUnit(BehaviorUnit unit){
-        behaviorUnits.add(unit);
+    protected abstract Component returnStartComponent();
+    protected abstract Component returnShutdownComponent();
+
+    protected abstract void initialize(Element element);
+
+    protected void addComponent(Component component){
+        components.add(component);
     }
 
-    protected void setStartUnit(BehaviorUnit behaviorUnit){
-        this.startUnit=behaviorUnit;
-    }
 
+    public void attribute(){
+
+    }
     protected abstract void consist();
 
+    public Identifier getIdentifier() {
+        return identifier;
+    }
 }

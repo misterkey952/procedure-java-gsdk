@@ -18,30 +18,7 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class Identifier {
-    private String name;
-    private String category;
-
-    public Identifier(String name, String category) {
-        this.name = name;
-        this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-
-    public String identify(){
-        return toString();
-    }
-
-    public String toString(){
-        return category+"/"+name;
-    }
-
+public abstract class Reaction<T extends RobotEvent> {
+    abstract Result action(T event);
+    abstract int eventType();
 }

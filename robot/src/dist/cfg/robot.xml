@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nests>
-    <nest name="" category="" class="" count="1">
-        <robot name="" category="" class="" count="1"/>
-        <robot name="" category="" class="" count="1"/>
-        <robot name="" category="" class="" count="1"/>
+    <nest name="登陆测试群" category="" class="" count="1">
+        <robot name="login" category="登陆机器人" class="" count="1">
+            <ip>127.0.0.1</ip>
+            <port>6000</port>
+        </robot>
     </nest>
 </nests>

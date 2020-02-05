@@ -18,28 +18,6 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class BehaviorResult {
-    private int code;
-    private String msg;
-
-    BehaviorResult(){
-        this.code=0;
-        this.msg="SUCCESS";
-    }
-    BehaviorResult(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public String toString(){
-        return code+":"+msg;
-    }
+public interface RobotEvent {
+    int eventType();
 }

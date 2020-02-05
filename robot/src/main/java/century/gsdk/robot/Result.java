@@ -18,6 +18,28 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public abstract class BehaviorDelay {
+public class Result {
+    private int code;
+    private String msg;
 
+    Result(){
+        this.code=0;
+        this.msg="SUCCESS";
+    }
+    Result(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public String toString(){
+        return code+":"+msg;
+    }
 }

@@ -1,53 +1,44 @@
-package century.gsdk.net.netty;
+package century.gsdk.robot;
 import century.gsdk.net.NetLogger;
 import century.gsdk.net.core.*;
+import century.gsdk.net.netty.NettyConnectCloseHook;
+import century.gsdk.net.netty.NettySendCallBack;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.GenericFutureListener;
+
 /**
- *     Copyright (C) <2019>  <Century>
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- *     Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
+ * Copyright (C) <2019>  <Century>
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * <p>
+ * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class NettyClientConnect implements NetConnect {
+public class RobotClient implements NetConnect {
     private Identifier identifier;
-    private EventLoopGroup workGroup;
+    private static final EventLoopGroup workGroup=new NioEventLoopGroup(4);
     private ChannelInitializer<SocketChannel> channelInitializer;
-    private int threadCount;
     private SocketChannel channel;
     private NetAddress remoteAddress;
     private NetAddress localAddress;
-    public NettyClientConnect(Identifier identifier,String ip, int port, int threadCount, ChannelInitializer<SocketChannel> channelInitializer) {
-        this.identifier=identifier;
+    public RobotClient(Identifier identifier,String ip, int port, ChannelInitializer<SocketChannel> channelInitializer) {
         this.remoteAddress=new NetAddress(ip,port);
         this.channelInitializer=channelInitializer;
-        this.threadCount=threadCount;
-    }
-
-
-    public NettyClientConnect(Identifier identifier,String ip, int port, ChannelInitializer<SocketChannel> channelInitializer) {
-        this.remoteAddress=new NetAddress(ip,port);
-        this.channelInitializer=channelInitializer;
-        threadCount=1;
         this.identifier=identifier;
     }
 
@@ -69,7 +60,6 @@ public class NettyClientConnect implements NetConnect {
     @Override
     public boolean connect() {
         try {
-            workGroup=new NioEventLoopGroup(threadCount);
             Bootstrap bootstrap=new Bootstrap();
             bootstrap.group(workGroup).channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY,true)
@@ -79,12 +69,6 @@ public class NettyClientConnect implements NetConnect {
                     channel.localAddress().getAddress().getHostAddress(),
                     channel.localAddress().getPort()
             );
-            channel.closeFuture().addListener(new GenericFutureListener<ChannelFuture>(){
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    shutDownThread();
-                }
-            });
             NetLogger.NetLog.info("Connect:local {} remote {} success",localAddress.toString(),remoteAddress.toString());
             return true;
         }catch(Exception e) {
@@ -92,11 +76,6 @@ public class NettyClientConnect implements NetConnect {
             NetLogger.NetLog.error("Connect:"+remoteAddress.toString(),e);
             return false;
         }
-    }
-
-
-    private void shutDownThread(){
-        workGroup.shutdownGracefully();
     }
 
     @Override
