@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nests>
     <nest name="test" category="登陆测试群" class="century.gsdk.robot.Nest" count="1">
-        <robot name="login" category="登陆机器人" class="x51.robot.robots.LoginRobot" count="1">
-            <ip>10.1.1.234</ip>
-            <port>8847</port>
+        <robot name="login" category="登陆机器人" class="" count="1">
+            <ip></ip>
+            <port></port>
         </robot>
     </nest>
 </nests>
