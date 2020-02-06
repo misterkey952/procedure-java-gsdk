@@ -6,6 +6,8 @@ import org.dom4j.Element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -28,7 +30,8 @@ import java.util.List;
 public class Nest implements Runnable{
     private Identifier identifier;
     private List<Robot> robots;
-
+    private BlockingQueue<RobotEvent> eventBlockingQueue=new LinkedBlockingDeque<>();
+    private boolean threadOnOff=true;
     public Nest() {
         robots=new ArrayList<>();
     }
@@ -45,7 +48,8 @@ public class Nest implements Runnable{
                 int count=XMLTool.getIntAttrValue(robEle,"count");
                 for(int i=0;i<count;i++){
                     Robot robot= (Robot) Class.forName(XMLTool.getStrAttrValue(robEle,"class")).getDeclaredConstructor().newInstance();
-                    robot.init(robEle);
+                    robot.init(robEle,i);
+                    robot.nest(this);
                     robots.add(robot);
                 }
             }catch(Exception e){
@@ -56,8 +60,63 @@ public class Nest implements Runnable{
 
     }
 
+    void addEvent(RobotEvent event){
+        try {
+            eventBlockingQueue.put(event);
+        } catch (InterruptedException e) {
+            RobotLogger.SYSLOG.error("Nest.addEvent",e);
+        }
+    }
+
+    void start(){
+        addEvent(new StartEvent());
+    }
+
+    void shutdown(){
+        addEvent(new ShutDownEvent());
+    }
+
     @Override
     public void run() {
+        RobotEvent robotEvent;
+        while(threadOnOff){
+            try{
+                robotEvent=eventBlockingQueue.take();
+                if(robotEvent.eventType()==ShutDownEvent.SHUTDOWN){
+                    threadOnOff=false;
+                }else if(robotEvent.eventType()==StartEvent.START){
+                    for(Robot robot:robots){
+                        try{
+                            robot.go();
+                        }catch(Exception e){
+                            RobotLogger.SYSLOG.error("["+robot.toString()+"]robot.go err",e);
+                        }
+                    }
+                }else if(robotEvent.eventType()==NextComponentEvent.NEXT_COMPONENT){
+                    robotEvent.robot().executeComponent();
+                }else if(robotEvent.eventType()==NextBehaviorEvent.NEXT_BEHAVIOR){
+                    robotEvent.robot().executeComponent();
+                }else{
+                    robotEvent.robot().reactionEvent(robotEvent);
+                }
+            }catch(Exception e){
+                RobotLogger.SYSLOG.error("Nest.run err",e);
+            }
+        }
+
+        for(Robot robot:robots){
+            try{
+                robot.stop();
+            }catch(Exception e){
+                RobotLogger.SYSLOG.error("["+robot.toString()+"]robot.stop err",e);
+            }
+        }
 
     }
+
+
+    Identifier getIdentifier(){
+        return identifier;
+    }
+
 }

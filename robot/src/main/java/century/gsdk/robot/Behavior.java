@@ -22,24 +22,66 @@ import century.gsdk.net.core.Identifier;
  */
 public abstract class Behavior {
     private Identifier identifier;
+    private Robot robot;
+    private Component component;
+    private WaitFor waitFor;
+    void robot(Robot robot){
+        this.robot=robot;
+    }
 
+    void component(Component component){
+        this.component=component;
+    }
+
+    public <T extends Robot>T robot(){
+        return (T) robot;
+    }
     public Behavior(String name,String category) {
         identifier=new Identifier(name,category);
     }
 
     protected abstract Result execute();
 
-    void waitFor(){
-
+    protected Result waitFor(WaitFor wait){
+        waitFor=wait;
+        wait.waitFor();
+        return errResult(Result.BEHAVIOR_WAIT,"BEHAVIOR_WAIT");
     }
 
-    protected abstract Result onWaitFor(RobotEvent event);
+
+    protected void cancelWaitFor(){
+        this.waitFor=null;
+    }
+
+    Result waitResult(RobotEvent robotEvent){
+        if(waitFor!=null){
+            return waitFor.result(robotEvent);
+        }
+        return null;
+    }
 
     protected Result success(){
         return new Result();
     }
 
+    protected Result waitGoOn(){
+        return errResult(Result.BEHAVIOR_WAIT,"BEHAVIOR_WAIT");
+    }
+
     protected Result errResult(int code, String msg){
         return new Result(code,msg);
+    }
+
+
+    protected void next(){
+        component.nextBehavior();
+    }
+
+    protected Result execute(Class clazz){
+        return component.execute(clazz);
+    }
+
+    protected void jump(Class clazz){
+        component.jumpBehavior(clazz);
     }
 }

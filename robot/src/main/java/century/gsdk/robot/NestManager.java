@@ -51,4 +51,22 @@ public class NestManager {
         }
     }
 
+    public void start(){
+        for(Nest nest:nestList){
+            RobotThread.getInstance().execute(nest);
+        }
+
+        for(Nest nest:nestList){
+            nest.start();
+        }
+    }
+
+
+    public void shutdown(){
+        for(Nest nest:nestList){
+            nest.shutdown();
+        }
+    }
+
+
 }

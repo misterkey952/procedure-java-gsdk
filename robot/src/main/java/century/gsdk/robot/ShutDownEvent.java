@@ -1,8 +1,4 @@
-package century.gsdk.test;
-
-import century.gsdk.robot.Component;
-import century.gsdk.robot.Robot;
-import org.dom4j.Element;
+package century.gsdk.robot;
 
 /**
  * Copyright (C) <2019>  <Century>
@@ -22,24 +18,12 @@ import org.dom4j.Element;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class TestRobot extends Robot {
-    @Override
-    protected Component returnStartComponent() {
-        return null;
-    }
+public class ShutDownEvent extends RobotEvent{
+
+    static final int SHUTDOWN=-999999999;
 
     @Override
-    protected Component returnShutdownComponent() {
-        return null;
-    }
-
-    @Override
-    protected void initialize(Element element) {
-
-    }
-
-    @Override
-    protected void consist() {
-
+    public int eventType() {
+        return SHUTDOWN;
     }
 }

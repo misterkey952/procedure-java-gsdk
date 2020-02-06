@@ -18,10 +18,12 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public abstract class Reaction<T extends RobotEvent> {
-    protected abstract Result action(T event);
-    protected abstract int eventType();
-    protected Result success(){
-        return new Result();
+public class StartEvent extends RobotEvent{
+
+    static final int START=-999999998;
+
+    @Override
+    public int eventType() {
+        return START;
     }
 }

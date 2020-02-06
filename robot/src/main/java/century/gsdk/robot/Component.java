@@ -25,13 +25,91 @@ import java.util.Map;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public class Component {
+public abstract class Component {
+    private Robot robot;
     private Identifier identifier;
     private List<Behavior> allBehaviorOrder=new ArrayList<>();
-    private int lifeCycle;
-    public Component(String name, String category){
-        identifier=new Identifier(name,category);
+    private Map<Class,Integer> behaviorMap=new HashMap<>();
+    private int lifeCycle=Robot.UNINIT_LIFECYCLE;
+    private int curBehPointer;
+
+    public Component(Identifier identifier) {
+        this.identifier = identifier;
+    }
+
+    public Component(Identifier identifier, int lifeCycle) {
+        this.identifier = identifier;
+        this.lifeCycle = lifeCycle;
     }
 
 
+    boolean isComplete(){
+        return curBehPointer>=allBehaviorOrder.size();
+    }
+
+    void resetPointer(){
+        if(lifeCycle>0){
+            lifeCycle--;
+        }
+        curBehPointer=0;
+    }
+
+    protected void next(){
+        robot.nextComponent();
+    }
+
+    void robot(Robot robot){
+        this.robot=robot;
+    }
+
+    public <T extends Robot>T robot(){
+        return (T) robot;
+    }
+
+    protected abstract void consist();
+
+    protected void addBehavior(Behavior behavior){
+        behavior.robot(robot);
+        behavior.component(this);
+        behaviorMap.put(behavior.getClass(),allBehaviorOrder.size());
+        allBehaviorOrder.add(behavior);
+    }
+
+    Result execute(Class clazz){
+        curBehPointer=behaviorMap.get(clazz);
+        return execute();
+    }
+
+
+    Result waitForResult(RobotEvent robotEvent){
+        return allBehaviorOrder.get(curBehPointer).waitResult(robotEvent);
+    }
+
+    void nextBehavior(){
+        curBehPointer++;
+        NextBehaviorEvent behaviorEvent=new NextBehaviorEvent();
+        behaviorEvent.robot(robot);
+        robot.next().addEvent(behaviorEvent);
+    }
+
+
+    void jumpBehavior(Class clazz){
+        curBehPointer=behaviorMap.get(clazz);
+        NextBehaviorEvent behaviorEvent=new NextBehaviorEvent();
+        behaviorEvent.robot(robot);
+        robot.next().addEvent(behaviorEvent);
+    }
+
+    Result execute(){
+        Behavior behavior=allBehaviorOrder.get(curBehPointer);
+        return behavior.execute();
+    }
+
+    int getLifeCycle() {
+        return lifeCycle;
+    }
+
+    void setLifeCycle(int lifeCycle) {
+        this.lifeCycle = lifeCycle;
+    }
 }

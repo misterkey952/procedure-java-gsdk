@@ -19,11 +19,16 @@ package century.gsdk.robot;
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
 public class Result {
+    public static final int SUCCESS=-999999998;
+    public static final int BEHAVIOR_WAIT=-999999999;
+
+
+
     private int code;
     private String msg;
 
     Result(){
-        this.code=0;
+        this.code=SUCCESS;
         this.msg="SUCCESS";
     }
     Result(int code, String msg) {
@@ -42,4 +47,9 @@ public class Result {
     public String toString(){
         return code+":"+msg;
     }
+
+    public boolean isSuccess(){
+        return code==SUCCESS;
+    }
+
 }

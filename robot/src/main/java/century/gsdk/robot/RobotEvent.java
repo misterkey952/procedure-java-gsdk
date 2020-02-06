@@ -18,6 +18,15 @@ package century.gsdk.robot;
  * <p>
  * Author Email:   misterkey952@gmail.com		280202806@qq.com	yjy116@163.com.
  */
-public interface RobotEvent {
-    int eventType();
+public abstract class RobotEvent {
+    private Robot robot;
+
+    void robot(Robot robot){
+        this.robot=robot;
+    }
+
+    public <T extends Robot>T robot(){
+        return (T) robot;
+    }
+    public abstract int eventType();
 }
