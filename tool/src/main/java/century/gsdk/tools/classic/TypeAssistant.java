@@ -1,9 +1,7 @@
 package century.gsdk.tools.classic;
-
 import org.apache.commons.collections4.map.HashedMap;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +29,12 @@ public class TypeAssistant {
     public static Class getFieldClass(Field field){
         if(Map.class.isAssignableFrom(field.getType())){
             Type type=field.getGenericType();
-            if(type instanceof ParameterizedTypeImpl){
-                ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) type;
+
+            if(type instanceof ParameterizedType){
+                ParameterizedType ppt= (ParameterizedType) type;
                 Type subType=ppt.getActualTypeArguments()[1];
-                if(subType instanceof ParameterizedTypeImpl){
-                    ppt= (ParameterizedTypeImpl) subType;
+                if(subType instanceof ParameterizedType){
+                    ppt= (ParameterizedType) subType;
                     return (Class) ppt.getActualTypeArguments()[0];
                 }else{
                     return (Class) subType;
@@ -44,7 +43,7 @@ public class TypeAssistant {
                 return field.getType();
             }
         }else if(List.class.isAssignableFrom(field.getType())){
-            ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) field.getGenericType();
+            ParameterizedType ppt= (ParameterizedType) field.getGenericType();
             return (Class) ppt.getActualTypeArguments()[0];
         }else{
             return field.getType();
@@ -55,12 +54,12 @@ public class TypeAssistant {
     public static Class getKeyTypeInMap(Field field){
         if(Map.class.isAssignableFrom(field.getType())){
             Type type=field.getGenericType();
-            if(type instanceof ParameterizedTypeImpl){
-                ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) type;
+            if(type instanceof ParameterizedType){
+                ParameterizedType ppt= (ParameterizedType) type;
                 Type subType=ppt.getActualTypeArguments()[0];
-                if(subType instanceof ParameterizedTypeImpl){
-                    ppt= (ParameterizedTypeImpl) subType;
-                    return ppt.getRawType();
+                if(subType instanceof ParameterizedType){
+                    ppt= (ParameterizedType) subType;
+                    return (Class) ppt.getRawType();
                 }else{
                     return (Class) subType;
                 }
@@ -72,12 +71,12 @@ public class TypeAssistant {
     public static Class getValueTypeInMap(Field field){
         if(Map.class.isAssignableFrom(field.getType())){
             Type type=field.getGenericType();
-            if(type instanceof ParameterizedTypeImpl){
-                ParameterizedTypeImpl ppt= (ParameterizedTypeImpl) type;
+            if(type instanceof ParameterizedType){
+                ParameterizedType ppt= (ParameterizedType) type;
                 Type subType=ppt.getActualTypeArguments()[1];
-                if(subType instanceof ParameterizedTypeImpl){
-                    ppt= (ParameterizedTypeImpl) subType;
-                    return ppt.getRawType();
+                if(subType instanceof ParameterizedType){
+                    ppt= (ParameterizedType) subType;
+                    return (Class) ppt.getRawType();
                 }else{
                     return (Class) subType;
                 }

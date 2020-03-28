@@ -1,6 +1,5 @@
 allprojects {
     group 'gsdk'
-    version '0.0.0'
 }
 
 subprojects {
@@ -9,6 +8,6 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
